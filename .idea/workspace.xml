@@ -5,25 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/core/auth_bearer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/core/logging_config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/crud/transaction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routes/auth.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routes/users.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/test_auth_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_crud_user.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/deploy.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/services/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/env.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/core/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/transaction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/exceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/auth.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/uv.lock" beforeDir="false" afterPath="$PROJECT_DIR$/uv.lock" afterDir="false" />
     </list>
@@ -36,6 +25,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="workflow" />
       </list>
     </option>
   </component>
@@ -159,7 +149,7 @@
       <workItem from="1748207428589" duration="186000" />
       <workItem from="1748257648481" duration="3389000" />
       <workItem from="1748261266416" duration="492000" />
-      <workItem from="1748262297808" duration="9194000" />
+      <workItem from="1748262297808" duration="12745000" />
     </task>
     <servers />
   </component>

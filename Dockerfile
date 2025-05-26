@@ -53,3 +53,4 @@ COPY app/ ./app/
 
 EXPOSE 8000
 CMD ["/app/scripts/start-prod.sh"]
+
