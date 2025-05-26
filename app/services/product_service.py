@@ -1,7 +1,7 @@
 import logging
 from typing import List, Optional, Tuple
 
-from sqlalchemy import select, func, and_, or_
+from sqlalchemy import select, func, and_, or_, distinct
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import ProductNotAvailableError, BusinessLogicError
@@ -27,80 +27,85 @@ class ProductService:
     ) -> Tuple[List[ProxyProduct], int]:
         """Получение продуктов с фильтрами и пагинацией"""
 
-        # Базовый запрос
-        query = select(ProxyProduct)
-        count_query = select(func.count(ProxyProduct.id))
+        try:
+            # Базовый запрос
+            query = select(ProxyProduct)
+            count_query = select(func.count(ProxyProduct.id))
 
-        # Применяем фильтры
-        conditions = []
+            # Применяем фильтры
+            conditions = []
 
-        if filters.proxy_type:
-            conditions.append(ProxyProduct.proxy_type == filters.proxy_type)
+            # Всегда показываем только активные продукты
+            conditions.append(ProxyProduct.is_active == True)
 
-        if filters.session_type:
-            conditions.append(ProxyProduct.session_type == filters.session_type)
+            if filters.proxy_type:
+                conditions.append(ProxyProduct.proxy_type == filters.proxy_type)
 
-        if filters.provider:
-            conditions.append(ProxyProduct.provider == filters.provider)
+            if filters.session_type:
+                conditions.append(ProxyProduct.session_type == filters.session_type)
 
-        if filters.country_code:
-            conditions.append(ProxyProduct.country_code == filters.country_code.upper())
+            if filters.provider:
+                conditions.append(ProxyProduct.provider == filters.provider)
 
-        if filters.city:
-            conditions.append(ProxyProduct.city.ilike(f"%{filters.city}%"))
+            if filters.country_code:
+                conditions.append(ProxyProduct.country_code == filters.country_code.upper())
 
-        if filters.min_price:
-            conditions.append(ProxyProduct.price_per_proxy >= filters.min_price)
+            if filters.city:
+                conditions.append(ProxyProduct.city.ilike(f"%{filters.city}%"))
 
-        if filters.max_price:
-            conditions.append(ProxyProduct.price_per_proxy <= filters.max_price)
+            if filters.min_price:
+                conditions.append(ProxyProduct.price_per_proxy >= filters.min_price)
 
-        if filters.min_duration:
-            conditions.append(ProxyProduct.duration_days >= filters.min_duration)
+            if filters.max_price:
+                conditions.append(ProxyProduct.price_per_proxy <= filters.max_price)
 
-        if filters.max_duration:
-            conditions.append(ProxyProduct.duration_days <= filters.max_duration)
+            if filters.min_duration:
+                conditions.append(ProxyProduct.duration_days >= filters.min_duration)
 
-        if filters.is_active is not None:
-            conditions.append(ProxyProduct.is_active == filters.is_active)
+            if filters.max_duration:
+                conditions.append(ProxyProduct.duration_days <= filters.max_duration)
 
-        if filters.is_featured is not None:
-            conditions.append(ProxyProduct.is_featured == filters.is_featured)
+            if filters.is_featured is not None:
+                conditions.append(ProxyProduct.is_featured == filters.is_featured)
 
-        if filters.search:
-            search_term = f"%{filters.search}%"
-            conditions.append(
-                or_(
-                    ProxyProduct.name.ilike(search_term),
-                    ProxyProduct.description.ilike(search_term)
+            if filters.search:
+                search_term = f"%{filters.search}%"
+                conditions.append(
+                    or_(
+                        ProxyProduct.name.ilike(search_term),
+                        ProxyProduct.description.ilike(search_term)
+                    )
                 )
+
+            # Применяем условия к запросам
+            if conditions:
+                query = query.where(and_(*conditions))
+                count_query = count_query.where(and_(*conditions))
+
+            # Добавляем сортировку
+            query = query.order_by(
+                ProxyProduct.is_featured.desc(),
+                ProxyProduct.created_at.desc()
             )
 
-        # Применяем условия к запросам
-        if conditions:
-            query = query.where(and_(*conditions))
-            count_query = count_query.where(and_(*conditions))
+            # Пагинация
+            offset = (page - 1) * size
+            query = query.offset(offset).limit(size)
 
-        # Добавляем сортировку
-        query = query.order_by(
-            ProxyProduct.is_featured.desc(),
-            ProxyProduct.created_at.desc()
-        )
+            # Выполняем запросы
+            result = await db.execute(query)
+            products = result.scalars().all()
 
-        # Пагинация
-        offset = (page - 1) * size
-        query = query.offset(offset).limit(size)
+            count_result = await db.execute(count_query)
+            total = count_result.scalar() or 0
 
-        # Выполняем запросы
-        result = await db.execute(query)
-        products = result.scalars().all()
+            logger.info(f"Found {len(products)} products out of {total} total")
 
-        count_result = await db.execute(count_query)
-        total = count_result.scalar()
+            return list(products), total
 
-        logger.info(f"Found {len(products)} products with filters: {filters}")
-
-        return products, total
+        except Exception as e:
+            logger.error(f"Error in get_products_with_filters: {e}", exc_info=True)
+            raise BusinessLogicError(f"Failed to get products: {str(e)}")
 
     async def get_product_by_id(
             self,
@@ -108,17 +113,22 @@ class ProductService:
             product_id: int
     ) -> Optional[ProxyProduct]:
         """Получение продукта по ID"""
-        product = await self.crud.get(db, id=product_id)
+        try:
+            product = await self.crud.get(db, id=product_id)
 
-        if not product:
-            logger.warning(f"Product {product_id} not found")
-            return None
+            if not product:
+                logger.warning(f"Product {product_id} not found")
+                return None
 
-        if not product.is_active:
-            logger.warning(f"Product {product_id} is inactive")
-            raise ProductNotAvailableError(f"Product {product_id} is not available")
+            if not product.is_active:
+                logger.warning(f"Product {product_id} is inactive")
+                raise ProductNotAvailableError(f"Product {product_id} is not available")
 
-        return product
+            return product
+
+        except Exception as e:
+            logger.error(f"Error getting product {product_id}: {e}")
+            raise
 
     async def create_product(
             self,
@@ -181,68 +191,6 @@ class ProductService:
             logger.error(f"Error deactivating product {product_id}: {e}")
             raise BusinessLogicError("Failed to delete product")
 
-    @staticmethod
-    async def get_countries(db: AsyncSession) -> List[dict]:
-        """Получение списка стран с городами"""
-
-        query = select(
-            ProxyProduct.country_code,
-            ProxyProduct.country_name,
-            func.array_agg(ProxyProduct.city.distinct()).label('cities')
-        ).where(
-            and_(
-                ProxyProduct.is_active == True,
-                ProxyProduct.city.isnot(None)
-            )
-        ).group_by(
-            ProxyProduct.country_code,
-            ProxyProduct.country_name
-        ).order_by(ProxyProduct.country_name)
-
-        result = await db.execute(query)
-        countries = []
-
-        for row in result:
-            cities = [city for city in row.cities if city] if row.cities else []
-            countries.append({
-                "code": row.country_code,
-                "name": row.country_name,
-                "cities": sorted(cities)
-            })
-
-        return countries
-
-    @staticmethod
-    async def get_cities_by_country(
-            db: AsyncSession,
-            country_code: str
-    ) -> List[dict]:
-        """Получение городов по стране"""
-
-        query = select(
-            ProxyProduct.city,
-            ProxyProduct.country_code,
-            ProxyProduct.country_name
-        ).where(
-            and_(
-                ProxyProduct.country_code == country_code.upper(),
-                ProxyProduct.is_active == True,
-                ProxyProduct.city.isnot(None)
-            )
-        ).distinct().order_by(ProxyProduct.city)
-
-        result = await db.execute(query)
-        cities = []
-
-        for row in result:
-            cities.append({
-                "name": row.city,
-                "country_code": row.country_code,
-                "country_name": row.country_name
-            })
-
-        return cities
-
     async def check_stock_availability(
             self,
             db: AsyncSession,
@@ -265,6 +213,90 @@ class ProductService:
             return False
 
         return True
+
+    @staticmethod
+    async def get_countries(db: AsyncSession) -> List[dict]:
+        """Получение списка стран с городами (совместимо с SQLite и PostgreSQL)"""
+
+        try:
+            # Получаем уникальные страны
+            countries_query = select(
+                ProxyProduct.country_code,
+                ProxyProduct.country_name
+            ).where(
+                and_(
+                    ProxyProduct.is_active == True,
+                    ProxyProduct.city.isnot(None)
+                )
+            ).group_by(
+                ProxyProduct.country_code,
+                ProxyProduct.country_name
+            ).order_by(ProxyProduct.country_name)
+
+            result = await db.execute(countries_query)
+            countries_data = result.all()
+
+            countries = []
+            for row in countries_data:
+                # Получаем города для каждой страны отдельным запросом
+                cities_query = select(distinct(ProxyProduct.city)).where(
+                    and_(
+                        ProxyProduct.country_code == row.country_code,
+                        ProxyProduct.is_active == True,
+                        ProxyProduct.city.isnot(None)
+                    )
+                ).order_by(ProxyProduct.city)
+
+                cities_result = await db.execute(cities_query)
+                cities = [city[0] for city in cities_result.all()]
+
+                countries.append({
+                    "code": row.country_code,
+                    "name": row.country_name,
+                    "cities": cities
+                })
+
+            return countries
+
+        except Exception as e:
+            logger.error(f"Error getting countries: {e}")
+            raise BusinessLogicError(f"Failed to get countries: {str(e)}")
+
+    @staticmethod
+    async def get_cities_by_country(
+            db: AsyncSession,
+            country_code: str
+    ) -> List[dict]:
+        """Получение городов по стране"""
+
+        try:
+            query = select(
+                ProxyProduct.city,
+                ProxyProduct.country_code,
+                ProxyProduct.country_name
+            ).where(
+                and_(
+                    ProxyProduct.country_code == country_code.upper(),
+                    ProxyProduct.is_active == True,
+                    ProxyProduct.city.isnot(None)
+                )
+            ).distinct().order_by(ProxyProduct.city)
+
+            result = await db.execute(query)
+            cities = []
+
+            for row in result:
+                cities.append({
+                    "name": row.city,
+                    "country_code": row.country_code,
+                    "country_name": row.country_name
+                })
+
+            return cities
+
+        except Exception as e:
+            logger.error(f"Error getting cities for {country_code}: {e}")
+            raise BusinessLogicError(f"Failed to get cities: {str(e)}")
 
     @staticmethod
     async def _validate_product_data(product_data: ProductCreate) -> None:

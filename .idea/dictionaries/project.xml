@@ -2,9 +2,13 @@
   <dictionary name="project">
     <words>
       <w>goproxy</w>
+      <w>newuser</w>
       <w>tablename</w>
+      <w>testpassword</w>
+      <w>wrongpassword</w>
       <w>админов</w>
       <w>енумы</w>
+      <w>захеширован</w>
     </words>
   </dictionary>
 </component>

@@ -5,7 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/integration/test_cart_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/integration/test_products_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_cart_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_product_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_redis_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.coverage" beforeDir="false" afterPath="$PROJECT_DIR$/.coverage" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/shopping_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/shopping_cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/product_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/product_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/integration/test_auth_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test_auth_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_simple.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_simple.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/test_crud_user.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_crud_user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/test_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uv.lock" beforeDir="false" afterPath="$PROJECT_DIR$/uv.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +35,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="workflow" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -140,7 +160,7 @@
       <workItem from="1748207428589" duration="186000" />
       <workItem from="1748257648481" duration="3389000" />
       <workItem from="1748261266416" duration="492000" />
-      <workItem from="1748262297808" duration="13092000" />
+      <workItem from="1748262297808" duration="17182000" />
     </task>
     <servers />
   </component>

@@ -1,7 +1,6 @@
-import asyncio
-from typing import AsyncGenerator, Generator, Any, Dict, Callable
+from typing import AsyncGenerator
 
-import pytest
+import pytest_asyncio
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.pool import StaticPool
@@ -15,15 +14,7 @@ from app.schemas.user import UserCreate
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 
-@pytest.fixture(scope="session")
-def event_loop() -> Generator:
-    """Создание event loop для всей сессии тестов"""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
-
-
-@pytest.fixture(scope="session")
+@pytest_asyncio.fixture(scope="session")
 async def test_engine():
     """Создание тестового движка базы данных"""
     engine = create_async_engine(
@@ -41,7 +32,7 @@ async def test_engine():
     await engine.dispose()
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def db_session(test_engine) -> AsyncGenerator[AsyncSession, None]:
     """Создание тестовой сессии базы данных"""
     async_session = async_sessionmaker(
@@ -55,35 +46,35 @@ async def db_session(test_engine) -> AsyncGenerator[AsyncSession, None]:
         await session.rollback()
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
     """Создание тестового HTTP клиента"""
 
     async def override_get_db() -> AsyncSession:
         return db_session
 
-    # Правильная типизация для dependency_overrides
-    original_overrides: Dict[Callable[..., Any], Callable[..., Any]] = getattr(app, 'dependency_overrides', {}).copy()
-
-    # Устанавливаем override
-    if not hasattr(app, 'dependency_overrides'):
-        setattr(app, 'dependency_overrides', {})
-
     app.dependency_overrides[get_db] = override_get_db  # type: ignore
 
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    # ИСПРАВЛЕНО: используем transport вместо app
+    from httpx import ASGITransport
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
         yield client
 
     app.dependency_overrides.clear()  # type: ignore
-    app.dependency_overrides.update(original_overrides)  # type: ignore
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_user(db_session: AsyncSession):
     """Создание тестового пользователя"""
+    # ИСПРАВЛЕНО: используем уникальные данные для каждого теста
+    import uuid
+    unique_id = str(uuid.uuid4())[:8]
+
     user_data = UserCreate(
-        email="test@example.com",
-        username="testuser",
+        email=f"test-{unique_id}@example.com",
+        username=f"testuser-{unique_id}",
         password="testpassword123",
         first_name="Test",
         last_name="User"
@@ -93,14 +84,17 @@ async def test_user(db_session: AsyncSession):
     return user
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_guest_user(db_session: AsyncSession):
     """Создание тестового гостевого пользователя"""
-    guest = await user_crud.create_guest_user(db_session, session_id="test-session-123")
+    import uuid
+    session_id = f"test-session-{str(uuid.uuid4())[:8]}"
+
+    guest = await user_crud.create_guest_user(db_session, session_id=session_id)
     return guest
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def auth_headers(client: AsyncClient, test_user):
     """Создание заголовков авторизации"""
     login_data = {
