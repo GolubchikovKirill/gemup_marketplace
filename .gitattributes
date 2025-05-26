@@ -1,0 +1,22 @@
+# Принудительно используем LF для всех текстовых файлов
+* text=auto eol=lf
+
+# Специфичные типы файлов
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.env text eol=lf
+Dockerfile* text eol=lf
+Makefile text eol=lf
+.dockerignore text eol=lf
+
+# Бинарные файлы
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary

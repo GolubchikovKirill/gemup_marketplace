@@ -1,0 +1,1 @@
+-- Создание расширенийCREATE EXTENSION IF NOT EXISTS "uuid-ossp";CREATE EXTENSION IF NOT EXISTS "pg_trgm";-- Создание индексов для поиска-- Будут созданы автоматически через SQLAlchemy, но можно добавить дополнительные-- Настройка часового поясаSET timezone = 'UTC';
