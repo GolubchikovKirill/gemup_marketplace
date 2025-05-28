@@ -8,8 +8,9 @@ from app.core.exceptions import BusinessLogicError, InsufficientFundsError
 from app.crud.order import order_crud
 from app.crud.proxy_product import proxy_product_crud
 from app.crud.shopping_cart import shopping_cart_crud
+from app.crud.transaction import transaction_crud
 from app.crud.user import user_crud
-from app.models.models import Order, OrderStatus, User
+from app.models.models import Order, OrderStatus, User, Transaction, TransactionStatus
 from app.schemas.order import OrderCreate, OrderUpdate
 from app.services.base import BaseService, BusinessRuleValidator
 
@@ -70,7 +71,7 @@ class OrderService(BaseService[Order, OrderCreate, OrderUpdate]):
 
     def __init__(self):
         super().__init__(Order)
-        self.crud = order_crud  # ИСПРАВЛЕНО: добавляем crud
+        self.crud = order_crud
         self.business_rules = OrderBusinessRules()
 
     async def create_order_from_cart(
@@ -149,6 +150,63 @@ class OrderService(BaseService[Order, OrderCreate, OrderUpdate]):
         await db.refresh(order)
 
         logger.info(f"Payment processed from balance for order {order.order_number}")
+
+    async def _process_successful_payment(
+            self,
+            db: AsyncSession,
+            transaction: Transaction,
+            amount: str
+    ):
+        """Обработка успешного платежа"""
+        try:
+            # Обновляем статус транзакции
+            await transaction_crud.update_status(
+                db,
+                transaction=transaction,
+                status=TransactionStatus.COMPLETED
+            )
+
+            # Пополняем баланс пользователя
+            user = await user_crud.get(db, obj_id=transaction.user_id)
+            if user:
+                await user_crud.update_balance(
+                    db,
+                    user=user,
+                    amount=float(amount)
+                )
+
+                # ИСПРАВЛЕНО: Активируем прокси если это оплата заказа
+                if transaction.order_id:
+                    order = await order_crud.get(db, obj_id=transaction.order_id)
+                    if order and order.status == OrderStatus.PAID:
+                        try:
+                            # ИСПРАВЛЕНО: вызываем метод напрямую
+                            await self._activate_proxies_for_order(db, order)
+
+                            # Обновляем статус заказа на "в обработке"
+                            await order_crud.update_status(
+                                db,
+                                order_id=order.id,
+                                status=OrderStatus.PROCESSING
+                            )
+                            logger.info(f"Proxies activated for order {order.order_number}")
+
+                        except Exception as e:
+                            logger.error(f"Failed to activate proxies for order {order.id}: {e}")
+                            # Не прерываем процесс, только логируем ошибку
+
+                logger.info(f"Balance updated for user {user.id}: +{amount}")
+
+        except Exception as e:
+            logger.error(f"Error processing successful payment: {e}")
+            raise
+
+    @staticmethod
+    async def _activate_proxies_for_order(db: AsyncSession, order: Order):
+        """ДОБАВЛЕНО: Активация прокси для заказа"""
+        # Импортируем здесь для избежания циклических импортов
+        from app.services.proxy_service import proxy_service
+        return await proxy_service.activate_proxies_for_order(db, order)
 
     @staticmethod
     async def get_user_orders(

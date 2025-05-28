@@ -5,20 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/integrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/integrations/cryptomus.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routes/payments.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/payment_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/test_payments_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_cryptomus_api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_payment_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.coverage" beforeDir="false" afterPath="$PROJECT_DIR$/.coverage" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/crud/proxy_purchase.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/integrations/proxy_711.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/proxies.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/services/proxy_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/integration/test_proxies_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_order_service_proxy_activation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_proxy_711_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_proxy_purchase_crud.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_proxy_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/core/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/transaction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/transaction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/proxy_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/proxy_purchase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/order_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/order_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -163,7 +166,7 @@
       <workItem from="1748261266416" duration="492000" />
       <workItem from="1748262297808" duration="17182000" />
       <workItem from="1748427366236" duration="11327000" />
-      <workItem from="1748439037407" duration="8422000" />
+      <workItem from="1748439037407" duration="12536000" />
     </task>
     <servers />
   </component>

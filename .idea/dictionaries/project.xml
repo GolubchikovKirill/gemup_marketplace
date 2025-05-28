@@ -7,8 +7,11 @@
       <w>testpassword</w>
       <w>wrongpassword</w>
       <w>админов</w>
+      <w>валидатор</w>
+      <w>валидируем</w>
       <w>енумы</w>
       <w>захеширован</w>
+      <w>логируем</w>
     </words>
   </dictionary>
 </component>
