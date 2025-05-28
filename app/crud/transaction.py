@@ -24,7 +24,6 @@ class CRUDTransaction(CRUDBase[Transaction, TransactionCreate, TransactionUpdate
             description: Optional[str] = None
     ) -> Transaction:
         """Создание новой транзакции"""
-
         transaction_id = f"TXN-{datetime.now().strftime('%Y%m%d')}-{str(uuid.uuid4())[:8].upper()}"
 
         transaction = Transaction(
@@ -75,7 +74,7 @@ class CRUDTransaction(CRUDBase[Transaction, TransactionCreate, TransactionUpdate
             .offset(skip)
             .limit(limit)
         )
-        return result.scalars().all()
+        return list(result.scalars().all())
 
     @staticmethod
     async def get_by_status(
@@ -93,7 +92,7 @@ class CRUDTransaction(CRUDBase[Transaction, TransactionCreate, TransactionUpdate
             .offset(skip)
             .limit(limit)
         )
-        return result.scalars().all()
+        return list(result.scalars().all())
 
     @staticmethod
     async def update_status(
@@ -127,7 +126,7 @@ class CRUDTransaction(CRUDBase[Transaction, TransactionCreate, TransactionUpdate
         result = await db.execute(
             select(Transaction).where(Transaction.status == TransactionStatus.PENDING)
         )
-        return result.scalars().all()
+        return list(result.scalars().all())
 
     @staticmethod
     async def get_order_transactions(
@@ -141,7 +140,7 @@ class CRUDTransaction(CRUDBase[Transaction, TransactionCreate, TransactionUpdate
             .where(Transaction.order_id == order_id)
             .order_by(Transaction.created_at.desc())
         )
-        return result.scalars().all()
+        return list(result.scalars().all())
 
 
 transaction_crud = CRUDTransaction(Transaction)

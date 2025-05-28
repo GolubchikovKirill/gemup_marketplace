@@ -44,21 +44,9 @@ async def get_products(
 ):
     """
     Получение списка продуктов с фильтрацией и пагинацией
-
-    - **page**: Номер страницы (начиная с 1)
-    - **size**: Количество элементов на странице (1-100)
-    - **proxy_type**: Фильтр по типу прокси
-    - **session_type**: Фильтр по типу сессии
-    - **provider**: Фильтр по провайдеру
-    - **country_code**: Фильтр по коду страны (ISO 3166-1 alpha-2)
-    - **city**: Фильтр по городу
-    - **min_price/max_price**: Диапазон цен
-    - **min_duration/max_duration**: Диапазон сроков действия
-    - **is_featured**: Только рекомендуемые товары
-    - **search**: Поиск по названию и описанию
     """
     try:
-        # Создаем фильтр
+        # Создаем фильтр с правильными полями
         filters = ProductFilter(
             proxy_type=proxy_type,
             session_type=session_type,
@@ -104,8 +92,6 @@ async def get_product(
 ):
     """
     Получение детальной информации о продукте
-
-    - **product_id**: ID продукта
     """
     try:
         product = await product_service.get_product_by_id(db, product_id)
@@ -132,22 +118,15 @@ async def get_product(
 async def create_product(
         product_data: ProductCreate,
         db: AsyncSession = Depends(get_db),
-        current_user=Depends(get_current_registered_user)  # Только для админов
+        current_user=Depends(get_current_registered_user)
 ):
     """
     Создание нового продукта (только для администраторов)
-
-    Требует аутентификации и прав администратора.
     """
     try:
         # TODO: Добавить проверку прав администратора
-        # if not current_user.is_admin:
-        #     raise HTTPException(status_code=403, detail="Admin access required")
-
         product = await product_service.create_product(db, product_data)
-
         logger.info(f"Product created by user {current_user.id}: {product.name}")
-
         return product
 
     except HTTPException:
@@ -165,16 +144,12 @@ async def update_product(
         product_id: int,
         product_data: ProductUpdate,
         db: AsyncSession = Depends(get_db),
-        current_user=Depends(get_current_registered_user)  # Только для админов
+        current_user=Depends(get_current_registered_user)
 ):
     """
     Обновление продукта (только для администраторов)
-
-    - **product_id**: ID продукта для обновления
     """
     try:
-        # TODO: Добавить проверку прав администратора
-
         product = await product_service.update_product(db, product_id, product_data)
 
         if not product:
@@ -184,7 +159,6 @@ async def update_product(
             )
 
         logger.info(f"Product {product_id} updated by user {current_user.id}")
-
         return product
 
     except HTTPException:
@@ -201,16 +175,12 @@ async def update_product(
 async def delete_product(
         product_id: int,
         db: AsyncSession = Depends(get_db),
-        current_user=Depends(get_current_registered_user)  # Только для админов
+        current_user=Depends(get_current_registered_user)
 ):
     """
     Удаление продукта (только для администраторов)
-
-    Выполняет мягкое удаление - деактивирует продукт.
     """
     try:
-        # TODO: Добавить проверку прав администратора
-
         success = await product_service.delete_product(db, product_id)
 
         if not success:
@@ -220,7 +190,6 @@ async def delete_product(
             )
 
         logger.info(f"Product {product_id} deleted by user {current_user.id}")
-
         return MessageResponse(message="Product successfully deleted")
 
     except HTTPException:
@@ -239,9 +208,6 @@ async def get_countries(
 ):
     """
     Получение списка доступных стран с городами
-
-    Возвращает список стран, в которых доступны прокси,
-    с перечнем городов для каждой страны.
     """
     try:
         countries = await product_service.get_countries(db)
@@ -262,8 +228,6 @@ async def get_cities_by_country(
 ):
     """
     Получение списка городов по коду страны
-
-    - **country_code**: Код страны (ISO 3166-1 alpha-2, например: US, GB, DE)
     """
     try:
         if len(country_code) != 2:
@@ -293,9 +257,6 @@ async def check_product_availability(
 ):
     """
     Проверка доступности товара в требуемом количестве
-
-    - **product_id**: ID продукта
-    - **quantity**: Требуемое количество
     """
     try:
         is_available = await product_service.check_stock_availability(

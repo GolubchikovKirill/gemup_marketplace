@@ -1,13 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+import logging
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import List, Optional
 
 from app.core.db import get_db
-from app.core.dependencies import get_current_user_or_create_guest, get_current_registered_user
-from app.services.cart_service import cart_service
-from app.schemas.cart import CartItemResponse, CartItemCreate, CartItemUpdate, CartResponse
+from app.core.dependencies import get_current_user_or_create_guest
 from app.schemas.base import MessageResponse
-import logging
+from app.schemas.cart import CartItemResponse, CartItemCreate, CartItemUpdate, CartResponse
+from app.services.cart_service import cart_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/cart", tags=["Cart"])

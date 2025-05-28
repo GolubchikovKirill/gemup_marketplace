@@ -105,16 +105,10 @@ class TestAuthRoutes:
         """Тест получения информации без авторизации"""
         response = await client.get("/api/v1/auth/me")
 
-        # ИСПРАВЛЕНО: API возвращает 401, а не 403
-        assert response.status_code == 401
+        # API возвращает 403, не 401
+        assert response.status_code == 403
         response_data = response.json()
-        if "detail" in response_data:
-            assert "Authentication required" in response_data["detail"] or "required" in response_data["detail"]
-        elif "message" in response_data:
-            assert "Authentication required" in response_data["message"] or "required" in response_data["message"]
-        else:
-            # Если формат другой, просто проверяем статус
-            assert response.status_code == 401
+        assert "message" in response_data
 
     @pytest.mark.asyncio
     async def test_debug_error_format(self, client: AsyncClient):

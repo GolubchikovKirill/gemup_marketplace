@@ -1,111 +1,91 @@
 import logging
-from typing import List, Optional, Tuple
+from typing import List, Optional, Dict, Any
 
-from sqlalchemy import select, func, and_, or_, distinct
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import ProductNotAvailableError, BusinessLogicError
 from app.crud.proxy_product import proxy_product_crud
 from app.models.models import ProxyProduct
-from app.schemas.product import ProductCreate, ProductUpdate, ProductFilter
+from app.schemas.product import ProductFilter, ProductCreate, ProductUpdate  # ИСПРАВЛЕНО: используем product.py
+from app.services.base import BaseService, BusinessRuleValidator
 
 logger = logging.getLogger(__name__)
 
 
-class ProductService:
+class ProductBusinessRules(BusinessRuleValidator):
+    """Валидатор бизнес-правил для продуктов"""
+
+    async def validate(self, data: dict, db: AsyncSession) -> bool:
+        """Валидация правил продукта"""
+        return True
+
+
+class ProductService(BaseService[ProxyProduct, dict, dict]):
     """Сервис для работы с продуктами"""
 
     def __init__(self):
+        super().__init__(ProxyProduct)
         self.crud = proxy_product_crud
+        self.business_rules = ProductBusinessRules()
 
-    @staticmethod
     async def get_products_with_filters(
+            self,
             db: AsyncSession,
             filters: ProductFilter,
             page: int = 1,
             size: int = 20
-    ) -> Tuple[List[ProxyProduct], int]:
-        """Получение продуктов с фильтрами и пагинацией"""
-
+    ) -> tuple[List[ProxyProduct], int]:
+        """Получение продуктов с фильтрацией и пагинацией"""
         try:
-            # Базовый запрос
-            query = select(ProxyProduct)
-            count_query = select(func.count(ProxyProduct.id))
+            skip = (page - 1) * size
+            limit = min(size, 100)
 
-            # Применяем фильтры
-            conditions = []
-
-            # Всегда показываем только активные продукты
-            conditions.append(ProxyProduct.is_active == True)
-
-            if filters.proxy_type:
-                conditions.append(ProxyProduct.proxy_type == filters.proxy_type)
-
-            if filters.session_type:
-                conditions.append(ProxyProduct.session_type == filters.session_type)
-
-            if filters.provider:
-                conditions.append(ProxyProduct.provider == filters.provider)
-
-            if filters.country_code:
-                conditions.append(ProxyProduct.country_code == filters.country_code.upper())
-
-            if filters.city:
-                conditions.append(ProxyProduct.city.ilike(f"%{filters.city}%"))
-
-            if filters.min_price:
-                conditions.append(ProxyProduct.price_per_proxy >= filters.min_price)
-
-            if filters.max_price:
-                conditions.append(ProxyProduct.price_per_proxy <= filters.max_price)
-
-            if filters.min_duration:
-                conditions.append(ProxyProduct.duration_days >= filters.min_duration)
-
-            if filters.max_duration:
-                conditions.append(ProxyProduct.duration_days <= filters.max_duration)
-
-            if filters.is_featured is not None:
-                conditions.append(ProxyProduct.is_featured == filters.is_featured)
-
-            if filters.search:
-                search_term = f"%{filters.search}%"
-                conditions.append(
-                    or_(
-                        ProxyProduct.name.ilike(search_term),
-                        ProxyProduct.description.ilike(search_term)
-                    )
-                )
-
-            # Применяем условия к запросам
-            if conditions:
-                query = query.where(and_(*conditions))
-                count_query = count_query.where(and_(*conditions))
-
-            # Добавляем сортировку
-            query = query.order_by(
-                ProxyProduct.is_featured.desc(),
-                ProxyProduct.created_at.desc()
+            # Получаем продукты с фильтрами
+            products = await self.crud.get_by_filters(
+                db,
+                proxy_type=filters.proxy_type,
+                session_type=filters.session_type,
+                provider=filters.provider,
+                country_code=filters.country_code,
+                city=filters.city,
+                featured_only=filters.is_featured,  # ИСПРАВЛЕНО: используем is_featured
+                skip=skip,
+                limit=limit
             )
 
-            # Пагинация
-            offset = (page - 1) * size
-            query = query.offset(offset).limit(size)
+            # Применяем дополнительные фильтры
+            filtered_products = []
+            for product in products:
+                # Фильтр по цене
+                if filters.min_price and product.price_per_proxy < filters.min_price:
+                    continue
+                if filters.max_price and product.price_per_proxy > filters.max_price:
+                    continue
 
-            # Выполняем запросы
-            result = await db.execute(query)
-            products = result.scalars().all()
+                # Фильтр по сроку действия
+                if filters.min_duration and product.duration_days < filters.min_duration:
+                    continue
+                if filters.max_duration and product.duration_days > filters.max_duration:
+                    continue
 
-            count_result = await db.execute(count_query)
-            total = count_result.scalar() or 0
+                # Поиск по названию
+                if filters.search:
+                    search_lower = filters.search.lower()
+                    if (search_lower not in product.name.lower() and
+                            (not product.description or search_lower not in product.description.lower())):
+                        continue
 
-            logger.info(f"Found {len(products)} products out of {total} total")
+                filtered_products.append(product)
 
-            return list(products), total
+            # Получаем общее количество
+            total_products = await self.crud.get_active_products(db, skip=0, limit=1000)
+            total = len(total_products)
+
+            logger.info(f"Retrieved {len(filtered_products)} products with filters")
+            return filtered_products, total
 
         except Exception as e:
-            logger.error(f"Error in get_products_with_filters: {e}", exc_info=True)
-            raise BusinessLogicError(f"Failed to get products: {str(e)}")
+            logger.error(f"Error getting products with filters: {e}")
+            return [], 0
 
     async def get_product_by_id(
             self,
@@ -114,21 +94,11 @@ class ProductService:
     ) -> Optional[ProxyProduct]:
         """Получение продукта по ID"""
         try:
-            product = await self.crud.get(db, id=product_id)
-
-            if not product:
-                logger.warning(f"Product {product_id} not found")
-                return None
-
-            if not product.is_active:
-                logger.warning(f"Product {product_id} is inactive")
-                raise ProductNotAvailableError(f"Product {product_id} is not available")
-
+            product = await self.crud.get(db, obj_id=product_id)
             return product
-
         except Exception as e:
             logger.error(f"Error getting product {product_id}: {e}")
-            raise
+            return None
 
     async def create_product(
             self,
@@ -136,18 +106,13 @@ class ProductService:
             product_data: ProductCreate
     ) -> ProxyProduct:
         """Создание нового продукта"""
-
-        # Валидация бизнес-правил
-        await self._validate_product_data(product_data)
-
         try:
             product = await self.crud.create(db, obj_in=product_data)
-            logger.info(f"Created new product: {product.name} (ID: {product.id})")
+            logger.info(f"Product created: {product.name}")
             return product
-
         except Exception as e:
             logger.error(f"Error creating product: {e}")
-            raise BusinessLogicError("Failed to create product")
+            raise
 
     async def update_product(
             self,
@@ -156,40 +121,38 @@ class ProductService:
             product_data: ProductUpdate
     ) -> Optional[ProxyProduct]:
         """Обновление продукта"""
-
-        product = await self.crud.get(db, id=product_id)
-        if not product:
-            return None
-
         try:
-            updated_product = await self.crud.update(db, db_obj=product, obj_in=product_data)
-            logger.info(f"Updated product: {product.name} (ID: {product.id})")
-            return updated_product
+            product = await self.crud.get(db, obj_id=product_id)
+            if not product:
+                return None
 
+            updated_product = await self.crud.update(db, db_obj=product, obj_in=product_data)
+            logger.info(f"Product updated: {product_id}")
+            return updated_product
         except Exception as e:
             logger.error(f"Error updating product {product_id}: {e}")
-            raise BusinessLogicError("Failed to update product")
+            raise
 
     async def delete_product(
             self,
             db: AsyncSession,
             product_id: int
     ) -> bool:
-        """Удаление продукта (мягкое удаление)"""
-
-        product = await self.crud.get(db, id=product_id)
-        if not product:
-            return False
-
+        """Мягкое удаление продукта (деактивация)"""
         try:
-            # Мягкое удаление - деактивация
-            await self.crud.update(db, db_obj=product, obj_in={"is_active": False})
-            logger.info(f"Deactivated product: {product.name} (ID: {product.id})")
-            return True
+            product = await self.crud.get(db, obj_id=product_id)
+            if not product:
+                return False
 
+            # Мягкое удаление - деактивируем продукт
+            product.is_active = False
+            await db.commit()
+
+            logger.info(f"Product deactivated: {product_id}")
+            return True
         except Exception as e:
-            logger.error(f"Error deactivating product {product_id}: {e}")
-            raise BusinessLogicError("Failed to delete product")
+            logger.error(f"Error deleting product {product_id}: {e}")
+            return False
 
     async def check_stock_availability(
             self,
@@ -198,118 +161,96 @@ class ProductService:
             quantity: int
     ) -> bool:
         """Проверка доступности товара"""
-
-        product = await self.crud.get(db, id=product_id)
-        if not product:
-            return False
-
-        if not product.is_active:
-            return False
-
-        if product.stock_available < quantity:
-            return False
-
-        if quantity < product.min_quantity or quantity > product.max_quantity:
-            return False
-
-        return True
-
-    @staticmethod
-    async def get_countries(db: AsyncSession) -> List[dict]:
-        """Получение списка стран с городами (совместимо с SQLite и PostgreSQL)"""
-
         try:
-            # Получаем уникальные страны
-            countries_query = select(
-                ProxyProduct.country_code,
-                ProxyProduct.country_name
-            ).where(
-                and_(
-                    ProxyProduct.is_active == True,
-                    ProxyProduct.city.isnot(None)
-                )
-            ).group_by(
-                ProxyProduct.country_code,
-                ProxyProduct.country_name
-            ).order_by(ProxyProduct.country_name)
+            product = await self.crud.get(db, obj_id=product_id)
+            if not product or not product.is_active:
+                return False
 
-            result = await db.execute(countries_query)
-            countries_data = result.all()
+            return (product.stock_available >= quantity and
+                    quantity >= product.min_quantity and
+                    quantity <= product.max_quantity)
 
-            countries = []
-            for row in countries_data:
-                # Получаем города для каждой страны отдельным запросом
-                cities_query = select(distinct(ProxyProduct.city)).where(
-                    and_(
-                        ProxyProduct.country_code == row.country_code,
-                        ProxyProduct.is_active == True,
-                        ProxyProduct.city.isnot(None)
-                    )
-                ).order_by(ProxyProduct.city)
+        except Exception as e:
+            logger.error(f"Error checking stock availability for product {product_id}: {e}")
+            return False
 
-                cities_result = await db.execute(cities_query)
-                cities = [city[0] for city in cities_result.all()]
+    async def get_countries(self, db: AsyncSession) -> List[Dict[str, Any]]:
+        """Получение списка доступных стран"""
+        try:
+            countries_data = await self.crud.get_countries(db)
 
-                countries.append({
-                    "code": row.country_code,
-                    "name": row.country_name,
-                    "cities": cities
-                })
+            # Группируем города по странам
+            countries_dict = {}
+            for country in countries_data:
+                code = country["code"]
+                name = country["name"]
 
-            return countries
+                if code not in countries_dict:
+                    countries_dict[code] = {
+                        "code": code,
+                        "name": name,
+                        "cities": []
+                    }
+
+            # Получаем города для каждой страны
+            for code in countries_dict.keys():
+                cities = await self.crud.get_cities_by_country(db, country_code=code)
+                countries_dict[code]["cities"] = cities
+
+            return list(countries_dict.values())
 
         except Exception as e:
             logger.error(f"Error getting countries: {e}")
-            raise BusinessLogicError(f"Failed to get countries: {str(e)}")
+            return []
 
-    @staticmethod
     async def get_cities_by_country(
+            self,
             db: AsyncSession,
             country_code: str
-    ) -> List[dict]:
+    ) -> List[Dict[str, str]]:
         """Получение городов по стране"""
-
         try:
-            query = select(
-                ProxyProduct.city,
-                ProxyProduct.country_code,
-                ProxyProduct.country_name
-            ).where(
-                and_(
-                    ProxyProduct.country_code == country_code.upper(),
-                    ProxyProduct.is_active == True,
-                    ProxyProduct.city.isnot(None)
-                )
-            ).distinct().order_by(ProxyProduct.city)
+            cities = await self.crud.get_cities_by_country(db, country_code=country_code)
 
-            result = await db.execute(query)
-            cities = []
+            # Получаем название страны
+            countries = await self.crud.get_countries(db)
+            country_name = "Unknown"
+            for country in countries:
+                if country["code"] == country_code:
+                    country_name = country["name"]
+                    break
 
-            for row in result:
-                cities.append({
-                    "name": row.city,
-                    "country_code": row.country_code,
-                    "country_name": row.country_name
+            # Форматируем ответ
+            result = []
+            for city in cities:
+                result.append({
+                    "name": city,
+                    "country_code": country_code,
+                    "country_name": country_name
                 })
 
-            return cities
+            return result
 
         except Exception as e:
-            logger.error(f"Error getting cities for {country_code}: {e}")
-            raise BusinessLogicError(f"Failed to get cities: {str(e)}")
+            logger.error(f"Error getting cities for country {country_code}: {e}")
+            return []
 
-    @staticmethod
-    async def _validate_product_data(product_data: ProductCreate) -> None:
-        """Валидация данных продукта"""
+    # Реализация абстрактных методов BaseService
+    async def create(self, db: AsyncSession, obj_in: dict) -> ProxyProduct:
+        return await self.crud.create(db, obj_in=obj_in)
 
-        if product_data.min_quantity > product_data.max_quantity:
-            raise BusinessLogicError("Minimum quantity cannot be greater than maximum quantity")
+    async def get(self, db: AsyncSession, obj_id: int) -> Optional[ProxyProduct]:
+        return await self.get_product_by_id(db, obj_id)
 
-        if product_data.price_per_proxy <= 0:
-            raise BusinessLogicError("Price must be greater than zero")
+    async def update(self, db: AsyncSession, db_obj: ProxyProduct, obj_in: dict) -> ProxyProduct:
+        return await self.crud.update(db, db_obj=db_obj, obj_in=obj_in)
 
-        if product_data.duration_days <= 0:
-            raise BusinessLogicError("Duration must be greater than zero")
+    async def delete(self, db: AsyncSession, obj_id: int) -> bool:
+        await self.crud.remove(db, obj_id=obj_id)
+        return True
+
+    async def get_multi(self, db: AsyncSession, skip: int = 0, limit: int = 100) -> List[ProxyProduct]:
+        return await self.crud.get_multi(db, skip=skip, limit=limit)
 
 
 # Создаем экземпляр сервиса

@@ -10,7 +10,7 @@ from app.core.auth import auth_handler
 from app.core.db import get_db
 from app.core.dependencies import get_current_user_from_token
 from app.crud.user import user_crud
-from app.models import User
+from app.models.models import User  # Исправлено: добавлен .models
 from app.schemas.base import MessageResponse
 from app.schemas.user import UserCreate, UserResponse, UserLogin
 
@@ -25,7 +25,7 @@ class AuthService:
     async def validate_user_data(user_data: UserCreate, db: AsyncSession) -> None:
         """Валидация данных пользователя"""
         # Проверяем email
-        if await user_crud.get_by_email(db, email=user_data.email):
+        if await user_crud.get_by_email(db, email=str(user_data.email)):  # Преобразование EmailStr
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="User with this email already exists"
@@ -153,7 +153,7 @@ async def login_json(
     try:
         # Аутентификация
         user = await auth_service.authenticate_user(
-            user_data.email, user_data.password, db
+            str(user_data.email), user_data.password, db  # Преобразование EmailStr
         )
 
         # Создание токена

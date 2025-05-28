@@ -1,0 +1,22 @@
+[run]
+source = app
+omit =
+    app/tests/*
+    app/migrations/*
+    app/core/migrations.py
+    app/__init__.py
+    */venv/*
+    */site-packages/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    class .*\bProtocol\):
+    @(abc\.)?abstractmethod
+
+[html]
+directory = htmlcov

@@ -7,41 +7,43 @@ from app.core.db import Base
 
 
 # Енумы для типов данных
-class ProxyType(PyEnum):
+class ProxyType(str, PyEnum):
     HTTP = "http"
     HTTPS = "https"
     SOCKS4 = "socks4"
     SOCKS5 = "socks5"
 
 
-class SessionType(PyEnum):
+class SessionType(str, PyEnum):
     STICKY = "sticky"
     ROTATING = "rotating"
 
 
-class OrderStatus(PyEnum):
+class OrderStatus(str, PyEnum):
     PENDING = "pending"
+    PAID = "paid"
     PROCESSING = "processing"
     COMPLETED = "completed"
     CANCELLED = "cancelled"
-    EXPIRED = "expired"
+    FAILED = "failed"
+    REFUNDED = "refunded"
 
 
-class TransactionType(PyEnum):
+class TransactionType(str, PyEnum):
     DEPOSIT = "deposit"
     PURCHASE = "purchase"
     REFUND = "refund"
     WITHDRAWAL = "withdrawal"
 
 
-class TransactionStatus(PyEnum):
+class TransactionStatus(str, PyEnum):
     PENDING = "pending"
     COMPLETED = "completed"
     FAILED = "failed"
     CANCELLED = "cancelled"
 
 
-class ProviderType(PyEnum):
+class ProviderType(str, PyEnum):
     PROVIDER_711 = "711"
     PROXY_SELLER = "proxy_seller"
     LIGHTNING = "lightning"
@@ -55,30 +57,25 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String(255), unique=True, index=True, nullable=True)  # Nullable для гостей
+    email = Column(String(255), unique=True, index=True, nullable=True)
     username = Column(String(100), unique=True, index=True, nullable=True)
-    hashed_password = Column(String(255), nullable=True)  # Nullable для гостей
+    hashed_password = Column(String(255), nullable=True)
     first_name = Column(String(100), nullable=True)
     last_name = Column(String(100), nullable=True)
 
-    # Баланс пользователя
-    balance = Column(DECIMAL(15, 8), default=0.00000000, nullable=False)  # Поддержка криптовалют
+    balance = Column(DECIMAL(15, 8), default=0.00000000, nullable=False)
 
-    # Статусы и флаги - ИСПРАВЛЕНО: добавлены default и server_default
     is_active = Column(Boolean, default=True, server_default='true', nullable=False)
     is_verified = Column(Boolean, default=False, server_default='false', nullable=False)
-    is_guest = Column(Boolean, default=False, server_default='false', nullable=False)  # Гостевой аккаунт
+    is_guest = Column(Boolean, default=False, server_default='false', nullable=False)
 
-    # Временные данные для гостей
     guest_session_id = Column(String(255), nullable=True, index=True)
     guest_expires_at = Column(DateTime(timezone=True), nullable=True)
 
-    # Временные метки
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     last_login = Column(DateTime(timezone=True), nullable=True)
 
-    # Связи
     orders = relationship("Order", back_populates="user")
     transactions = relationship("Transaction", back_populates="user")
     proxy_purchases = relationship("ProxyPurchase", back_populates="user")
@@ -95,40 +92,32 @@ class ProxyProduct(Base):
     name = Column(String(200), nullable=False)
     description = Column(Text, nullable=True)
 
-    # Технические характеристики
     proxy_type = Column(Enum(ProxyType), nullable=False)
     session_type = Column(Enum(SessionType), nullable=False)
     provider = Column(Enum(ProviderType), nullable=False)
 
-    # Географические данные
-    country_code = Column(String(2), nullable=False)  # ISO код страны
+    country_code = Column(String(2), nullable=False)
     country_name = Column(String(100), nullable=False)
     city = Column(String(100), nullable=True)
 
-    # Ценообразование
-    price_per_proxy = Column(DECIMAL(10, 8), nullable=False)  # Цена за 1 прокси
+    price_per_proxy = Column(DECIMAL(10, 8), nullable=False)
     min_quantity = Column(Integer, default=1, nullable=False)
     max_quantity = Column(Integer, default=1000, nullable=False)
 
-    # Технические параметры
-    duration_days = Column(Integer, nullable=False)  # Срок действия
-    max_threads = Column(Integer, default=1, nullable=False)  # Максимальное количество потоков
-    bandwidth_limit_gb = Column(Integer, nullable=True)  # Лимит трафика
+    duration_days = Column(Integer, nullable=False)
+    max_threads = Column(Integer, default=1, nullable=False)
+    bandwidth_limit_gb = Column(Integer, nullable=True)
 
-    # Статусы - ИСПРАВЛЕНО: добавлены nullable=False
     is_active = Column(Boolean, server_default='true', nullable=False)
     is_featured = Column(Boolean, server_default='false', nullable=False)
-    stock_available = Column(Integer, default=0, nullable=False)  # Доступное количество
+    stock_available = Column(Integer, default=0, nullable=False)
 
-    # Метаданные провайдера
-    provider_product_id = Column(String(255), nullable=True)  # ID в системе провайдера
-    provider_metadata = Column(Text, nullable=True)  # JSON с дополнительными данными
+    provider_product_id = Column(String(255), nullable=True)
+    provider_metadata = Column(Text, nullable=True)
 
-    # Временные метки
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
-    # Связи
     order_items = relationship("OrderItem", back_populates="proxy_product")
     proxy_purchases = relationship("ProxyPurchase", back_populates="proxy_product")
 
@@ -144,22 +133,25 @@ class Order(Base):
     order_number = Column(String(50), unique=True, nullable=False, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
-    # Финансовая информация
     total_amount = Column(DECIMAL(15, 8), nullable=False)
     currency = Column(String(10), default="USD", nullable=False)
 
-    # Статус и обработка
     status = Column(Enum(OrderStatus), default=OrderStatus.PENDING, nullable=False)
     payment_method = Column(String(50), nullable=True)
+    payment_id = Column(String(255), nullable=True)
+    notes = Column(Text, nullable=True)
 
-    # Временные метки
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-    expires_at = Column(DateTime(timezone=True), nullable=True)  # Срок действия заказа
+    expires_at = Column(DateTime(timezone=True), nullable=True)
 
-    # Связи
     user = relationship("User", back_populates="orders")
-    order_items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
+    order_items = relationship(
+        "OrderItem",
+        back_populates="order",
+        cascade="all, delete-orphan",
+        lazy="selectin"  # ИСПРАВЛЕНО: eager loading для решения MissingGreenlet
+    )
     transactions = relationship("Transaction", back_populates="order")
 
     def __repr__(self):
@@ -174,17 +166,18 @@ class OrderItem(Base):
     order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
     proxy_product_id = Column(Integer, ForeignKey("proxy_products.id"), nullable=False)
 
-    # Количество и цены
     quantity = Column(Integer, nullable=False, default=1)
     unit_price = Column(DECIMAL(10, 8), nullable=False)
     total_price = Column(DECIMAL(15, 8), nullable=False)
 
-    # Параметры генерации (для Stage 1)
-    generation_params = Column(Text, nullable=True)  # JSON с параметрами
+    generation_params = Column(Text, nullable=True)
 
-    # Связи
     order = relationship("Order", back_populates="order_items")
-    proxy_product = relationship("ProxyProduct", back_populates="order_items")
+    proxy_product = relationship(
+        "ProxyProduct",
+        back_populates="order_items",
+        lazy="selectin"  # ИСПРАВЛЕНО: eager loading для решения MissingGreenlet
+    )
 
     def __repr__(self):
         return f"<OrderItem(id={self.id}, order_id={self.order_id}, quantity={self.quantity})>"
@@ -199,27 +192,22 @@ class Transaction(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     order_id = Column(Integer, ForeignKey("orders.id"), nullable=True)
 
-    # Финансовая информация
     amount = Column(DECIMAL(15, 8), nullable=False)
     currency = Column(String(10), nullable=False)
     transaction_type = Column(Enum(TransactionType), nullable=False)
     status = Column(Enum(TransactionStatus), default=TransactionStatus.PENDING, nullable=False)
 
-    # Платежная система (Cryptomus)
     payment_provider = Column(String(50), default="cryptomus", nullable=False)
     external_transaction_id = Column(String(255), nullable=True)
     payment_url = Column(String(500), nullable=True)
 
-    # Метаданные
     description = Column(String(500), nullable=True)
-    provider_metadata = Column(Text, nullable=True)  # JSON с дополнительными данными
+    provider_metadata = Column(Text, nullable=True)
 
-    # Временные метки
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     completed_at = Column(DateTime(timezone=True), nullable=True)
 
-    # Связи
     user = relationship("User", back_populates="transactions")
     order = relationship("Order", back_populates="transactions")
 
@@ -236,28 +224,22 @@ class ProxyPurchase(Base):
     proxy_product_id = Column(Integer, ForeignKey("proxy_products.id"), nullable=False)
     order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
 
-    # Данные доступа к прокси
-    proxy_list = Column(Text, nullable=False)  # JSON список прокси
+    proxy_list = Column(Text, nullable=False)
     username = Column(String(100), nullable=True)
     password = Column(String(255), nullable=True)
 
-    # Статус и сроки
     is_active = Column(Boolean, default=True, server_default="true", nullable=False)
     expires_at = Column(DateTime(timezone=True), nullable=False)
 
-    # Использование
     traffic_used_gb = Column(DECIMAL(10, 2), default=0.00, nullable=False)
     last_used = Column(DateTime(timezone=True), nullable=True)
 
-    # Метаданные провайдера
     provider_order_id = Column(String(255), nullable=True)
     provider_metadata = Column(Text, nullable=True)
 
-    # Временные метки
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
-    # Связи
     user = relationship("User", back_populates="proxy_purchases")
     proxy_product = relationship("ProxyProduct", back_populates="proxy_purchases")
 
@@ -270,22 +252,22 @@ class ShoppingCart(Base):
     __tablename__ = "shopping_carts"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Nullable для гостей
-    session_id = Column(String(255), nullable=True, index=True)  # Для гостевых сессий
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    session_id = Column(String(255), nullable=True, index=True)
     proxy_product_id = Column(Integer, ForeignKey("proxy_products.id"), nullable=False)
 
-    # Параметры товара
     quantity = Column(Integer, nullable=False, default=1)
-    generation_params = Column(Text, nullable=True)  # JSON с параметрами генерации
+    generation_params = Column(Text, nullable=True)
 
-    # Временные метки
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-    expires_at = Column(DateTime(timezone=True), nullable=True)  # Срок жизни для гостей
+    expires_at = Column(DateTime(timezone=True), nullable=True)
 
-    # Связи
     user = relationship("User")
-    proxy_product = relationship("ProxyProduct")
+    proxy_product = relationship(
+        "ProxyProduct",
+        lazy="selectin"  # ИСПРАВЛЕНО: eager loading для решения MissingGreenlet
+    )
 
     def __repr__(self):
         return f"<ShoppingCart(id={self.id}, user_id={self.user_id}, quantity={self.quantity})>"

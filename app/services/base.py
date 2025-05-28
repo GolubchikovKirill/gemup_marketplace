@@ -27,7 +27,7 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType], ABC):
     async def get(
             self,
             db: AsyncSession,
-            id: int
+            obj_id: int  # Переименовано id -> obj_id
     ) -> Optional[ModelType]:
         """Получение объекта по ID"""
         pass
@@ -46,7 +46,7 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType], ABC):
     async def delete(
             self,
             db: AsyncSession,
-            id: int
+            obj_id: int  # Переименовано id -> obj_id
     ) -> bool:
         """Удаление объекта"""
         pass

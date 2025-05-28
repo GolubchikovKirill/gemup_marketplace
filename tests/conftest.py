@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import AsyncGenerator
 
 import pytest_asyncio
@@ -25,23 +26,27 @@ async def test_engine():
     )
 
     async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
     yield engine
-
     await engine.dispose()
 
 
 @pytest_asyncio.fixture
-async def db_session(test_engine) -> AsyncGenerator[AsyncSession, None]:
-    """Создание тестовой сессии базы данных"""
-    async_session = async_sessionmaker(
+async def session_factory(test_engine):
+    """Создание фабрики сессий"""
+    return async_sessionmaker(
         bind=test_engine,
         class_=AsyncSession,
         expire_on_commit=False
     )
 
-    async with async_session() as session:
+
+@pytest_asyncio.fixture
+async def db_session(session_factory) -> AsyncGenerator[AsyncSession, None]:
+    """Создание тестовой сессии базы данных"""
+    async with session_factory() as session:
         yield session
         await session.rollback()
 
@@ -49,26 +54,24 @@ async def db_session(test_engine) -> AsyncGenerator[AsyncSession, None]:
 @pytest_asyncio.fixture
 async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
     """Создание тестового HTTP клиента"""
+    # Используем один и тот же db_session для всех запросов!
+    async def override_get_db() -> AsyncGenerator[AsyncSession, None]:
+        yield db_session
 
-    async def override_get_db() -> AsyncSession:
-        return db_session
+    app.dependency_overrides[get_db] = override_get_db
 
-    app.dependency_overrides[get_db] = override_get_db  # type: ignore
-
-    # ИСПРАВЛЕНО: используем transport вместо app
     from httpx import ASGITransport
     transport = ASGITransport(app=app)
 
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         yield client
 
-    app.dependency_overrides.clear()  # type: ignore
+    app.dependency_overrides.clear()
 
 
 @pytest_asyncio.fixture
 async def test_user(db_session: AsyncSession):
     """Создание тестового пользователя"""
-    # ИСПРАВЛЕНО: используем уникальные данные для каждого теста
     import uuid
     unique_id = str(uuid.uuid4())[:8]
 
@@ -81,6 +84,10 @@ async def test_user(db_session: AsyncSession):
     )
 
     user = await user_crud.create_registered_user(db_session, user_in=user_data)
+    # Устанавливаем достаточный баланс для тестов
+    user.balance = Decimal("100.00")
+    await db_session.commit()
+    await db_session.refresh(user)
     return user
 
 
@@ -91,6 +98,8 @@ async def test_guest_user(db_session: AsyncSession):
     session_id = f"test-session-{str(uuid.uuid4())[:8]}"
 
     guest = await user_crud.create_guest_user(db_session, session_id=session_id)
+    await db_session.commit()
+    await db_session.refresh(guest)
     return guest
 
 

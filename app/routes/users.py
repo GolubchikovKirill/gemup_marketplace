@@ -33,8 +33,8 @@ async def update_my_profile(
     """Обновление профиля пользователя"""
 
     # Проверяем уникальность email если он изменяется
-    if user_update.email and user_update.email != current_user.email:
-        existing_user = await user_crud.get_by_email(db, email=user_update.email)
+    if user_update.email and str(user_update.email) != current_user.email:  # Преобразование EmailStr
+        existing_user = await user_crud.get_by_email(db, email=str(user_update.email))
         if existing_user:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -82,7 +82,7 @@ async def convert_guest_to_registered(
         )
 
     # Проверяем уникальность данных
-    existing_email = await user_crud.get_by_email(db, email=user_data.email)
+    existing_email = await user_crud.get_by_email(db, email=str(user_data.email))  # Преобразование EmailStr
     if existing_email:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
