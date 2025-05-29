@@ -7,23 +7,10 @@
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/proxy_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/proxy_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/shopping_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/shopping_cart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/products.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/product.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/proxy_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/proxy_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/cart_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/cart_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/product_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/product_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/integration/test_cart_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test_cart_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/integration/test_orders_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test_orders_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/integration/test_products_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test_products_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_cart_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_cart_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_order_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_order_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_order_service_proxy_activation.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_order_service_proxy_activation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_product_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_product_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_proxy_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_proxy_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +26,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -68,34 +60,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Makefile Target.dev.executor": "Run",
-    "Makefile Target.test-unit.executor": "Run",
-    "Makefile Target.test.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.config.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/golubcikovkirill/Desktop/Projects/gemup_marketplace",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Makefile Target.dev.executor&quot;: &quot;Run&quot;,
+    &quot;Makefile Target.test-unit.executor&quot;: &quot;Run&quot;,
+    &quot;Makefile Target.test.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.config.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/golubcikovkirill/Desktop/Projects/gemup_marketplace&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/core" />
     </key>
   </component>
-  <component name="RunManager" selected="Makefile Target.test">
+  <component name="RunManager">
     <configuration name="dev" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/Makefile" target="dev" workingDirectory="" arguments="">
         <envs />
@@ -168,7 +160,8 @@
       <workItem from="1748262297808" duration="17182000" />
       <workItem from="1748427366236" duration="11327000" />
       <workItem from="1748439037407" duration="12964000" />
-      <workItem from="1748499996444" duration="5227000" />
+      <workItem from="1748499996444" duration="5551000" />
+      <workItem from="1748510689863" duration="1739000" />
     </task>
     <servers />
   </component>

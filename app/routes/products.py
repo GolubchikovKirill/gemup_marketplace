@@ -41,6 +41,11 @@ async def get_products(
         min_uptime: Optional[float] = Query(None, ge=0, le=100, description="Минимальный uptime (%)"),
         min_duration: Optional[int] = Query(None, ge=1, description="Минимальный срок действия"),
         max_duration: Optional[int] = Query(None, ge=1, description="Максимальный срок действия"),
+        # НОВЫЕ ПАРАМЕТРЫ для фарминга
+        min_points_per_hour: Optional[int] = Query(None, ge=0, description="Минимум очков в час"),
+        min_farm_efficiency: Optional[float] = Query(None, ge=0, le=100, description="Минимальная эффективность фарминга"),
+        auto_claim_only: Optional[bool] = Query(None, description="Только с автоклеймом"),
+        multi_account_only: Optional[bool] = Query(None, description="Только с поддержкой мульти-аккаунтов"),
         is_featured: Optional[bool] = Query(None, description="Только рекомендуемые"),
         search: Optional[str] = Query(None, description="Поиск по названию"),
         db: AsyncSession = Depends(get_db)
@@ -48,14 +53,14 @@ async def get_products(
     """
     Получение списка продуктов с фильтрацией и пагинацией
 
-    - **proxy_category**: residential, datacenter, isp
-    - **min_speed**: минимальная скорость в Mbps (для datacenter)
-    - **min_uptime**: минимальный uptime в % (для ISP)
-    - **min_duration/max_duration**: фильтр по сроку действия в днях
-    - **search**: поиск по названию и описанию
+    - **proxy_category**: residential, datacenter, isp, nodepay, grass
+    - **min_points_per_hour**: минимум очков в час (для nodepay/grass)
+    - **min_farm_efficiency**: минимальная эффективность фарминга (для nodepay/grass)
+    - **auto_claim_only**: только с автоматическим клеймом (для nodepay/grass)
+    - **multi_account_only**: только с поддержкой мульти-аккаунтов (для nodepay/grass)
     """
     try:
-        # Создаем фильтр с правильными полями
+        # Создаем фильтр с новыми полями
         filters = ProxyProductFilter(
             proxy_type=proxy_type,
             proxy_category=proxy_category,
@@ -70,6 +75,11 @@ async def get_products(
             min_uptime=min_uptime,
             min_duration=min_duration,
             max_duration=max_duration,
+            # НОВЫЕ ФИЛЬТРЫ
+            min_points_per_hour=min_points_per_hour,
+            min_farm_efficiency=min_farm_efficiency,
+            auto_claim_only=auto_claim_only,
+            multi_account_only=multi_account_only,
             search=search
         )
 
@@ -95,6 +105,7 @@ async def get_products(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to get products"
         )
+
 
 
 @router.get("/categories/stats")

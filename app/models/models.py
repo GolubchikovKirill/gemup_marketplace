@@ -17,7 +17,9 @@ class ProxyType(str, PyEnum):
 class ProxyCategory(str, PyEnum):
     RESIDENTIAL = "residential"
     DATACENTER = "datacenter"
-    ISP = "isp"  # Static Residential
+    ISP = "isp"
+    NODEPAY = "nodepay"  # ДОБАВЛЕНО
+    GRASS = "grass"  # ДОБАВЛЕНО
 
 
 class SessionType(str, PyEnum):
@@ -99,7 +101,7 @@ class ProxyProduct(Base):
     description = Column(Text, nullable=True)
 
     proxy_type = Column(Enum(ProxyType), nullable=False)
-    proxy_category = Column(Enum(ProxyCategory), nullable=False)  # НОВОЕ
+    proxy_category = Column(Enum(ProxyCategory), nullable=False)
     session_type = Column(Enum(SessionType), nullable=False)
     provider = Column(Enum(ProviderType), nullable=False)
 
@@ -109,7 +111,7 @@ class ProxyProduct(Base):
 
     # Ценообразование
     price_per_proxy = Column(DECIMAL(10, 8), nullable=False)
-    price_per_gb = Column(DECIMAL(10, 8), nullable=True)  # НОВОЕ: для residential
+    price_per_gb = Column(DECIMAL(10, 8), nullable=True)
 
     min_quantity = Column(Integer, default=1, nullable=False)
     max_quantity = Column(Integer, default=1000, nullable=False)
@@ -119,9 +121,15 @@ class ProxyProduct(Base):
     bandwidth_limit_gb = Column(Integer, nullable=True)
 
     # Характеристики по категориям
-    uptime_guarantee = Column(DECIMAL(5, 2), nullable=True)  # НОВОЕ: % uptime
-    speed_mbps = Column(Integer, nullable=True)  # НОВОЕ: скорость для datacenter
-    ip_pool_size = Column(Integer, nullable=True)  # НОВОЕ: размер пула для residential
+    uptime_guarantee = Column(DECIMAL(5, 2), nullable=True)
+    speed_mbps = Column(Integer, nullable=True)
+    ip_pool_size = Column(Integer, nullable=True)
+
+    # НОВЫЕ ПОЛЯ для Nodepay и Grass
+    points_per_hour = Column(Integer, nullable=True)  # Очки в час для фарминга
+    farm_efficiency = Column(DECIMAL(5, 2), nullable=True)  # Эффективность фарминга в %
+    auto_claim = Column(Boolean, default=False, nullable=False)  # Автоматический клейм
+    multi_account_support = Column(Boolean, default=False, nullable=False)  # Поддержка мульти-аккаунтов
 
     is_active = Column(Boolean, server_default='true', nullable=False)
     is_featured = Column(Boolean, server_default='false', nullable=False)

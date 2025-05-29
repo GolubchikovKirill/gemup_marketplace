@@ -27,6 +27,11 @@ class ProxyProductBase(BaseModel):
     uptime_guarantee: Optional[Decimal] = Field(None, ge=0, le=100)
     speed_mbps: Optional[int] = Field(None, ge=1)
     ip_pool_size: Optional[int] = Field(None, ge=1)
+    # НОВЫЕ ПОЛЯ для Nodepay и Grass
+    points_per_hour: Optional[int] = Field(None, ge=0, description="Очки в час для фарминга")
+    farm_efficiency: Optional[Decimal] = Field(None, ge=0, le=100, description="Эффективность фарминга в %")
+    auto_claim: bool = Field(default=False, description="Автоматический клейм")
+    multi_account_support: bool = Field(default=False, description="Поддержка мульти-аккаунтов")
 
     @field_validator('country_code')
     @classmethod
@@ -62,6 +67,11 @@ class ProxyProductUpdate(BaseModel):
     uptime_guarantee: Optional[Decimal] = Field(None, ge=0, le=100)
     speed_mbps: Optional[int] = Field(None, ge=1)
     ip_pool_size: Optional[int] = Field(None, ge=1)
+    # НОВЫЕ ПОЛЯ для обновления
+    points_per_hour: Optional[int] = Field(None, ge=0)
+    farm_efficiency: Optional[Decimal] = Field(None, ge=0, le=100)
+    auto_claim: Optional[bool] = None
+    multi_account_support: Optional[bool] = None
     stock_available: Optional[int] = Field(None, ge=0)
     is_active: Optional[bool] = None
     is_featured: Optional[bool] = None
@@ -84,7 +94,7 @@ class ProxyProductResponse(ProxyProductBase):
         """Сериализация datetime в ISO строку"""
         return value.isoformat()
 
-    @field_serializer('price_per_proxy', 'price_per_gb', 'uptime_guarantee')
+    @field_serializer('price_per_proxy', 'price_per_gb', 'uptime_guarantee', 'farm_efficiency')
     def serialize_decimal(self, value: Optional[Decimal]) -> Optional[str]:
         """Сериализация Decimal в строку с 8 знаками"""
         return f"{value:.8f}" if value else None
@@ -112,10 +122,15 @@ class ProxyProductPublic(BaseModel):
     uptime_guarantee: Optional[Decimal]
     speed_mbps: Optional[int]
     ip_pool_size: Optional[int]
+    # НОВЫЕ ПОЛЯ для публичного API
+    points_per_hour: Optional[int]
+    farm_efficiency: Optional[Decimal]
+    auto_claim: bool
+    multi_account_support: bool
     is_featured: bool
     stock_available: int
 
-    @field_serializer('price_per_proxy', 'price_per_gb', 'uptime_guarantee')
+    @field_serializer('price_per_proxy', 'price_per_gb', 'uptime_guarantee', 'farm_efficiency')
     def serialize_decimal(self, value: Optional[Decimal]) -> Optional[str]:
         """Сериализация Decimal в строку с 8 знаками"""
         return f"{value:.8f}" if value else None
@@ -136,6 +151,11 @@ class ProductFilter(BaseModel):
     min_uptime: Optional[Decimal] = None
     min_duration: Optional[int] = None
     max_duration: Optional[int] = None
+    # НОВЫЕ ФИЛЬТРЫ для фарминга
+    min_points_per_hour: Optional[int] = Field(None, ge=0, description="Минимум очков в час")
+    min_farm_efficiency: Optional[Decimal] = Field(None, ge=0, le=100, description="Минимальная эффективность фарминга")
+    auto_claim_only: Optional[bool] = Field(None, description="Только с автоклеймом")
+    multi_account_only: Optional[bool] = Field(None, description="Только с поддержкой мульти-аккаунтов")
     search: Optional[str] = None
 
 

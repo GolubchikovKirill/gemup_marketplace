@@ -51,6 +51,11 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
                 featured_only=filters.featured_only,
                 min_speed=filters.min_speed,
                 min_uptime=filters.min_uptime,
+                # НОВЫЕ ФИЛЬТРЫ для фарминга
+                min_points_per_hour=getattr(filters, 'min_points_per_hour', None),
+                min_farm_efficiency=getattr(filters, 'min_farm_efficiency', None),
+                auto_claim_only=getattr(filters, 'auto_claim_only', None),
+                multi_account_only=getattr(filters, 'multi_account_only', None),
                 skip=skip,
                 limit=limit
             )
@@ -64,17 +69,17 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
                 if filters.max_price and product.price_per_proxy > filters.max_price:
                     continue
 
-                # ДОБАВЛЕНО: Фильтр по сроку действия
+                # Фильтр по сроку действия
                 if filters.min_duration and product.duration_days < filters.min_duration:
                     continue
                 if filters.max_duration and product.duration_days > filters.max_duration:
                     continue
 
-                # ДОБАВЛЕНО: Фильтр по поиску
+                # Фильтр по поиску
                 if filters.search:
                     search_term = filters.search.lower()
                     if (search_term not in product.name.lower() and
-                        (product.description is None or search_term not in product.description.lower())):
+                            (product.description is None or search_term not in product.description.lower())):
                         continue
 
                 filtered_products.append(product)
@@ -89,6 +94,64 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
             logger.error(f"Error getting products with filters: {e}")
             return [], 0
 
+    @staticmethod
+    async def get_category_comparison(db: AsyncSession) -> Dict[str, Any]:
+        """Сравнение характеристик категорий прокси"""
+
+        comparison = {
+            "residential": {
+                "description": "Real ISP-assigned IPs from residential devices",
+                "pros": ["Highest anonymity", "Lowest detection rate", "Global coverage"],
+                "cons": ["Variable speed", "Higher cost per GB", "Less stable"],
+                "best_for": ["Web scraping", "Geo-targeting", "Social media"],
+                "avg_speed": "5-50 Mbps",
+                "detection_rate": "< 1%",
+                "pricing_model": "Per GB"
+            },
+            "datacenter": {
+                "description": "High-speed IPs from data center servers",
+                "pros": ["Highest speed", "Most stable", "Lowest cost"],
+                "cons": ["Easier to detect", "Limited locations", "Higher block rate"],
+                "best_for": ["High-speed tasks", "Automation", "Bulk operations"],
+                "avg_speed": "100-1000 Mbps",
+                "detection_rate": "5-15%",
+                "pricing_model": "Per IP"
+            },
+            "isp": {
+                "description": "Static residential IPs hosted on data centers",
+                "pros": ["Residential appearance", "High speed", "Stable sessions"],
+                "cons": ["Limited locations", "Higher cost", "Smaller IP pools"],
+                "best_for": ["Account management", "E-commerce", "Long sessions"],
+                "avg_speed": "50-200 Mbps",
+                "detection_rate": "1-3%",
+                "pricing_model": "Per IP"
+            },
+            # НОВЫЕ КАТЕГОРИИ
+            "nodepay": {
+                "description": "Specialized proxies for Nodepay farming and bandwidth sharing",
+                "pros": ["Optimized for Nodepay", "Multi-account support", "Auto-claim features"],
+                "cons": ["Platform-specific", "Limited to farming", "Requires setup"],
+                "best_for": ["Nodepay farming", "Bandwidth monetization", "Passive income"],
+                "avg_speed": "10-100 Mbps",
+                "detection_rate": "< 2%",
+                "pricing_model": "Per IP + Points/Hour",
+                "special_features": ["Auto-claim", "Multi-account", "24/7 farming"]
+            },
+            "grass": {
+                "description": "Optimized proxies for Grass network participation and data sharing",
+                "pros": ["Grass-optimized", "High farming efficiency", "Stable connections"],
+                "cons": ["Platform-specific", "Network dependent", "Setup complexity"],
+                "best_for": ["Grass farming", "Data sharing", "Network participation"],
+                "avg_speed": "20-150 Mbps",
+                "detection_rate": "< 1%",
+                "pricing_model": "Per IP + Efficiency Rate",
+                "special_features": ["High efficiency", "Network diversity", "Automated farming"]
+            }
+        }
+
+        return comparison
+
+    # Остальные методы остаются без изменений...
     async def get_product_by_id(
             self,
             db: AsyncSession,
@@ -168,7 +231,6 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
             if not product or not product.is_active:
                 return False
 
-            # ИСПРАВЛЕНО: упрощенное сравнение
             return (product.stock_available >= quantity and
                     product.min_quantity <= quantity <= product.max_quantity)
 
