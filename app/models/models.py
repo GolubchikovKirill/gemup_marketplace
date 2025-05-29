@@ -14,6 +14,12 @@ class ProxyType(str, PyEnum):
     SOCKS5 = "socks5"
 
 
+class ProxyCategory(str, PyEnum):
+    RESIDENTIAL = "residential"
+    DATACENTER = "datacenter"
+    ISP = "isp"  # Static Residential
+
+
 class SessionType(str, PyEnum):
     STICKY = "sticky"
     ROTATING = "rotating"
@@ -93,6 +99,7 @@ class ProxyProduct(Base):
     description = Column(Text, nullable=True)
 
     proxy_type = Column(Enum(ProxyType), nullable=False)
+    proxy_category = Column(Enum(ProxyCategory), nullable=False)  # НОВОЕ
     session_type = Column(Enum(SessionType), nullable=False)
     provider = Column(Enum(ProviderType), nullable=False)
 
@@ -100,13 +107,21 @@ class ProxyProduct(Base):
     country_name = Column(String(100), nullable=False)
     city = Column(String(100), nullable=True)
 
+    # Ценообразование
     price_per_proxy = Column(DECIMAL(10, 8), nullable=False)
+    price_per_gb = Column(DECIMAL(10, 8), nullable=True)  # НОВОЕ: для residential
+
     min_quantity = Column(Integer, default=1, nullable=False)
     max_quantity = Column(Integer, default=1000, nullable=False)
 
     duration_days = Column(Integer, nullable=False)
     max_threads = Column(Integer, default=1, nullable=False)
     bandwidth_limit_gb = Column(Integer, nullable=True)
+
+    # Характеристики по категориям
+    uptime_guarantee = Column(DECIMAL(5, 2), nullable=True)  # НОВОЕ: % uptime
+    speed_mbps = Column(Integer, nullable=True)  # НОВОЕ: скорость для datacenter
+    ip_pool_size = Column(Integer, nullable=True)  # НОВОЕ: размер пула для residential
 
     is_active = Column(Boolean, server_default='true', nullable=False)
     is_featured = Column(Boolean, server_default='false', nullable=False)
@@ -122,7 +137,7 @@ class ProxyProduct(Base):
     proxy_purchases = relationship("ProxyPurchase", back_populates="proxy_product")
 
     def __repr__(self):
-        return f"<ProxyProduct(id={self.id}, name='{self.name}', provider='{self.provider.value}')>"
+        return f"<ProxyProduct(id={self.id}, name='{self.name}', category='{self.proxy_category.value}')>"
 
 
 class Order(Base):
@@ -150,7 +165,7 @@ class Order(Base):
         "OrderItem",
         back_populates="order",
         cascade="all, delete-orphan",
-        lazy="selectin"  # ИСПРАВЛЕНО: eager loading для решения MissingGreenlet
+        lazy="selectin"
     )
     transactions = relationship("Transaction", back_populates="order")
 
@@ -176,7 +191,7 @@ class OrderItem(Base):
     proxy_product = relationship(
         "ProxyProduct",
         back_populates="order_items",
-        lazy="selectin"  # ИСПРАВЛЕНО: eager loading для решения MissingGreenlet
+        lazy="selectin"
     )
 
     def __repr__(self):
@@ -266,7 +281,7 @@ class ShoppingCart(Base):
     user = relationship("User")
     proxy_product = relationship(
         "ProxyProduct",
-        lazy="selectin"  # ИСПРАВЛЕНО: eager loading для решения MissingGreenlet
+        lazy="selectin"
     )
 
     def __repr__(self):

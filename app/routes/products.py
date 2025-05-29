@@ -7,14 +7,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
 from app.core.dependencies import get_current_registered_user
-from app.models.models import ProxyType, SessionType, ProviderType
+from app.models.models import ProxyType, ProxyCategory, SessionType, ProviderType
 from app.schemas.base import MessageResponse
-from app.schemas.product import (
-    ProductResponse,
-    ProductCreate,
-    ProductUpdate,
+from app.schemas.proxy_product import (
+    ProxyProductPublic,
+    ProxyProductCreate,
+    ProxyProductUpdate,
+    ProductFilter as ProxyProductFilter,
     ProductListResponse,
-    ProductFilter,
     CountryResponse,
     CityResponse
 )
@@ -30,12 +30,15 @@ async def get_products(
         page: int = Query(1, ge=1, description="Номер страницы"),
         size: int = Query(20, ge=1, le=100, description="Размер страницы"),
         proxy_type: Optional[ProxyType] = Query(None, description="Тип прокси"),
+        proxy_category: Optional[ProxyCategory] = Query(None, description="Категория прокси"),
         session_type: Optional[SessionType] = Query(None, description="Тип сессии"),
         provider: Optional[ProviderType] = Query(None, description="Провайдер"),
         country_code: Optional[str] = Query(None, min_length=2, max_length=2, description="Код страны"),
         city: Optional[str] = Query(None, description="Город"),
         min_price: Optional[float] = Query(None, ge=0, description="Минимальная цена"),
         max_price: Optional[float] = Query(None, ge=0, description="Максимальная цена"),
+        min_speed: Optional[int] = Query(None, ge=1, description="Минимальная скорость (Mbps)"),
+        min_uptime: Optional[float] = Query(None, ge=0, le=100, description="Минимальный uptime (%)"),
         min_duration: Optional[int] = Query(None, ge=1, description="Минимальный срок действия"),
         max_duration: Optional[int] = Query(None, ge=1, description="Максимальный срок действия"),
         is_featured: Optional[bool] = Query(None, description="Только рекомендуемые"),
@@ -44,20 +47,29 @@ async def get_products(
 ):
     """
     Получение списка продуктов с фильтрацией и пагинацией
+
+    - **proxy_category**: residential, datacenter, isp
+    - **min_speed**: минимальная скорость в Mbps (для datacenter)
+    - **min_uptime**: минимальный uptime в % (для ISP)
+    - **min_duration/max_duration**: фильтр по сроку действия в днях
+    - **search**: поиск по названию и описанию
     """
     try:
         # Создаем фильтр с правильными полями
-        filters = ProductFilter(
+        filters = ProxyProductFilter(
             proxy_type=proxy_type,
+            proxy_category=proxy_category,
             session_type=session_type,
             provider=provider,
             country_code=country_code,
             city=city,
+            featured_only=is_featured or False,
             min_price=min_price,
             max_price=max_price,
+            min_speed=min_speed,
+            min_uptime=min_uptime,
             min_duration=min_duration,
             max_duration=max_duration,
-            is_featured=is_featured,
             search=search
         )
 
@@ -85,7 +97,49 @@ async def get_products(
         )
 
 
-@router.get("/{product_id}", response_model=ProductResponse)
+@router.get("/categories/stats")
+async def get_categories_stats(db: AsyncSession = Depends(get_db)):
+    """
+    Получение статистики по категориям прокси
+    """
+    try:
+        from app.crud.proxy_product import proxy_product_crud
+        stats = await proxy_product_crud.get_categories_stats(db)
+        return stats
+    except Exception as e:
+        logger.error(f"Error getting categories stats: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get categories stats"
+        )
+
+
+@router.get("/categories/{category}")
+async def get_products_by_category(
+        category: ProxyCategory,
+        skip: int = 0,
+        limit: int = 20,
+        db: AsyncSession = Depends(get_db)
+):
+    """
+    Получение продуктов по категории
+    """
+    try:
+        from app.crud.proxy_product import proxy_product_crud
+        products = await proxy_product_crud.get_by_filters(
+            db, proxy_category=category, skip=skip, limit=limit
+        )
+
+        return {"category": category, "products": products}
+    except Exception as e:
+        logger.error(f"Error getting products by category: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get products by category"
+        )
+
+
+@router.get("/{product_id}", response_model=ProxyProductPublic)
 async def get_product(
         product_id: int,
         db: AsyncSession = Depends(get_db)
@@ -114,9 +168,9 @@ async def get_product(
         )
 
 
-@router.post("/", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=ProxyProductPublic, status_code=status.HTTP_201_CREATED)
 async def create_product(
-        product_data: ProductCreate,
+        product_data: ProxyProductCreate,
         db: AsyncSession = Depends(get_db),
         current_user=Depends(get_current_registered_user)
 ):
@@ -139,10 +193,10 @@ async def create_product(
         )
 
 
-@router.put("/{product_id}", response_model=ProductResponse)
+@router.put("/{product_id}", response_model=ProxyProductPublic)
 async def update_product(
         product_id: int,
-        product_data: ProductUpdate,
+        product_data: ProxyProductUpdate,
         db: AsyncSession = Depends(get_db),
         current_user=Depends(get_current_registered_user)
 ):

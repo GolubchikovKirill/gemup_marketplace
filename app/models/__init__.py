@@ -1,1 +1,1 @@
-from .models import *__all__ = [    "User",    "ProxyProduct",    "Order",    "OrderItem",    "Transaction",    "ProxyPurchase",    "ShoppingCart"]
+from .models import *__all__ = [    "User",    "ProxyProduct",    "Order",    "OrderItem",    "Transaction",    "ProxyPurchase",    "ShoppingCart",    "ProxyType",    "ProxyCategory",    "SessionType",    "ProviderType",]

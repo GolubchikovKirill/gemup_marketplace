@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.proxy_product import proxy_product_crud
 from app.models.models import ProxyProduct
-from app.schemas.product import ProductFilter, ProductCreate, ProductUpdate  # ИСПРАВЛЕНО: используем product.py
+from app.schemas.proxy_product import ProductFilter, ProxyProductCreate, ProxyProductUpdate
 from app.services.base import BaseService, BusinessRuleValidator
 
 logger = logging.getLogger(__name__)
@@ -43,11 +43,14 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
             products = await self.crud.get_by_filters(
                 db,
                 proxy_type=filters.proxy_type,
+                proxy_category=filters.proxy_category,
                 session_type=filters.session_type,
                 provider=filters.provider,
                 country_code=filters.country_code,
                 city=filters.city,
-                featured_only=filters.is_featured,  # ИСПРАВЛЕНО: используем is_featured
+                featured_only=filters.featured_only,
+                min_speed=filters.min_speed,
+                min_uptime=filters.min_uptime,
                 skip=skip,
                 limit=limit
             )
@@ -61,24 +64,23 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
                 if filters.max_price and product.price_per_proxy > filters.max_price:
                     continue
 
-                # Фильтр по сроку действия
+                # ДОБАВЛЕНО: Фильтр по сроку действия
                 if filters.min_duration and product.duration_days < filters.min_duration:
                     continue
                 if filters.max_duration and product.duration_days > filters.max_duration:
                     continue
 
-                # Поиск по названию
+                # ДОБАВЛЕНО: Фильтр по поиску
                 if filters.search:
-                    search_lower = filters.search.lower()
-                    if (search_lower not in product.name.lower() and
-                            (not product.description or search_lower not in product.description.lower())):
+                    search_term = filters.search.lower()
+                    if (search_term not in product.name.lower() and
+                        (product.description is None or search_term not in product.description.lower())):
                         continue
 
                 filtered_products.append(product)
 
-            # Получаем общее количество
-            total_products = await self.crud.get_active_products(db, skip=0, limit=1000)
-            total = len(total_products)
+            # Получаем общее количество (упрощенно)
+            total = len(filtered_products)
 
             logger.info(f"Retrieved {len(filtered_products)} products with filters")
             return filtered_products, total
@@ -103,7 +105,7 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
     async def create_product(
             self,
             db: AsyncSession,
-            product_data: ProductCreate
+            product_data: ProxyProductCreate
     ) -> ProxyProduct:
         """Создание нового продукта"""
         try:
@@ -118,7 +120,7 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
             self,
             db: AsyncSession,
             product_id: int,
-            product_data: ProductUpdate
+            product_data: ProxyProductUpdate
     ) -> Optional[ProxyProduct]:
         """Обновление продукта"""
         try:
@@ -166,9 +168,9 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
             if not product or not product.is_active:
                 return False
 
+            # ИСПРАВЛЕНО: упрощенное сравнение
             return (product.stock_available >= quantity and
-                    quantity >= product.min_quantity and
-                    quantity <= product.max_quantity)
+                    product.min_quantity <= quantity <= product.max_quantity)
 
         except Exception as e:
             logger.error(f"Error checking stock availability for product {product_id}: {e}")

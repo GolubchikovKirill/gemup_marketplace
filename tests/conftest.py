@@ -1,6 +1,7 @@
 from decimal import Decimal
 from typing import AsyncGenerator
 
+import pytest
 import pytest_asyncio
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
@@ -10,6 +11,7 @@ from app.core.db import get_db, Base
 from app.core.main import app
 from app.crud.user import user_crud
 from app.schemas.user import UserCreate
+from app.models import ProxyProduct, ProxyType, ProxyCategory, SessionType, ProviderType
 
 # Тестовая база данных в памяти
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -116,3 +118,82 @@ async def auth_headers(client: AsyncClient, test_user):
 
     token = response.json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.fixture
+async def test_residential_product(db_session):
+    """Фикстура для residential прокси"""
+    product = ProxyProduct(
+        name="Test Residential Proxy",
+        description="Test residential proxy for testing",
+        proxy_type=ProxyType.HTTP,
+        proxy_category=ProxyCategory.RESIDENTIAL,
+        session_type=SessionType.ROTATING,
+        provider=ProviderType.PROVIDER_711,
+        country_code="US",
+        country_name="United States",
+        price_per_proxy=Decimal("3.00"),
+        price_per_gb=Decimal("15.00"),
+        duration_days=30,
+        ip_pool_size=1000000,
+        is_active=True,
+        stock_available=100
+    )
+
+    db_session.add(product)
+    await db_session.commit()
+    await db_session.refresh(product)
+    return product
+
+
+@pytest.fixture
+async def test_datacenter_product(db_session):
+    """Фикстура для datacenter прокси"""
+    product = ProxyProduct(
+        name="Test Datacenter Proxy",
+        description="Test datacenter proxy for testing",
+        proxy_type=ProxyType.HTTP,
+        proxy_category=ProxyCategory.DATACENTER,
+        session_type=SessionType.STICKY,
+        provider=ProviderType.PROVIDER_711,
+        country_code="US",
+        country_name="United States",
+        price_per_proxy=Decimal("1.00"),
+        duration_days=7,
+        speed_mbps=1000,
+        uptime_guarantee=Decimal("99.9"),
+        is_active=True,
+        stock_available=200
+    )
+
+    db_session.add(product)
+    await db_session.commit()
+    await db_session.refresh(product)
+    return product
+
+
+@pytest.fixture
+async def test_isp_product(db_session):
+    """Фикстура для ISP прокси"""
+    product = ProxyProduct(
+        name="Test ISP Proxy",
+        description="Test ISP proxy for testing",
+        proxy_type=ProxyType.HTTP,
+        proxy_category=ProxyCategory.ISP,
+        session_type=SessionType.STICKY,
+        provider=ProviderType.PROVIDER_711,
+        country_code="US",
+        country_name="United States",
+        price_per_proxy=Decimal("2.00"),
+        duration_days=15,
+        speed_mbps=200,
+        uptime_guarantee=Decimal("99.5"),
+        ip_pool_size=50000,
+        is_active=True,
+        stock_available=50
+    )
+
+    db_session.add(product)
+    await db_session.commit()
+    await db_session.refresh(product)
+    return product

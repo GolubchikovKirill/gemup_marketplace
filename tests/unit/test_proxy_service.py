@@ -6,7 +6,7 @@ import pytest
 
 from app.core.exceptions import BusinessLogicError
 from app.models.models import (
-    ProxyProduct, ProxyType, SessionType, ProviderType,
+    ProxyProduct, ProxyType, ProxyCategory, SessionType, ProviderType,
     Order, OrderStatus
 )
 from app.services.proxy_service import proxy_service, ProxyBusinessRules
@@ -26,13 +26,13 @@ class TestProxyService:
     @patch('app.services.proxy_service.proxy_711_api.purchase_proxies')
     async def test_activate_proxies_for_order_success(self, mock_purchase, db_session, test_user):
         """Тест успешной активации прокси для заказа"""
-        # ИСПРАВЛЕНО: уникальный order_number
         unique_id = str(uuid.uuid4())[:8]
 
-        # Создаем продукт
+        # Создаем продукт с обязательным proxy_category
         product = ProxyProduct(
             name="Test Proxy Product",
             proxy_type=ProxyType.HTTP,
+            proxy_category=ProxyCategory.DATACENTER,
             session_type=SessionType.STICKY,
             provider=ProviderType.PROVIDER_711,
             country_code="US",
@@ -51,7 +51,7 @@ class TestProxyService:
         # Создаем заказ с уникальным номером
         from app.models.models import OrderItem
         order = Order(
-            order_number=f"ORD-PROXY-{unique_id}",  # ИСПРАВЛЕНО: уникальный номер
+            order_number=f"ORD-PROXY-{unique_id}",
             user_id=test_user.id,
             total_amount=Decimal("4.00"),
             status=OrderStatus.PAID

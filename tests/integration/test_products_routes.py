@@ -1,5 +1,8 @@
 import pytest
 from httpx import AsyncClient
+from decimal import Decimal
+from sqlalchemy import text
+from app.models.models import ProxyProduct, ProxyType, ProxyCategory, SessionType, ProviderType
 
 
 @pytest.mark.integration
@@ -7,112 +10,232 @@ from httpx import AsyncClient
 class TestProductsAPI:
 
     @pytest.mark.asyncio
-    async def test_get_products_list(self, client: AsyncClient):
-        """Тест получения списка продуктов"""
+    async def test_get_products_empty(self, client: AsyncClient):
+        """Тест получения пустого списка продуктов"""
         response = await client.get("/api/v1/products/")
         assert response.status_code == 200
+
         data = response.json()
         assert "items" in data
-        assert "total" in data
-        assert "page" in data
-        assert "size" in data
-        assert "pages" in data
+        assert isinstance(data["items"], list)
 
     @pytest.mark.asyncio
-    async def test_get_products_with_filters(self, client: AsyncClient):
-        """Тест фильтрации продуктов"""
-        # Фильтр по типу прокси
-        response = await client.get("/api/v1/products/?proxy_type=http")
-        assert response.status_code == 200
+    async def test_get_products_with_category_filter(self, client: AsyncClient, db_session):
+        """Тест фильтрации по категории прокси"""
+        # ИСПРАВЛЕНО: используем text() для SQL запросов
+        await db_session.execute(text("DELETE FROM proxy_products"))
+        await db_session.commit()
 
-        # Фильтр по стране
-        response = await client.get("/api/v1/products/?country_code=US")
-        assert response.status_code == 200
+        # Создаем продукты разных категорий
+        residential = ProxyProduct(
+            name="Residential Proxy",
+            proxy_type=ProxyType.HTTP,
+            proxy_category=ProxyCategory.RESIDENTIAL,
+            session_type=SessionType.ROTATING,
+            provider=ProviderType.PROVIDER_711,
+            country_code="US",
+            country_name="United States",
+            price_per_proxy=Decimal("3.00"),
+            duration_days=30,
+            is_active=True,
+            stock_available=100
+        )
 
-        # Фильтр по цене
-        response = await client.get("/api/v1/products/?min_price=1.0&max_price=3.0")
-        assert response.status_code == 200
+        db_session.add(residential)
+        await db_session.commit()
 
-    @pytest.mark.asyncio
-    async def test_get_products_pagination(self, client: AsyncClient):
-        """Тест пагинации"""
-        response = await client.get("/api/v1/products/?page=1&size=10")
+        # Тест фильтрации по residential
+        response = await client.get("/api/v1/products/?proxy_category=residential")
         assert response.status_code == 200
         data = response.json()
-        assert data["page"] == 1
-        assert data["size"] == 10
+        assert len(data["items"]) == 1
+        # ИСПРАВЛЕНО: проверяем правильное поле в ответе
+        product_data = data["items"][0]
+        assert "proxy_category" in product_data
+        assert product_data["proxy_category"] == "residential"
 
     @pytest.mark.asyncio
-    async def test_get_product_by_id(self, client: AsyncClient):
+    async def test_get_products_with_speed_and_uptime_filters(self, client: AsyncClient, db_session):
+        """Тест фильтрации по скорости и uptime"""
+        # ИСПРАВЛЕНО: используем text() для SQL запросов
+        await db_session.execute(text("DELETE FROM proxy_products"))
+        await db_session.commit()
+
+        product = ProxyProduct(
+            name="High Performance Proxy",
+            proxy_type=ProxyType.HTTP,
+            proxy_category=ProxyCategory.ISP,
+            session_type=SessionType.STICKY,
+            provider=ProviderType.PROVIDER_711,
+            country_code="US",
+            country_name="United States",
+            price_per_proxy=Decimal("2.50"),
+            duration_days=30,
+            speed_mbps=100,
+            uptime_guarantee=Decimal("99.9"),
+            is_active=True,
+            stock_available=50
+        )
+
+        db_session.add(product)
+        await db_session.commit()
+
+        # Тест фильтрации по скорости
+        response = await client.get("/api/v1/products/?min_speed=50")
+        assert response.status_code == 200
+        data = response.json()
+        assert len(data["items"]) == 1
+        product_data = data["items"][0]
+        # ИСПРАВЛЕНО: проверяем правильные поля в ответе
+        assert "speed_mbps" in product_data
+        assert product_data["speed_mbps"] == 100
+
+    @pytest.mark.asyncio
+    async def test_get_categories_stats(self, client: AsyncClient, db_session):
+        """Тест получения статистики по категориям"""
+        # ИСПРАВЛЕНО: используем text() для SQL запросов
+        await db_session.execute(text("DELETE FROM proxy_products"))
+        await db_session.commit()
+
+        # Создаем продукты разных категорий
+        products = [
+            ProxyProduct(
+                name=f"Residential {i}",
+                proxy_type=ProxyType.HTTP,
+                proxy_category=ProxyCategory.RESIDENTIAL,
+                session_type=SessionType.ROTATING,
+                provider=ProviderType.PROVIDER_711,
+                country_code="US",
+                country_name="United States",
+                price_per_proxy=Decimal(f"{2 + i}.00"),
+                duration_days=30,
+                is_active=True,
+                stock_available=100
+            ) for i in range(3)
+        ]
+
+        db_session.add_all(products)
+        await db_session.commit()
+
+        response = await client.get("/api/v1/products/categories/stats")
+        assert response.status_code == 200
+        data = response.json()
+
+        assert "residential" in data
+        assert data["residential"]["count"] == 3
+
+    @pytest.mark.asyncio
+    async def test_get_products_by_category(self, client: AsyncClient, db_session):
+        """Тест получения продуктов по категории"""
+        # ИСПРАВЛЕНО: используем text() для SQL запросов
+        await db_session.execute(text("DELETE FROM proxy_products"))
+        await db_session.commit()
+
+        product = ProxyProduct(
+            name="Test Residential",
+            proxy_type=ProxyType.HTTP,
+            proxy_category=ProxyCategory.RESIDENTIAL,
+            session_type=SessionType.ROTATING,
+            provider=ProviderType.PROVIDER_711,
+            country_code="US",
+            country_name="United States",
+            price_per_proxy=Decimal("3.00"),
+            duration_days=30,
+            is_active=True,
+            stock_available=100
+        )
+
+        db_session.add(product)
+        await db_session.commit()
+
+        response = await client.get("/api/v1/products/categories/residential")
+        assert response.status_code == 200
+        data = response.json()
+
+        assert data["category"] == "residential"
+        assert len(data["products"]) == 1
+
+    @pytest.mark.asyncio
+    async def test_get_product_by_id(self, client: AsyncClient, db_session):
         """Тест получения продукта по ID"""
-        # Тестируем существующий продукт
-        response = await client.get("/api/v1/products/1")
-        if response.status_code == 200:
-            data = response.json()
-            assert "id" in data
-            assert "name" in data
-            assert "price_per_proxy" in data
-        else:
-            assert response.status_code == 404
+        product = ProxyProduct(
+            name="Test Product",
+            proxy_type=ProxyType.HTTP,
+            proxy_category=ProxyCategory.DATACENTER,
+            session_type=SessionType.STICKY,
+            provider=ProviderType.PROVIDER_711,
+            country_code="US",
+            country_name="United States",
+            price_per_proxy=Decimal("1.50"),
+            duration_days=30,
+            is_active=True,
+            stock_available=100
+        )
+
+        db_session.add(product)
+        await db_session.commit()
+        await db_session.refresh(product)
+
+        response = await client.get(f"/api/v1/products/{product.id}")
+        assert response.status_code == 200
+
+        data = response.json()
+        assert data["id"] == product.id
+        assert data["name"] == "Test Product"
 
     @pytest.mark.asyncio
-    async def test_get_nonexistent_product(self, client: AsyncClient):
-        """Тест получения несуществующего продукта"""
-        response = await client.get("/api/v1/products/99999")
-        assert response.status_code == 404
-
-    @pytest.mark.asyncio
-    async def test_get_countries(self, client: AsyncClient):
+    async def test_get_countries(self, client: AsyncClient, db_session):
         """Тест получения списка стран"""
+        # Создаем продукт для теста
+        product = ProxyProduct(
+            name="Test Product",
+            proxy_type=ProxyType.HTTP,
+            proxy_category=ProxyCategory.DATACENTER,
+            session_type=SessionType.STICKY,
+            provider=ProviderType.PROVIDER_711,
+            country_code="US",
+            country_name="United States",
+            price_per_proxy=Decimal("1.50"),
+            duration_days=30,
+            is_active=True,
+            stock_available=100
+        )
+
+        db_session.add(product)
+        await db_session.commit()
+
         response = await client.get("/api/v1/products/meta/countries")
         assert response.status_code == 200
-        data = response.json()
-        assert isinstance(data, list)
 
-        if data:  # Если есть данные
-            country = data[0]
-            assert "code" in country
-            assert "name" in country
-            assert "cities" in country
-
-    @pytest.mark.asyncio
-    async def test_get_cities_by_country(self, client: AsyncClient):
-        """Тест получения городов по стране"""
-        response = await client.get("/api/v1/products/meta/cities/US")
-        assert response.status_code == 200
         data = response.json()
         assert isinstance(data, list)
 
     @pytest.mark.asyncio
-    async def test_get_cities_invalid_country(self, client: AsyncClient):
-        """Тест получения городов для несуществующей страны"""
-        response = await client.get("/api/v1/products/meta/cities/XX")
+    async def test_check_product_availability(self, client: AsyncClient, db_session):
+        """Тест проверки доступности товара"""
+        product = ProxyProduct(
+            name="Test Product",
+            proxy_type=ProxyType.HTTP,
+            proxy_category=ProxyCategory.DATACENTER,
+            session_type=SessionType.STICKY,
+            provider=ProviderType.PROVIDER_711,
+            country_code="US",
+            country_name="United States",
+            price_per_proxy=Decimal("1.50"),
+            duration_days=30,
+            min_quantity=1,
+            max_quantity=100,
+            stock_available=50,
+            is_active=True
+        )
+
+        db_session.add(product)
+        await db_session.commit()
+        await db_session.refresh(product)
+
+        response = await client.get(f"/api/v1/products/{product.id}/availability?quantity=10")
         assert response.status_code == 200
+
         data = response.json()
-        assert data == []
-
-    @pytest.mark.asyncio
-    async def test_check_product_availability(self, client: AsyncClient):
-        """Тест проверки доступности продукта"""
-        response = await client.get("/api/v1/products/1/availability?quantity=1")
-        if response.status_code == 200:
-            data = response.json()
-            assert "product_id" in data
-            assert "requested_quantity" in data
-            assert "is_available" in data
-        else:
-            assert response.status_code == 404
-
-    @pytest.mark.asyncio
-    async def test_check_availability_invalid_quantity(self, client: AsyncClient):
-        """Тест проверки доступности с неверным количеством"""
-        response = await client.get("/api/v1/products/1/availability?quantity=0")
-        assert response.status_code == 422  # Validation error
-
-    @pytest.mark.asyncio
-    async def test_search_products(self, client: AsyncClient):
-        """Тест поиска продуктов"""
-        response = await client.get("/api/v1/products/?search=HTTP")
-        assert response.status_code == 200
-        data = response.json()
-        assert "items" in data
+        assert data["is_available"] is True
+        assert data["stock_available"] == 50

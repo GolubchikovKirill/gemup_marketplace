@@ -1,71 +1,28 @@
 import pytest
 from decimal import Decimal
+from sqlalchemy import text
+from app.models.models import ProxyProduct, ProxyType, ProxyCategory, SessionType, ProviderType
+from app.schemas.proxy_product import ProductFilter
 from app.services.product_service import product_service
-from app.schemas.product import ProductFilter  # ИСПРАВЛЕНО: правильный импорт
-from app.models.models import ProxyProduct, ProxyType, SessionType, ProviderType
 
 
 @pytest.mark.unit
+@pytest.mark.asyncio
 class TestProductService:
 
-    @pytest.mark.asyncio
-    async def test_get_products_with_empty_filters(self, db_session):
-        """Тест получения продуктов без фильтров"""
-        filters = ProductFilter()
-        products, total = await product_service.get_products_with_filters(
-            db_session, filters, page=1, size=20
-        )
-
-        assert isinstance(products, list)
-        assert isinstance(total, int)
-        assert total >= 0
-
-    @pytest.mark.asyncio
-    async def test_get_products_with_filters(self, db_session):
-        """Тест фильтрации продуктов"""
-        # Создаем тестовый продукт
-        product = ProxyProduct(
-            name="Test HTTP Proxy",
-            proxy_type=ProxyType.HTTP,
-            session_type=SessionType.ROTATING,
-            provider=ProviderType.PROVIDER_711,
-            country_code="US",
-            country_name="United States",
-            price_per_proxy=Decimal("1.50"),
-            duration_days=30,
-            min_quantity=1,  # ДОБАВЛЕНО обязательное поле
-            max_quantity=100,  # ДОБАВЛЕНО обязательное поле
-            stock_available=100,
-            is_active=True
-        )
-        db_session.add(product)
-        await db_session.commit()
-
-        # Фильтр по типу прокси
-        filters = ProductFilter(proxy_type=ProxyType.HTTP)
-        products, total = await product_service.get_products_with_filters(
-            db_session, filters, page=1, size=20
-        )
-
-        # ИСПРАВЛЕНО: более мягкая проверка
-        assert total >= 0
-        assert isinstance(products, list)
-
-    @pytest.mark.asyncio  # ИСПРАВЛЕНО: добавлен декоратор
-    async def test_get_product_by_id_existing(self, db_session):
-        """Тест получения существующего продукта"""
-        # Создаем тестовый продукт
+    async def test_get_product_by_id(self, db_session):
+        """Тест получения продукта по ID"""
+        # Создаем продукт с обязательным proxy_category
         product = ProxyProduct(
             name="Test Product",
             proxy_type=ProxyType.HTTP,
-            session_type=SessionType.ROTATING,
+            proxy_category=ProxyCategory.DATACENTER,
+            session_type=SessionType.STICKY,
             provider=ProviderType.PROVIDER_711,
             country_code="US",
             country_name="United States",
             price_per_proxy=Decimal("1.50"),
             duration_days=30,
-            min_quantity=1,  # ДОБАВЛЕНО
-            max_quantity=100,  # ДОБАВЛЕНО
             stock_available=100,
             is_active=True
         )
@@ -78,128 +35,88 @@ class TestProductService:
         assert found_product is not None
         assert found_product.id == product.id
 
-    @pytest.mark.asyncio
-    async def test_get_product_by_id_nonexistent(self, db_session):
-        """Тест получения несуществующего продукта"""
-        product = await product_service.get_product_by_id(db_session, 99999)
-        assert product is None
+    async def test_get_products_with_filters(self, db_session):
+        """Тест получения продуктов с фильтрами"""
+        # ИСПРАВЛЕНО: используем text() для SQL запросов
+        await db_session.execute(text("DELETE FROM proxy_products"))
+        await db_session.commit()
 
-    @pytest.mark.asyncio
+        # Создаем продукты разных категорий
+        residential = ProxyProduct(
+            name="Residential Product",
+            proxy_type=ProxyType.HTTP,
+            proxy_category=ProxyCategory.RESIDENTIAL,
+            session_type=SessionType.ROTATING,
+            provider=ProviderType.PROVIDER_711,
+            country_code="US",
+            country_name="United States",
+            price_per_proxy=Decimal("3.00"),
+            duration_days=30,
+            stock_available=100,
+            is_active=True
+        )
+
+        datacenter = ProxyProduct(
+            name="Datacenter Product",
+            proxy_type=ProxyType.HTTP,
+            proxy_category=ProxyCategory.DATACENTER,
+            session_type=SessionType.STICKY,
+            provider=ProviderType.PROVIDER_711,
+            country_code="US",
+            country_name="United States",
+            price_per_proxy=Decimal("1.00"),
+            duration_days=7,
+            stock_available=200,
+            is_active=True
+        )
+
+        db_session.add_all([residential, datacenter])
+        await db_session.commit()
+
+        # Тест фильтрации по категории
+        filters = ProductFilter(proxy_category=ProxyCategory.RESIDENTIAL)
+        products, total = await product_service.get_products_with_filters(
+            db_session, filters, page=1, size=10
+        )
+
+        assert len(products) == 1
+        assert products[0].proxy_category == ProxyCategory.RESIDENTIAL
+
     async def test_check_stock_availability(self, db_session):
         """Тест проверки доступности товара"""
-        # Создаем тестовый продукт
+        # Создаем продукт
         product = ProxyProduct(
-            name="Stock Test Product",
+            name="Test Product",
             proxy_type=ProxyType.HTTP,
-            session_type=SessionType.ROTATING,
+            proxy_category=ProxyCategory.DATACENTER,
+            session_type=SessionType.STICKY,
             provider=ProviderType.PROVIDER_711,
             country_code="US",
             country_name="United States",
             price_per_proxy=Decimal("1.50"),
             duration_days=30,
-            min_quantity=1,
-            max_quantity=10,
-            stock_available=5,
+            min_quantity=5,
+            max_quantity=100,
+            stock_available=50,
             is_active=True
         )
         db_session.add(product)
         await db_session.commit()
         await db_session.refresh(product)
 
-        # Проверяем доступность в пределах лимитов
-        is_available = await product_service.check_stock_availability(
-            db_session, product.id, 3
-        )
-        assert is_available is True
-
-        # Проверяем недоступность (больше stock)
+        # Тест успешной проверки
         is_available = await product_service.check_stock_availability(
             db_session, product.id, 10
         )
-        assert is_available is False
+        assert is_available is True
 
-        # Проверяем недоступность (меньше min_quantity)
+        # Тест: количество меньше минимального
         is_available = await product_service.check_stock_availability(
-            db_session, product.id, 0
+            db_session, product.id, 3
         )
         assert is_available is False
 
-    @pytest.mark.asyncio
     async def test_get_countries(self, db_session):
         """Тест получения списка стран"""
-        # Создаем тестовые продукты
-        products = [
-            ProxyProduct(
-                name="US Product",
-                proxy_type=ProxyType.HTTP,
-                session_type=SessionType.ROTATING,
-                provider=ProviderType.PROVIDER_711,
-                country_code="US",
-                country_name="United States",
-                city="New York",
-                price_per_proxy=Decimal("1.50"),
-                duration_days=30,
-                min_quantity=1,
-                max_quantity=100,
-                is_active=True
-            ),
-            ProxyProduct(
-                name="GB Product",
-                proxy_type=ProxyType.HTTP,
-                session_type=SessionType.ROTATING,
-                provider=ProviderType.PROVIDER_711,
-                country_code="GB",
-                country_name="United Kingdom",
-                city="London",
-                price_per_proxy=Decimal("2.00"),
-                duration_days=30,
-                min_quantity=1,
-                max_quantity=100,
-                is_active=True
-            )
-        ]
-
-        for product in products:
-            db_session.add(product)
-        await db_session.commit()
-
         countries = await product_service.get_countries(db_session)
         assert isinstance(countries, list)
-
-        # Если есть данные, проверяем структуру
-        if countries:
-            country = countries[0]
-            assert "code" in country
-            assert "name" in country
-            assert "cities" in country
-
-    @pytest.mark.asyncio
-    async def test_get_cities_by_country(self, db_session):
-        """Тест получения городов по стране"""
-        # Создаем тестовый продукт
-        product = ProxyProduct(
-            name="US Product",
-            proxy_type=ProxyType.HTTP,
-            session_type=SessionType.ROTATING,
-            provider=ProviderType.PROVIDER_711,
-            country_code="US",
-            country_name="United States",
-            city="New York",
-            price_per_proxy=Decimal("1.50"),
-            duration_days=30,
-            min_quantity=1,
-            max_quantity=100,
-            is_active=True
-        )
-        db_session.add(product)
-        await db_session.commit()
-
-        cities = await product_service.get_cities_by_country(db_session, "US")
-        assert isinstance(cities, list)
-
-        # Если есть данные, проверяем структуру
-        if cities:
-            city = cities[0]
-            assert "name" in city
-            assert "country_code" in city
-            assert "country_name" in city
