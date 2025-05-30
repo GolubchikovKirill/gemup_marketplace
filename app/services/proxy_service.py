@@ -129,7 +129,7 @@ class ProxyService(BaseService[ProxyPurchase, dict, dict]):
 
     @staticmethod
     def _format_proxy_list(
-            proxy_list: str,  # ИСПРАВЛЕНО: принимаем строку
+            proxy_list: str,
             username: str,
             password: str,
             format_type: str
@@ -233,5 +233,4 @@ class ProxyService(BaseService[ProxyPurchase, dict, dict]):
         return await proxy_purchase_crud.get_multi(db, skip=skip, limit=limit)
 
 
-# Создаем экземпляр сервиса
 proxy_service = ProxyService()

@@ -175,15 +175,12 @@ class OrderService(BaseService[Order, OrderCreate, OrderUpdate]):
                     amount=float(amount)
                 )
 
-                # ИСПРАВЛЕНО: Активируем прокси если это оплата заказа
                 if transaction.order_id:
                     order = await order_crud.get(db, obj_id=transaction.order_id)
                     if order and order.status == OrderStatus.PAID:
                         try:
-                            # ИСПРАВЛЕНО: вызываем метод напрямую
                             await self._activate_proxies_for_order(db, order)
 
-                            # Обновляем статус заказа на "в обработке"
                             await order_crud.update_status(
                                 db,
                                 order_id=order.id,
@@ -390,5 +387,4 @@ class OrderService(BaseService[Order, OrderCreate, OrderUpdate]):
         return await order_crud.get_multi(db, skip=skip, limit=limit)
 
 
-# Создаем экземпляр сервиса
 order_service = OrderService()

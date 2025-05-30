@@ -10,7 +10,7 @@ from app.core.auth import auth_handler
 from app.core.db import get_db
 from app.core.dependencies import get_current_user_from_token
 from app.crud.user import user_crud
-from app.models.models import User  # Исправлено: добавлен .models
+from app.models.models import User
 from app.schemas.base import MessageResponse
 from app.schemas.user import UserCreate, UserResponse, UserLogin
 

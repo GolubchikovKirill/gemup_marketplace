@@ -1,8 +1,11 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, ForeignKey, Enum
-from sqlalchemy.types import DECIMAL
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
+from datetime import datetime
+from decimal import Decimal
+from typing import Optional, List
 from enum import Enum as PyEnum
+
+from sqlalchemy import String, Text, ForeignKey, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.core.db import Base
 
 
@@ -18,8 +21,8 @@ class ProxyCategory(str, PyEnum):
     RESIDENTIAL = "residential"
     DATACENTER = "datacenter"
     ISP = "isp"
-    NODEPAY = "nodepay"  # ДОБАВЛЕНО
-    GRASS = "grass"  # ДОБАВЛЕНО
+    NODEPAY = "nodepay"
+    GRASS = "grass"
 
 
 class SessionType(str, PyEnum):
@@ -64,31 +67,32 @@ class User(Base):
     """Модель пользователя (включая гостевых через cookies)"""
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String(255), unique=True, index=True, nullable=True)
-    username = Column(String(100), unique=True, index=True, nullable=True)
-    hashed_password = Column(String(255), nullable=True)
-    first_name = Column(String(100), nullable=True)
-    last_name = Column(String(100), nullable=True)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    email: Mapped[Optional[str]] = mapped_column(String(255), unique=True, index=True)
+    username: Mapped[Optional[str]] = mapped_column(String(100), unique=True, index=True)
+    hashed_password: Mapped[Optional[str]] = mapped_column(String(255))
+    first_name: Mapped[Optional[str]] = mapped_column(String(100))
+    last_name: Mapped[Optional[str]] = mapped_column(String(100))
 
-    balance = Column(DECIMAL(15, 8), default=0.00000000, nullable=False)
+    balance: Mapped[Decimal] = mapped_column(default=Decimal('0.00000000'))
 
-    is_active = Column(Boolean, default=True, server_default='true', nullable=False)
-    is_verified = Column(Boolean, default=False, server_default='false', nullable=False)
-    is_guest = Column(Boolean, default=False, server_default='false', nullable=False)
+    is_active: Mapped[bool] = mapped_column(default=True, server_default='true')
+    is_verified: Mapped[bool] = mapped_column(default=False, server_default='false')
+    is_guest: Mapped[bool] = mapped_column(default=False, server_default='false')
 
-    guest_session_id = Column(String(255), nullable=True, index=True)
-    guest_expires_at = Column(DateTime(timezone=True), nullable=True)
+    guest_session_id: Mapped[Optional[str]] = mapped_column(String(255), index=True)
+    guest_expires_at: Mapped[Optional[datetime]] = mapped_column()
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-    last_login = Column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+    last_login: Mapped[Optional[datetime]] = mapped_column()
 
-    orders = relationship("Order", back_populates="user")
-    transactions = relationship("Transaction", back_populates="user")
-    proxy_purchases = relationship("ProxyPurchase", back_populates="user")
+    # Relationships
+    orders: Mapped[List["Order"]] = relationship(back_populates="user")
+    transactions: Mapped[List["Transaction"]] = relationship(back_populates="user")
+    proxy_purchases: Mapped[List["ProxyPurchase"]] = relationship(back_populates="user")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<User(id={self.id}, email='{self.email}', is_guest={self.is_guest})>"
 
 
@@ -96,55 +100,56 @@ class ProxyProduct(Base):
     """Продукты прокси от различных провайдеров"""
     __tablename__ = "proxy_products"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(200), nullable=False)
-    description = Column(Text, nullable=True)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(200))
+    description: Mapped[Optional[str]] = mapped_column(Text)
 
-    proxy_type = Column(Enum(ProxyType), nullable=False)
-    proxy_category = Column(Enum(ProxyCategory), nullable=False)
-    session_type = Column(Enum(SessionType), nullable=False)
-    provider = Column(Enum(ProviderType), nullable=False)
+    proxy_type: Mapped[ProxyType] = mapped_column()
+    proxy_category: Mapped[ProxyCategory] = mapped_column()
+    session_type: Mapped[SessionType] = mapped_column()
+    provider: Mapped[ProviderType] = mapped_column()
 
-    country_code = Column(String(2), nullable=False)
-    country_name = Column(String(100), nullable=False)
-    city = Column(String(100), nullable=True)
+    country_code: Mapped[str] = mapped_column(String(2))
+    country_name: Mapped[str] = mapped_column(String(100))
+    city: Mapped[Optional[str]] = mapped_column(String(100))
 
     # Ценообразование
-    price_per_proxy = Column(DECIMAL(10, 8), nullable=False)
-    price_per_gb = Column(DECIMAL(10, 8), nullable=True)
+    price_per_proxy: Mapped[Decimal] = mapped_column()
+    price_per_gb: Mapped[Optional[Decimal]] = mapped_column()
 
-    min_quantity = Column(Integer, default=1, nullable=False)
-    max_quantity = Column(Integer, default=1000, nullable=False)
+    min_quantity: Mapped[int] = mapped_column(default=1)
+    max_quantity: Mapped[int] = mapped_column(default=1000)
 
-    duration_days = Column(Integer, nullable=False)
-    max_threads = Column(Integer, default=1, nullable=False)
-    bandwidth_limit_gb = Column(Integer, nullable=True)
+    duration_days: Mapped[int] = mapped_column()
+    max_threads: Mapped[int] = mapped_column(default=1)
+    bandwidth_limit_gb: Mapped[Optional[int]] = mapped_column()
 
     # Характеристики по категориям
-    uptime_guarantee = Column(DECIMAL(5, 2), nullable=True)
-    speed_mbps = Column(Integer, nullable=True)
-    ip_pool_size = Column(Integer, nullable=True)
+    uptime_guarantee: Mapped[Optional[Decimal]] = mapped_column()
+    speed_mbps: Mapped[Optional[int]] = mapped_column()
+    ip_pool_size: Mapped[Optional[int]] = mapped_column()
 
-    # НОВЫЕ ПОЛЯ для Nodepay и Grass
-    points_per_hour = Column(Integer, nullable=True)  # Очки в час для фарминга
-    farm_efficiency = Column(DECIMAL(5, 2), nullable=True)  # Эффективность фарминга в %
-    auto_claim = Column(Boolean, default=False, nullable=False)  # Автоматический клейм
-    multi_account_support = Column(Boolean, default=False, nullable=False)  # Поддержка мульти-аккаунтов
+    # Nodepay и Grass
+    points_per_hour: Mapped[Optional[int]] = mapped_column()  # Очки в час для фарминга
+    farm_efficiency: Mapped[Optional[Decimal]] = mapped_column()  # Эффективность фарминга в %
+    auto_claim: Mapped[bool] = mapped_column(default=False)  # Автоматический клейм
+    multi_account_support: Mapped[bool] = mapped_column(default=False)  # Поддержка мульти-аккаунтов
 
-    is_active = Column(Boolean, server_default='true', nullable=False)
-    is_featured = Column(Boolean, server_default='false', nullable=False)
-    stock_available = Column(Integer, default=0, nullable=False)
+    is_active: Mapped[bool] = mapped_column(default=True, server_default='true')
+    is_featured: Mapped[bool] = mapped_column(default=False, server_default='false')
+    stock_available: Mapped[int] = mapped_column(default=0)
 
-    provider_product_id = Column(String(255), nullable=True)
-    provider_metadata = Column(Text, nullable=True)
+    provider_product_id: Mapped[Optional[str]] = mapped_column(String(255))
+    provider_metadata: Mapped[Optional[str]] = mapped_column(Text)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
 
-    order_items = relationship("OrderItem", back_populates="proxy_product")
-    proxy_purchases = relationship("ProxyPurchase", back_populates="proxy_product")
+    # Relationships
+    order_items: Mapped[List["OrderItem"]] = relationship(back_populates="proxy_product")
+    proxy_purchases: Mapped[List["ProxyPurchase"]] = relationship(back_populates="proxy_product")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<ProxyProduct(id={self.id}, name='{self.name}', category='{self.proxy_category.value}')>"
 
 
@@ -152,32 +157,32 @@ class Order(Base):
     """Заказы пользователей"""
     __tablename__ = "orders"
 
-    id = Column(Integer, primary_key=True, index=True)
-    order_number = Column(String(50), unique=True, nullable=False, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    order_number: Mapped[str] = mapped_column(String(50), unique=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
-    total_amount = Column(DECIMAL(15, 8), nullable=False)
-    currency = Column(String(10), default="USD", nullable=False)
+    total_amount: Mapped[Decimal] = mapped_column()
+    currency: Mapped[str] = mapped_column(String(10), default="USD")
 
-    status = Column(Enum(OrderStatus), default=OrderStatus.PENDING, nullable=False)
-    payment_method = Column(String(50), nullable=True)
-    payment_id = Column(String(255), nullable=True)
-    notes = Column(Text, nullable=True)
+    status: Mapped[OrderStatus] = mapped_column(default=OrderStatus.PENDING)
+    payment_method: Mapped[Optional[str]] = mapped_column(String(50))
+    payment_id: Mapped[Optional[str]] = mapped_column(String(255))
+    notes: Mapped[Optional[str]] = mapped_column(Text)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-    expires_at = Column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+    expires_at: Mapped[Optional[datetime]] = mapped_column()
 
-    user = relationship("User", back_populates="orders")
-    order_items = relationship(
-        "OrderItem",
+    # Relationships
+    user: Mapped["User"] = relationship(back_populates="orders")
+    order_items: Mapped[List["OrderItem"]] = relationship(
         back_populates="order",
         cascade="all, delete-orphan",
         lazy="selectin"
     )
-    transactions = relationship("Transaction", back_populates="order")
+    transactions: Mapped[List["Transaction"]] = relationship(back_populates="order")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Order(id={self.id}, order_number='{self.order_number}', status='{self.status.value}')>"
 
 
@@ -185,24 +190,24 @@ class OrderItem(Base):
     """Элементы заказа"""
     __tablename__ = "order_items"
 
-    id = Column(Integer, primary_key=True, index=True)
-    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
-    proxy_product_id = Column(Integer, ForeignKey("proxy_products.id"), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
+    proxy_product_id: Mapped[int] = mapped_column(ForeignKey("proxy_products.id"))
 
-    quantity = Column(Integer, nullable=False, default=1)
-    unit_price = Column(DECIMAL(10, 8), nullable=False)
-    total_price = Column(DECIMAL(15, 8), nullable=False)
+    quantity: Mapped[int] = mapped_column(default=1)
+    unit_price: Mapped[Decimal] = mapped_column()
+    total_price: Mapped[Decimal] = mapped_column()
 
-    generation_params = Column(Text, nullable=True)
+    generation_params: Mapped[Optional[str]] = mapped_column(Text)
 
-    order = relationship("Order", back_populates="order_items")
-    proxy_product = relationship(
-        "ProxyProduct",
+    # Relationships
+    order: Mapped["Order"] = relationship(back_populates="order_items")
+    proxy_product: Mapped["ProxyProduct"] = relationship(
         back_populates="order_items",
         lazy="selectin"
     )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<OrderItem(id={self.id}, order_id={self.order_id}, quantity={self.quantity})>"
 
 
@@ -210,31 +215,32 @@ class Transaction(Base):
     """Финансовые транзакции"""
     __tablename__ = "transactions"
 
-    id = Column(Integer, primary_key=True, index=True)
-    transaction_id = Column(String(255), unique=True, nullable=False, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    order_id = Column(Integer, ForeignKey("orders.id"), nullable=True)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    transaction_id: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    order_id: Mapped[Optional[int]] = mapped_column(ForeignKey("orders.id"))
 
-    amount = Column(DECIMAL(15, 8), nullable=False)
-    currency = Column(String(10), nullable=False)
-    transaction_type = Column(Enum(TransactionType), nullable=False)
-    status = Column(Enum(TransactionStatus), default=TransactionStatus.PENDING, nullable=False)
+    amount: Mapped[Decimal] = mapped_column()
+    currency: Mapped[str] = mapped_column(String(10))
+    transaction_type: Mapped[TransactionType] = mapped_column()
+    status: Mapped[TransactionStatus] = mapped_column(default=TransactionStatus.PENDING)
 
-    payment_provider = Column(String(50), default="cryptomus", nullable=False)
-    external_transaction_id = Column(String(255), nullable=True)
-    payment_url = Column(String(500), nullable=True)
+    payment_provider: Mapped[str] = mapped_column(String(50), default="cryptomus")
+    external_transaction_id: Mapped[Optional[str]] = mapped_column(String(255))
+    payment_url: Mapped[Optional[str]] = mapped_column(String(500))
 
-    description = Column(String(500), nullable=True)
-    provider_metadata = Column(Text, nullable=True)
+    description: Mapped[Optional[str]] = mapped_column(String(500))
+    provider_metadata: Mapped[Optional[str]] = mapped_column(Text)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-    completed_at = Column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+    completed_at: Mapped[Optional[datetime]] = mapped_column()
 
-    user = relationship("User", back_populates="transactions")
-    order = relationship("Order", back_populates="transactions")
+    # Relationships
+    user: Mapped["User"] = relationship(back_populates="transactions")
+    order: Mapped[Optional["Order"]] = relationship(back_populates="transactions")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Transaction(id={self.id}, transaction_id='{self.transaction_id}', amount={self.amount})>"
 
 
@@ -242,31 +248,32 @@ class ProxyPurchase(Base):
     """Приобретенные прокси (результат выполненного заказа)"""
     __tablename__ = "proxy_purchases"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    proxy_product_id = Column(Integer, ForeignKey("proxy_products.id"), nullable=False)
-    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    proxy_product_id: Mapped[int] = mapped_column(ForeignKey("proxy_products.id"))
+    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
 
-    proxy_list = Column(Text, nullable=False)
-    username = Column(String(100), nullable=True)
-    password = Column(String(255), nullable=True)
+    proxy_list: Mapped[str] = mapped_column(Text)
+    username: Mapped[Optional[str]] = mapped_column(String(100))
+    password: Mapped[Optional[str]] = mapped_column(String(255))
 
-    is_active = Column(Boolean, default=True, server_default="true", nullable=False)
-    expires_at = Column(DateTime(timezone=True), nullable=False)
+    is_active: Mapped[bool] = mapped_column(default=True, server_default="true")
+    expires_at: Mapped[datetime] = mapped_column()
 
-    traffic_used_gb = Column(DECIMAL(10, 2), default=0.00, nullable=False)
-    last_used = Column(DateTime(timezone=True), nullable=True)
+    traffic_used_gb: Mapped[Decimal] = mapped_column(default=Decimal('0.00'))
+    last_used: Mapped[Optional[datetime]] = mapped_column()
 
-    provider_order_id = Column(String(255), nullable=True)
-    provider_metadata = Column(Text, nullable=True)
+    provider_order_id: Mapped[Optional[str]] = mapped_column(String(255))
+    provider_metadata: Mapped[Optional[str]] = mapped_column(Text)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
 
-    user = relationship("User", back_populates="proxy_purchases")
-    proxy_product = relationship("ProxyProduct", back_populates="proxy_purchases")
+    # Relationships
+    user: Mapped["User"] = relationship(back_populates="proxy_purchases")
+    proxy_product: Mapped["ProxyProduct"] = relationship(back_populates="proxy_purchases")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<ProxyPurchase(id={self.id}, user_id={self.user_id}, expires_at={self.expires_at})>"
 
 
@@ -274,23 +281,21 @@ class ShoppingCart(Base):
     """Корзина покупок (для зарегистрированных и гостевых пользователей)"""
     __tablename__ = "shopping_carts"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    session_id = Column(String(255), nullable=True, index=True)
-    proxy_product_id = Column(Integer, ForeignKey("proxy_products.id"), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"))
+    session_id: Mapped[Optional[str]] = mapped_column(String(255), index=True)
+    proxy_product_id: Mapped[int] = mapped_column(ForeignKey("proxy_products.id"))
 
-    quantity = Column(Integer, nullable=False, default=1)
-    generation_params = Column(Text, nullable=True)
+    quantity: Mapped[int] = mapped_column(default=1)
+    generation_params: Mapped[Optional[str]] = mapped_column(Text)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-    expires_at = Column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+    expires_at: Mapped[Optional[datetime]] = mapped_column()
 
-    user = relationship("User")
-    proxy_product = relationship(
-        "ProxyProduct",
-        lazy="selectin"
-    )
+    # Relationships
+    user: Mapped[Optional["User"]] = relationship()
+    proxy_product: Mapped["ProxyProduct"] = relationship(lazy="selectin")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<ShoppingCart(id={self.id}, user_id={self.user_id}, quantity={self.quantity})>"

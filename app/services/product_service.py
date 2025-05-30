@@ -51,7 +51,6 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
                 featured_only=filters.featured_only,
                 min_speed=filters.min_speed,
                 min_uptime=filters.min_uptime,
-                # НОВЫЕ ФИЛЬТРЫ для фарминга
                 min_points_per_hour=getattr(filters, 'min_points_per_hour', None),
                 min_farm_efficiency=getattr(filters, 'min_farm_efficiency', None),
                 auto_claim_only=getattr(filters, 'auto_claim_only', None),
@@ -126,7 +125,6 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
                 "detection_rate": "1-3%",
                 "pricing_model": "Per IP"
             },
-            # НОВЫЕ КАТЕГОРИИ
             "nodepay": {
                 "description": "Specialized proxies for Nodepay farming and bandwidth sharing",
                 "pros": ["Optimized for Nodepay", "Multi-account support", "Auto-claim features"],
@@ -317,5 +315,4 @@ class ProductService(BaseService[ProxyProduct, dict, dict]):
         return await self.crud.get_multi(db, skip=skip, limit=limit)
 
 
-# Создаем экземпляр сервиса
 product_service = ProductService()

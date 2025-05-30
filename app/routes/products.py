@@ -41,7 +41,6 @@ async def get_products(
         min_uptime: Optional[float] = Query(None, ge=0, le=100, description="Минимальный uptime (%)"),
         min_duration: Optional[int] = Query(None, ge=1, description="Минимальный срок действия"),
         max_duration: Optional[int] = Query(None, ge=1, description="Максимальный срок действия"),
-        # НОВЫЕ ПАРАМЕТРЫ для фарминга
         min_points_per_hour: Optional[int] = Query(None, ge=0, description="Минимум очков в час"),
         min_farm_efficiency: Optional[float] = Query(None, ge=0, le=100, description="Минимальная эффективность фарминга"),
         auto_claim_only: Optional[bool] = Query(None, description="Только с автоклеймом"),
@@ -75,7 +74,6 @@ async def get_products(
             min_uptime=min_uptime,
             min_duration=min_duration,
             max_duration=max_duration,
-            # НОВЫЕ ФИЛЬТРЫ
             min_points_per_hour=min_points_per_hour,
             min_farm_efficiency=min_farm_efficiency,
             auto_claim_only=auto_claim_only,

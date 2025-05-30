@@ -72,7 +72,7 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
                 db,
                 user_id=user.id,
                 amount=float(amount),
-                currency=currency,  # ИСПРАВЛЕНО: передаем currency
+                currency=currency,
                 transaction_type=TransactionType.DEPOSIT,
                 payment_provider="cryptomus",
                 description=description
@@ -87,7 +87,7 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
             )
 
             # Обновляем транзакцию данными от Cryptomus
-            if payment_result.get('state') == 0:  # Успешно создан
+            if payment_result.get('state') == 0:
                 result_data = payment_result.get('result', {})
 
                 await transaction_crud.update_status(
@@ -295,5 +295,4 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
         return await transaction_crud.get_multi(db, skip=skip, limit=limit)
 
 
-# Создаем экземпляр сервиса
 payment_service = PaymentService()

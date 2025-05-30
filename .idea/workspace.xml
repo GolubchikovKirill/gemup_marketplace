@@ -6,11 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/proxy_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/proxy_product.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/auth.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/products.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/product.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/proxy_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/proxy_product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/cart_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/cart_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/order_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/order_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/payment_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/payment_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/product_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/product_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/proxy_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/proxy_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/start-dev.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/start-dev.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/start-prod.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/start-prod.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +96,7 @@
       <recent name="$PROJECT_DIR$/app/core" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Makefile Target.dev">
     <configuration name="dev" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/Makefile" target="dev" workingDirectory="" arguments="">
         <envs />
@@ -161,7 +170,9 @@
       <workItem from="1748427366236" duration="11327000" />
       <workItem from="1748439037407" duration="12964000" />
       <workItem from="1748499996444" duration="5551000" />
-      <workItem from="1748510689863" duration="1739000" />
+      <workItem from="1748510689863" duration="2137000" />
+      <workItem from="1748523637230" duration="335000" />
+      <workItem from="1748590046539" duration="2771000" />
     </task>
     <servers />
   </component>

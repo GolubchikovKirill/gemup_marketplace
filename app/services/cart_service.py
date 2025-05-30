@@ -105,5 +105,4 @@ class CartService(BaseService[ShoppingCart, dict, dict]):
         return await self.crud.get_multi(db, skip=skip, limit=limit)
 
 
-# Создаем экземпляр сервиса
 cart_service = CartService()
