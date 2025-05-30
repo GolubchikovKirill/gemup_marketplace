@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from fastapi.responses import PlainTextResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -21,7 +21,7 @@ router = APIRouter(prefix="/proxies", tags=["Proxies"])
 
 @router.get("/my", response_model=List[ProxyPurchaseResponse])
 async def get_my_proxies(
-        active_only: bool = True,
+        active_only: bool = Query(True, description="Показывать только активные прокси"),
         current_user: User = Depends(get_current_registered_user),
         db: AsyncSession = Depends(get_db)
 ):
@@ -73,7 +73,7 @@ async def generate_proxy_list(
     except BusinessLogicError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=e.message
+            detail=str(e.message) if hasattr(e, 'message') else str(e)
         )
     except Exception as e:
         logger.error(f"Error generating proxy list: {e}")
@@ -86,7 +86,7 @@ async def generate_proxy_list(
 @router.get("/{purchase_id}/download")
 async def download_proxy_list(
         purchase_id: int,
-        format_type: str = "ip:port:user:pass",
+        format_type: str = Query("ip:port:user:pass", description="Формат вывода"),
         current_user: User = Depends(get_current_registered_user),
         db: AsyncSession = Depends(get_db)
 ):
@@ -116,14 +116,14 @@ async def download_proxy_list(
             content=proxy_text,
             headers={
                 "Content-Disposition": f"attachment; filename={filename}",
-                "Content-Type": "text/plain"
+                "Content-Type": "text/plain; charset=utf-8"
             }
         )
 
     except BusinessLogicError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=e.message
+            detail=str(e.message) if hasattr(e, 'message') else str(e)
         )
     except Exception as e:
         logger.error(f"Error downloading proxy list: {e}")
@@ -160,7 +160,7 @@ async def extend_proxies(
     except BusinessLogicError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=e.message
+            detail=str(e.message) if hasattr(e, 'message') else str(e)
         )
     except Exception as e:
         logger.error(f"Error extending proxies: {e}")
@@ -172,7 +172,7 @@ async def extend_proxies(
 
 @router.get("/expiring", response_model=List[ProxyPurchaseResponse])
 async def get_expiring_proxies(
-        days_ahead: int = 7,
+        days_ahead: int = Query(7, ge=1, le=365, description="За сколько дней до истечения показывать"),
         current_user: User = Depends(get_current_registered_user),
         db: AsyncSession = Depends(get_db)
 ):
@@ -194,4 +194,26 @@ async def get_expiring_proxies(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to get expiring proxies"
+        )
+
+
+@router.get("/stats", response_model=dict)
+async def get_proxy_stats(
+        current_user: User = Depends(get_current_registered_user),
+        db: AsyncSession = Depends(get_db)
+):
+    """
+    Получение статистики по прокси пользователя
+    """
+    try:
+        stats = await proxy_service.get_user_proxy_stats(db, user=current_user)
+
+        logger.info(f"Retrieved proxy stats for user {current_user.id}")
+        return stats
+
+    except Exception as e:
+        logger.error(f"Error getting proxy stats: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get proxy statistics"
         )

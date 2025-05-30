@@ -12,4 +12,4 @@ echo "✅ База данных готова!"
 echo "🚀 Запуск приложения..."
 
 # Используем uv run вместо прямого вызова fastapi
-exec uv run fastapi run app/core/main.py --host 0.0.0.0 --port 8001
+exec uv run fastapi run app/core/main.py --host 0.0.0.0 --port 8000

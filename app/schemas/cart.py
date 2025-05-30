@@ -1,59 +1,56 @@
-from pydantic import BaseModel, Field, ConfigDict, field_serializer
-from typing import Optional, List
-from decimal import Decimal
-from datetime import datetime
+from typing import List, Optional, Dict, Any
+
+from pydantic import BaseModel, Field, ConfigDict
+
+from app.schemas.proxy_product import ProxyProductResponse
+
 
 class CartItemBase(BaseModel):
     """Базовая схема элемента корзины"""
-    proxy_product_id: int = Field(..., description="ID продукта")
-    quantity: int = Field(..., ge=1, le=1000, description="Количество")
-    generation_params: Optional[str] = Field(None, description="Параметры генерации (JSON)")
-
-class CartItemCreate(CartItemBase):
-    """Схема для добавления в корзину"""
-    user_id: Optional[int] = Field(None, description="ID пользователя (для зарегистрированных)")
-    session_id: Optional[str] = Field(None, description="ID сессии (для гостей)")
-
-class CartItemUpdate(BaseModel):
-    """Схема для обновления элемента корзины"""
-    quantity: int = Field(..., ge=1, le=1000, description="Новое количество")
+    proxy_product_id: int
+    quantity: int = Field(..., ge=1, description="Количество товара")
     generation_params: Optional[str] = Field(None, description="Параметры генерации")
 
-class CartItemResponse(CartItemBase):
+
+class CartItemCreate(CartItemBase):
+    """Схема создания элемента корзины"""
+    user_id: Optional[int] = None
+    session_id: Optional[str] = None
+
+
+class CartItemUpdate(BaseModel):
+    """Схема обновления элемента корзины"""
+    quantity: Optional[int] = Field(None, ge=1, description="Новое количество")
+    generation_params: Optional[str] = Field(None, description="Обновленные параметры")
+
+
+class CartItemResponse(BaseModel):
     """Схема ответа элемента корзины"""
     model_config = ConfigDict(from_attributes=True)
-    
+
     id: int
-    user_id: Optional[int]
-    session_id: Optional[str]
-    created_at: datetime
-    updated_at: datetime
-    expires_at: Optional[datetime]
-    
-    # Информация о продукте (будет добавлена в сервисе)
-    product: Optional[dict] = None
-    
-    @field_serializer('created_at', 'updated_at', 'expires_at')
-    def serialize_datetime(self, value: Optional[datetime]) -> Optional[str]:
-        """Сериализация datetime в ISO строку"""
-        return value.isoformat() if value else None
+    proxy_product_id: int
+    quantity: int
+    generation_params: Optional[str]
+
+    # Информация о продукте
+    proxy_product: Optional[ProxyProductResponse] = None
+
 
 class CartSummary(BaseModel):
-    """Сводка по корзине"""
-    items: List[dict]
-    total_items: int
-    total_amount: Decimal
-    currency: str = "USD"
-    
-    @field_serializer('total_amount')
-    def serialize_amount(self, value: Decimal) -> str:
-        return f"{value:.2f}"
+    """Сводка корзины"""
+    total_items: int = Field(default=0, description="Общее количество товаров")
+    total_amount: str = Field(default="0.00", description="Общая сумма")
+    currency: str = Field(default="USD", description="Валюта")
+    items_count: int = Field(default=0, description="Количество позиций")
+    items: List[Dict[str, Any]] = Field(default_factory=list, description="Детали товаров")  # ДОБАВЛЕНО
+
 
 class CartResponse(BaseModel):
-    """Полный ответ корзины"""
-    cart_items: List[CartItemResponse]
-    summary: CartSummary
+    """Ответ корзины"""
+    cart_items: List[CartItemResponse] = Field(default_factory=list)
+    summary: CartSummary = Field(default_factory=CartSummary)
 
-# Алиасы для совместимости
+# Алиасы для обратной совместимости
 CartCreate = CartItemCreate
 CartUpdate = CartItemUpdate

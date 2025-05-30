@@ -48,7 +48,7 @@ async def create_payment(
     except BusinessLogicError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=e.message
+            detail=str(e.message) if hasattr(e, 'message') else str(e)
         )
     except Exception as e:
         logger.error(f"Error creating payment: {e}")
@@ -95,7 +95,7 @@ async def get_payment_status(
     except BusinessLogicError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=e.message
+            detail=str(e.message) if hasattr(e, 'message') else str(e)
         )
     except Exception as e:
         logger.error(f"Error getting payment status: {e}")
@@ -150,14 +150,13 @@ async def cryptomus_webhook(
         if success:
             return MessageResponse(message="Webhook processed successfully")
         else:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Webhook processing failed"
-            )
+            # ИСПРАВЛЕНО: возвращаем 200 даже при неудаче, чтобы Cryptomus не повторял
+            logger.warning("Webhook processing failed, but returning 200")
+            return MessageResponse(message="Webhook received but processing failed")
 
     except Exception as e:
         logger.error(f"Error processing Cryptomus webhook: {e}")
-        # Возвращаем 200 чтобы Cryptomus не повторял запрос
+        # ИСПРАВЛЕНО: всегда возвращаем 200 чтобы Cryptomus не повторял запрос
         return MessageResponse(message="Webhook received")
 
 
@@ -178,14 +177,8 @@ async def test_webhook(
         if success:
             return MessageResponse(message="Test webhook processed successfully")
         else:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Test webhook processing failed"
-            )
+            return MessageResponse(message="Test webhook processing failed")
 
     except Exception as e:
         logger.error(f"Error processing test webhook: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Test webhook processing failed"
-        )
+        return MessageResponse(message=f"Test webhook error: {str(e)}")

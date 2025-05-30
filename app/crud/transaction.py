@@ -2,6 +2,7 @@ from typing import Optional, List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from datetime import datetime
+from decimal import Decimal
 import uuid
 
 from app.crud.base import CRUDBase
@@ -16,12 +17,12 @@ class CRUDTransaction(CRUDBase[Transaction, TransactionCreate, TransactionUpdate
             db: AsyncSession,
             *,
             user_id: int,
-            amount: float,
+            amount: Decimal,  # ИСПРАВЛЕНО: Decimal вместо float
             transaction_type: TransactionType,
             payment_provider: str = "cryptomus",
             description: str = None,
             order_id: int = None,
-            currency: str = "USD"  # ИСПРАВЛЕНО: добавлен параметр currency
+            currency: str = "USD"
     ) -> Transaction:
         """Создание новой транзакции"""
         transaction_id = f"TXN-{datetime.now().strftime('%Y%m%d')}-{str(uuid.uuid4())[:8].upper()}"
@@ -30,8 +31,8 @@ class CRUDTransaction(CRUDBase[Transaction, TransactionCreate, TransactionUpdate
             transaction_id=transaction_id,
             user_id=user_id,
             order_id=order_id,
-            amount=amount,
-            currency=currency,  # ИСПРАВЛЕНО: передаем currency
+            amount=amount,  # Теперь Decimal
+            currency=currency,
             transaction_type=transaction_type,
             status=TransactionStatus.PENDING,
             payment_provider=payment_provider,

@@ -5,21 +5,59 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.env.test" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/conftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_auth_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_cart_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_orders_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_payments_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_products_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_proxies_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/api/test_users_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/load/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mocks/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mocks/fixtures.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mocks/proxy_mocks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mocks/service_mocks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/products.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/proxy_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/proxy_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/proxy_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/proxy_purchase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/shopping_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/shopping_cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/transaction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/integrations/cryptomus.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/cryptomus.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/orders.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/orders.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/payments.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/payments.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/proxies.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/proxies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/proxy_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/proxy_purchase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/transaction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/cart_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/cart_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/order_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/order_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/payment_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/payment_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/product_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/product_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/proxy_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/proxy_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/start-dev.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/start-dev.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/start-prod.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/start-prod.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/integration/test_orders_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test_orders_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/integration/test_payments_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test_payments_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/integration/test_proxies_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test_proxies_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/test_cryptomus_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_cryptomus_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/test_order_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_order_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/test_payment_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_payment_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/test_proxy_purchase_crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_proxy_purchase_crud.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/unit/test_proxy_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_proxy_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +110,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Makefile Target.dev.executor&quot;: &quot;Run&quot;,
+    &quot;Makefile Target.test-api.executor&quot;: &quot;Run&quot;,
     &quot;Makefile Target.test-unit.executor&quot;: &quot;Run&quot;,
     &quot;Makefile Target.test.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
@@ -96,9 +135,15 @@
       <recent name="$PROJECT_DIR$/app/core" />
     </key>
   </component>
-  <component name="RunManager" selected="Makefile Target.dev">
+  <component name="RunManager" selected="Makefile Target.test-api">
     <configuration name="dev" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/Makefile" target="dev" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
+    <configuration name="test-api" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="test-api" workingDirectory="" arguments="">
         <envs />
       </makefile>
       <method v="2" />
@@ -140,6 +185,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Makefile Target.test-api" />
         <item itemvalue="Makefile Target.test" />
         <item itemvalue="Makefile Target.test-unit" />
         <item itemvalue="Python.config" />
@@ -172,7 +218,8 @@
       <workItem from="1748499996444" duration="5551000" />
       <workItem from="1748510689863" duration="2137000" />
       <workItem from="1748523637230" duration="335000" />
-      <workItem from="1748590046539" duration="2771000" />
+      <workItem from="1748590046539" duration="11693000" />
+      <workItem from="1748618000129" duration="4973000" />
     </task>
     <servers />
   </component>

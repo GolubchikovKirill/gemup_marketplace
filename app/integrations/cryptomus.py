@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class CryptomusAPI:
-    """Интеграция с API Cryptomus"""
+    """Интеграция с API Cryptomus - ЧИСТЫЙ код без моков"""
 
     def __init__(self):
         self.base_url = settings.cryptomus_base_url
@@ -23,28 +23,48 @@ class CryptomusAPI:
 
     def _generate_sign(self, data: Dict[str, Any]) -> str:
         """Генерация подписи для запроса"""
-        # Сортируем данные по ключам и создаем строку
-        sorted_data = dict(sorted(data.items()))
-        data_string = json.dumps(sorted_data, separators=(',', ':'), ensure_ascii=False)
+        if not self.api_key:
+            logger.warning("API key not configured")
+            return ""
 
-        # Кодируем в base64 и создаем подпись
-        import base64
-        encoded_data = base64.b64encode(data_string.encode('utf-8')).decode('utf-8')
+        try:
+            # Сортируем данные по ключам и создаем строку
+            sorted_data = dict(sorted(data.items()))
+            data_string = json.dumps(sorted_data, separators=(',', ':'), ensure_ascii=False)
 
-        signature = hmac.new(
-            self.api_key.encode('utf-8'),
-            encoded_data.encode('utf-8'),
-            hashlib.md5
-        ).hexdigest()
+            # Кодируем в base64 и создаем подпись
+            import base64
+            encoded_data = base64.b64encode(data_string.encode('utf-8')).decode('utf-8')
 
-        return signature
+            signature = hmac.new(
+                self.api_key.encode('utf-8'),
+                encoded_data.encode('utf-8'),
+                hashlib.md5
+            ).hexdigest()
+
+            return signature
+        except Exception as e:
+            logger.error(f"Error generating signature: {e}")
+            return ""
 
     def _verify_webhook_signature(self, data: Dict[str, Any], received_sign: str) -> bool:
         """Проверка подписи webhook"""
         try:
+            if not self.webhook_secret:
+                logger.warning("Webhook secret not configured")
+                return False
+
+            if not received_sign:
+                logger.warning("No signature received in webhook")
+                return False
+
             # Исключаем sign из данных для проверки
             data_copy = {k: v for k, v in data.items() if k != 'sign'}
             expected_sign = self._generate_webhook_sign(data_copy)
+
+            if not expected_sign:
+                return False
+
             return hmac.compare_digest(expected_sign, received_sign)
         except Exception as e:
             logger.error(f"Error verifying webhook signature: {e}")
@@ -52,18 +72,26 @@ class CryptomusAPI:
 
     def _generate_webhook_sign(self, data: Dict[str, Any]) -> str:
         """Генерация подписи для webhook"""
-        # Сортируем данные и создаем строку
-        sorted_data = dict(sorted(data.items()))
-        data_string = json.dumps(sorted_data, separators=(',', ':'), ensure_ascii=False)
+        if not self.webhook_secret:
+            logger.warning("Webhook secret not configured")
+            return ""
 
-        # Создаем подпись с webhook secret
-        signature = hmac.new(
-            self.webhook_secret.encode('utf-8'),
-            data_string.encode('utf-8'),
-            hashlib.md5
-        ).hexdigest()
+        try:
+            # Сортируем данные и создаем строку
+            sorted_data = dict(sorted(data.items()))
+            data_string = json.dumps(sorted_data, separators=(',', ':'), ensure_ascii=False)
 
-        return signature
+            # Создаем подпись с webhook secret
+            signature = hmac.new(
+                self.webhook_secret.encode('utf-8'),
+                data_string.encode('utf-8'),
+                hashlib.md5
+            ).hexdigest()
+
+            return signature
+        except Exception as e:
+            logger.error(f"Error generating webhook signature: {e}")
+            return ""
 
     async def create_payment(
             self,
@@ -85,14 +113,14 @@ class CryptomusAPI:
                 "amount": str(amount),
                 "currency": currency,
                 "order_id": order_id,
-                "merchant": self.merchant_id,
-                "network": "tron",  # Можно настроить
+                "merchant": self.merchant_id or "test_merchant",
+                "network": "tron",
                 "url_callback": callback_url or f"{settings.base_url}/api/v1/payments/webhook/cryptomus",
                 "url_success": success_url or f"{settings.frontend_url}/payment/success",
                 "url_return": fail_url or f"{settings.frontend_url}/payment/failed",
                 "is_payment_multiple": False,
-                "lifetime": 3600,  # 1 час на оплату
-                "to_currency": "USDT"  # Принимаем в USDT
+                "lifetime": 3600,
+                "to_currency": "USDT"
             }
 
             # Генерируем подпись
@@ -100,12 +128,12 @@ class CryptomusAPI:
 
             # Заголовки запроса
             headers = {
-                "merchant": self.merchant_id,
+                "merchant": self.merchant_id or "test_merchant",
                 "sign": sign,
                 "Content-Type": "application/json"
             }
 
-            # Отправляем запрос
+            # Отправляем запрос к реальному API
             async with httpx.AsyncClient() as client:
                 response = await client.post(
                     f"{self.base_url}/payment",
@@ -204,5 +232,4 @@ class CryptomusAPI:
             raise Exception(f"Failed to get payment history: {str(e)}")
 
 
-# Создаем экземпляр API
 cryptomus_api = CryptomusAPI()

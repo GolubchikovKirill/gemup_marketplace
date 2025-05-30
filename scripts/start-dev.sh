@@ -22,4 +22,4 @@ echo "✅ База данных готова!"
 echo "🚀 Запуск приложения в режиме разработки..."
 
 # Используем uvicorn напрямую с uv run
-exec uv run uvicorn app.core.main:app --host 0.0.0.0 --port 8001 --reload
+exec uv run uvicorn app.core.main:app --host 0.0.0.0 --port 8000 --reload

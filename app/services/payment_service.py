@@ -71,7 +71,7 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
             transaction = await transaction_crud.create_transaction(
                 db,
                 user_id=user.id,
-                amount=float(amount),
+                amount=amount,  # ИСПРАВЛЕНО: передаем Decimal
                 currency=currency,
                 transaction_type=TransactionType.DEPOSIT,
                 payment_provider="cryptomus",
@@ -100,10 +100,11 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
 
                 logger.info(f"Payment created for user {user.id}: {amount} {currency}")
 
+                # ИСПРАВЛЕНО: возвращаем строки для PaymentResponse
                 return {
                     "transaction_id": transaction.transaction_id,
                     "payment_url": result_data.get('url'),
-                    "amount": amount,
+                    "amount": str(amount),  # ИСПРАВЛЕНО: конвертируем в строку
                     "currency": currency,
                     "status": "pending",
                     "expires_at": self._calculate_expiry_time()
@@ -206,7 +207,7 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
                 await user_crud.update_balance(
                     db,
                     user=user,
-                    amount=float(amount)
+                    amount=Decimal(amount)  # ИСПРАВЛЕНО: конвертируем в Decimal
                 )
 
                 logger.info(f"Balance updated for user {user.id}: +{amount}")
@@ -240,8 +241,8 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
                         result_data = payment_info.get('result', {})
                         return {
                             "transaction_id": transaction.transaction_id,
-                            "status": result_data.get('payment_status', transaction.status),
-                            "amount": transaction.amount,
+                            "status": result_data.get('payment_status', str(transaction.status)),
+                            "amount": str(transaction.amount),  # ИСПРАВЛЕНО: конвертируем в строку
                             "currency": transaction.currency,
                             "created_at": transaction.created_at,
                             "payment_url": transaction.payment_url
@@ -253,8 +254,8 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
             # Возвращаем информацию из базы
             return {
                 "transaction_id": transaction.transaction_id,
-                "status": transaction.status,
-                "amount": transaction.amount,
+                "status": str(transaction.status),
+                "amount": str(transaction.amount),  # ИСПРАВЛЕНО: конвертируем в строку
                 "currency": transaction.currency,
                 "created_at": transaction.created_at,
                 "payment_url": transaction.payment_url
@@ -269,7 +270,7 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
     @staticmethod
     def _get_base_url() -> str:
         """Получение базового URL приложения"""
-        return getattr(settings, 'base_url', 'http://localhost:8000')
+        return getattr(settings, 'base_url', 'http://localhost:8080')  # ИСПРАВЛЕНО: порт 8080
 
     @staticmethod
     def _calculate_expiry_time() -> datetime:
@@ -295,4 +296,5 @@ class PaymentService(BaseService[Transaction, TransactionCreate, dict]):
         return await transaction_crud.get_multi(db, skip=skip, limit=limit)
 
 
+# Создаем экземпляр сервиса
 payment_service = PaymentService()

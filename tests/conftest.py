@@ -11,7 +11,7 @@ from app.core.db import get_db, Base
 from app.core.main import app
 from app.crud.user import user_crud
 from app.schemas.user import UserCreate
-from app.models import ProxyProduct, ProxyType, ProxyCategory, SessionType, ProviderType
+from app.models.models import ProxyProduct, ProxyType, ProxyCategory, SessionType, ProviderType, User
 
 # Тестовая база данных в памяти
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -56,7 +56,6 @@ async def db_session(session_factory) -> AsyncGenerator[AsyncSession, None]:
 @pytest_asyncio.fixture
 async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
     """Создание тестового HTTP клиента"""
-    # Используем один и тот же db_session для всех запросов!
     async def override_get_db() -> AsyncGenerator[AsyncSession, None]:
         yield db_session
 
@@ -86,7 +85,6 @@ async def test_user(db_session: AsyncSession):
     )
 
     user = await user_crud.create_registered_user(db_session, user_in=user_data)
-    # Устанавливаем достаточный баланс для тестов
     user.balance = Decimal("100.00")
     await db_session.commit()
     await db_session.refresh(user)
@@ -105,6 +103,16 @@ async def test_guest_user(db_session: AsyncSession):
     return guest
 
 
+# ДОБАВЛЕНО: Недостающая фикстура user_with_balance
+@pytest_asyncio.fixture
+async def user_with_balance(db_session: AsyncSession, test_user: User) -> User:
+    """Пользователь с балансом для тестов заказов"""
+    test_user.balance = Decimal("100.00")
+    await db_session.commit()
+    await db_session.refresh(test_user)
+    return test_user
+
+
 @pytest_asyncio.fixture
 async def auth_headers(client: AsyncClient, test_user):
     """Создание заголовков авторизации"""
@@ -120,7 +128,8 @@ async def auth_headers(client: AsyncClient, test_user):
     return {"Authorization": f"Bearer {token}"}
 
 
-@pytest.fixture
+# ИСПРАВЛЕНО: Все фикстуры продуктов теперь async
+@pytest_asyncio.fixture
 async def test_residential_product(db_session):
     """Фикстура для residential прокси"""
     product = ProxyProduct(
@@ -139,14 +148,13 @@ async def test_residential_product(db_session):
         is_active=True,
         stock_available=100
     )
-
     db_session.add(product)
     await db_session.commit()
     await db_session.refresh(product)
     return product
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_datacenter_product(db_session):
     """Фикстура для datacenter прокси"""
     product = ProxyProduct(
@@ -165,14 +173,13 @@ async def test_datacenter_product(db_session):
         is_active=True,
         stock_available=200
     )
-
     db_session.add(product)
     await db_session.commit()
     await db_session.refresh(product)
     return product
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_isp_product(db_session):
     """Фикстура для ISP прокси"""
     product = ProxyProduct(
@@ -192,8 +199,69 @@ async def test_isp_product(db_session):
         is_active=True,
         stock_available=50
     )
-
     db_session.add(product)
     await db_session.commit()
     await db_session.refresh(product)
     return product
+
+
+@pytest_asyncio.fixture
+async def test_nodepay_product(db_session):
+    """Фикстура для Nodepay прокси"""
+    product = ProxyProduct(
+        name="Test Nodepay Proxy",
+        description="Test Nodepay proxy for farming",
+        proxy_type=ProxyType.HTTP,
+        proxy_category=ProxyCategory.NODEPAY,
+        session_type=SessionType.STICKY,
+        provider=ProviderType.PROVIDER_711,
+        country_code="US",
+        country_name="United States",
+        price_per_proxy=Decimal("5.00"),
+        duration_days=30,
+        points_per_hour=120,
+        farm_efficiency=Decimal("95.5"),
+        auto_claim=True,
+        multi_account_support=True,
+        is_active=True,
+        stock_available=25
+    )
+    db_session.add(product)
+    await db_session.commit()
+    await db_session.refresh(product)
+    return product
+
+
+@pytest_asyncio.fixture
+async def test_grass_product(db_session):
+    """Фикстура для Grass прокси"""
+    product = ProxyProduct(
+        name="Test Grass Proxy",
+        description="Test Grass proxy for network participation",
+        proxy_type=ProxyType.HTTP,
+        proxy_category=ProxyCategory.GRASS,
+        session_type=SessionType.ROTATING,
+        provider=ProviderType.GOPROXY,
+        country_code="DE",
+        country_name="Germany",
+        price_per_proxy=Decimal("4.50"),
+        duration_days=30,
+        points_per_hour=150,
+        farm_efficiency=Decimal("92.0"),
+        auto_claim=False,
+        multi_account_support=True,
+        ip_pool_size=50000,
+        is_active=True,
+        stock_available=200
+    )
+    db_session.add(product)
+    await db_session.commit()
+    await db_session.refresh(product)
+    return product
+
+
+# ДОБАВЛЕНО: Алиас для совместимости
+@pytest_asyncio.fixture
+async def test_product(test_datacenter_product):
+    """Алиас для test_datacenter_product для совместимости"""
+    return test_datacenter_product

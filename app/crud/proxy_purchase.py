@@ -1,7 +1,8 @@
-from typing import Optional, List
-from sqlalchemy.ext.asyncio import AsyncSession
+from datetime import datetime, timedelta
+from typing import List, Optional
+
 from sqlalchemy import select, and_
-from datetime import datetime
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
 from app.models.models import ProxyPurchase
@@ -10,33 +11,36 @@ from app.schemas.proxy_purchase import ProxyPurchaseCreate, ProxyPurchaseUpdate
 
 class CRUDProxyPurchase(CRUDBase[ProxyPurchase, ProxyPurchaseCreate, ProxyPurchaseUpdate]):
 
-    @staticmethod
     async def create_purchase(
+            self,
             db: AsyncSession,
             *,
             user_id: int,
             proxy_product_id: int,
             order_id: int,
-            proxy_list: List[str],
-            username: str = None,
-            password: str = None,
+            proxy_list: str,
+            username: Optional[str] = None,
+            password: Optional[str] = None,
             expires_at: datetime,
-            provider_order_id: str = None
+            provider_order_id: Optional[str] = None,
+            provider_metadata: Optional[str] = None
     ) -> ProxyPurchase:
-        """Создание записи о покупке прокси"""
+        """Создание покупки прокси"""
+        # Если proxy_list это список, преобразуем в строку
+        if isinstance(proxy_list, list):
+            proxy_list = "\n".join(proxy_list)
 
-        # Конвертируем список прокси в строку
-        proxy_list_str = "\n".join(proxy_list) if isinstance(proxy_list, list) else str(proxy_list)
-
+        # Создаем объект напрямую, а не через схему
         purchase = ProxyPurchase(
             user_id=user_id,
             proxy_product_id=proxy_product_id,
             order_id=order_id,
-            proxy_list=proxy_list_str,
+            proxy_list=proxy_list,
             username=username,
             password=password,
             expires_at=expires_at,
             provider_order_id=provider_order_id,
+            provider_metadata=provider_metadata,
             is_active=True
         )
 
@@ -45,29 +49,8 @@ class CRUDProxyPurchase(CRUDBase[ProxyPurchase, ProxyPurchaseCreate, ProxyPurcha
         await db.refresh(purchase)
         return purchase
 
-    @staticmethod
-    async def get_user_purchases(
-            db: AsyncSession,
-            *,
-            user_id: int,
-            active_only: bool = True
-    ) -> List[ProxyPurchase]:
-        """Получение покупок прокси пользователя"""
-        query = select(ProxyPurchase).where(ProxyPurchase.user_id == user_id)
-
-        if active_only:
-            query = query.where(
-                and_(
-                    ProxyPurchase.is_active.is_(True),
-                    ProxyPurchase.expires_at > datetime.now()
-                )
-            )
-
-        result = await db.execute(query.order_by(ProxyPurchase.created_at.desc()))
-        return list(result.scalars().all())
-
-    @staticmethod
     async def get_user_purchase(
+            self,
             db: AsyncSession,
             *,
             purchase_id: int,
@@ -84,29 +67,43 @@ class CRUDProxyPurchase(CRUDBase[ProxyPurchase, ProxyPurchaseCreate, ProxyPurcha
         )
         return result.scalar_one_or_none()
 
-    @staticmethod
-    async def update_expiry(
-            db: AsyncSession,
-            *,
-            purchase: ProxyPurchase,
-            new_expires_at: datetime
-    ) -> ProxyPurchase:
-        """Обновление даты истечения"""
-        purchase.expires_at = new_expires_at
-        purchase.updated_at = datetime.now()
-
-        await db.commit()
-        await db.refresh(purchase)
-        return purchase
-
-    @staticmethod
-    async def get_expiring_purchases(
+    async def get_user_purchases(
+            self,
             db: AsyncSession,
             *,
             user_id: int,
-            expiry_date: datetime
+            active_only: bool = True,
+            skip: int = 0,
+            limit: int = 100
+    ) -> List[ProxyPurchase]:
+        """Получение покупок прокси пользователя"""
+        query = select(ProxyPurchase).where(ProxyPurchase.user_id == user_id)
+
+        if active_only:
+            query = query.where(
+                and_(
+                    ProxyPurchase.is_active.is_(True),
+                    ProxyPurchase.expires_at > datetime.now()
+                )
+            )
+
+        result = await db.execute(
+            query.order_by(ProxyPurchase.created_at.desc())
+            .offset(skip)
+            .limit(limit)
+        )
+        return list(result.scalars().all())
+
+    async def get_expiring_purchases(
+            self,
+            db: AsyncSession,
+            *,
+            user_id: int,
+            days_ahead: int = 7  # ИСПРАВЛЕНО: убрали expiry_date параметр
     ) -> List[ProxyPurchase]:
         """Получение истекающих покупок"""
+        expiry_date = datetime.now() + timedelta(days=days_ahead)
+
         result = await db.execute(
             select(ProxyPurchase).where(
                 and_(
@@ -115,9 +112,22 @@ class CRUDProxyPurchase(CRUDBase[ProxyPurchase, ProxyPurchaseCreate, ProxyPurcha
                     ProxyPurchase.expires_at <= expiry_date,
                     ProxyPurchase.expires_at > datetime.now()
                 )
-            ).order_by(ProxyPurchase.expires_at)
+            ).order_by(ProxyPurchase.expires_at.asc())
         )
         return list(result.scalars().all())
+
+    async def update_expiry(
+            self,
+            db: AsyncSession,
+            *,
+            purchase: ProxyPurchase,
+            new_expires_at: datetime
+    ) -> ProxyPurchase:
+        """Обновление даты истечения"""
+        purchase.expires_at = new_expires_at
+        await db.commit()
+        await db.refresh(purchase)
+        return purchase
 
 
 proxy_purchase_crud = CRUDProxyPurchase(ProxyPurchase)

@@ -58,6 +58,22 @@ async def add_to_cart(
     - **generation_params**: Дополнительные параметры генерации (JSON)
     """
     try:
+        # ДОБАВЛЕНО: проверка существования продукта
+        from app.crud.proxy_product import proxy_product_crud
+        product = await proxy_product_crud.get(db, obj_id=item.proxy_product_id)
+        if not product:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Product not found"
+            )
+
+        # Проверяем количество
+        if item.quantity < product.min_quantity or item.quantity > product.max_quantity:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Quantity must be between {product.min_quantity} and {product.max_quantity}"
+            )
+
         # Устанавливаем идентификатор пользователя
         if current_user.is_guest:
             item.session_id = current_user.guest_session_id
@@ -65,14 +81,14 @@ async def add_to_cart(
         else:
             item.user_id = current_user.id
             item.session_id = None
-        
+
         # Добавляем в корзину
         cart_item = await cart_service.create(db, obj_in=item)
-        
+
         logger.info(f"Item added to cart: product {item.proxy_product_id}, quantity {item.quantity}")
-        
+
         return cart_item
-        
+
     except HTTPException:
         raise
     except Exception as e:

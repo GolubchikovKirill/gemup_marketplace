@@ -202,6 +202,16 @@ test-watch:
 test-debug:
 	docker compose -f docker-compose.dev.yml exec web /app/.venv/bin/pytest -v -s --pdb
 
+test-api:
+	docker compose -f docker-compose.dev.yml exec web /app/.venv/bin/pytest tests/api/ --import-mode=append -v
+
+test-api-auth:
+	docker compose -f docker-compose.dev.yml exec web /app/.venv/bin/pytest tests/api/test_auth_api.py --import-mode=append -v
+
+test-api-products:
+	docker compose -f docker-compose.dev.yml exec web /app/.venv/bin/pytest tests/api/test_products_api.py --import-mode=append -v
+
+
 # =============================================================================
 # Зависимости
 # =============================================================================
