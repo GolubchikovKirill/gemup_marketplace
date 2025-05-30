@@ -1,7 +1,7 @@
 .PHONY: dev dev-d dev-watch prod build build-dev clean clean-all logs logs-all shell db-shell redis-shell migrate test lint format typecheck help
 .PHONY: create-migration migration-history migration-current reset-db backup-db restore-db
 .PHONY: test-unit test-integration test-cov test-fast test-auth test-crud test-api install-deps update-deps
-
+.PHONY: load-test stress-test performance-test
 # =============================================================================
 # Основные команды разработки
 # =============================================================================
@@ -211,6 +211,26 @@ test-api-auth:
 test-api-products:
 	docker compose -f docker-compose.dev.yml exec web /app/.venv/bin/pytest tests/api/test_products_api.py --import-mode=append -v
 
+load-test:
+	@echo "🚀 Running load tests with Locust..."
+	docker compose -f docker-compose.dev.yml exec web locust -f tests/load/locustfile.py --host=http://web:8000 --headless -u 50 -r 5 -t 60s
+
+stress-test:
+	@echo "🔥 Running stress tests..."
+	docker compose -f docker-compose.dev.yml exec web python tests/load/stress_test.py
+
+performance-test:
+	@echo "📈 Running performance tests..."
+	docker compose -f docker-compose.dev.yml exec web python tests/load/performance_test.py
+
+load-test-ui:
+	@echo "🌐 Starting Locust Web UI..."
+	@echo "Open http://localhost:8089 in your browser"
+	docker compose -f docker-compose.dev.yml exec web locust -f tests/load/locustfile.py --host=http://web:8000
+
+install-load-deps:
+	@echo "📦 Installing load testing dependencies..."
+	docker compose -f docker-compose.dev.yml exec web pip install locust faker aiohttp
 
 # =============================================================================
 # Зависимости
