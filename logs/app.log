@@ -1,0 +1,1802 @@
+2025-06-02 08:24:27 [[32mINFO[0m] app.core.auth:55 - AuthHandler initialized with algorithm: HS256
+2025-06-02 08:26:58 [[32mINFO[0m] app.core.auth:55 - AuthHandler initialized with algorithm: HS256
+2025-06-02 08:27:22 [[32mINFO[0m] app.core.auth:55 - AuthHandler initialized with algorithm: HS256
+2025-06-02 08:27:27 [[32mINFO[0m] app.core.auth:55 - AuthHandler initialized with algorithm: HS256
+2025-06-02 08:27:32 [[32mINFO[0m] app.core.auth:55 - AuthHandler initialized with algorithm: HS256
+2025-06-02 08:27:52 [[32mINFO[0m] app.core.auth:55 - AuthHandler initialized with algorithm: HS256
+2025-06-02 08:27:59 [[32mINFO[0m] app.core.auth:55 - AuthHandler initialized with algorithm: HS256
+2025-06-02 08:28:23 [[32mINFO[0m] app.core.auth:55 - AuthHandler initialized with algorithm: HS256
+2025-06-02 08:32:45 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:07:21 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:07:28 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:08:10 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:10:17 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:13:10 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:16:11 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:17:54 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:18:54 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:19:12 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:22:32 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:22:58 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:23:33 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:26:19 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:26:25 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:27:35 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:28:19 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:34:59 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:35:21 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:39:21 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:39:53 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:43:06 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:43:13 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:43:20 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:43:51 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:44:11 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:44:25 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:50:21 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:52:36 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:53:15 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:53:42 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:54:35 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 09:59:36 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:03:41 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:04:06 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:09:31 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:09:54 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:10:17 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:15:43 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:16:31 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:16:33 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:20:35 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:25:35 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:30:10 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:33:22 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:33:27 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:33:31 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:33:38 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:33:58 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:38:19 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:42:34 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:44:51 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:50:03 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:57:47 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 10:58:01 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:02:21 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:02:40 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:11:26 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:11:42 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:11:55 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:15:05 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:18:38 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:18:58 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:19:39 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:20:24 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:21:46 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:21:51 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:21:57 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:22:02 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:22:33 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:23:41 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:23:56 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:25:45 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:26:12 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:26:20 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:26:25 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:27:16 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:33:47 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:34:06 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:34:14 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:34:27 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:34:34 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:34:48 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:50:39 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:51:31 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:54:23 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:54:30 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:54:53 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:55:06 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:55:28 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:55:50 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:55:55 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 11:56:34 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:00:04 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:00:21 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:00:33 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:00:38 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:01:12 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:04:04 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:04:10 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:04:27 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:04:32 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:05:31 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:05:45 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:06:08 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:09:17 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:09:33 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:09:45 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:09:52 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:10:24 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:15:57 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:16:28 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:24:00 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:24:19 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:24:27 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:24:40 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:24:49 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:25:02 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:25:21 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:36:12 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:36:50 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:36:57 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:37:10 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:37:20 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:37:40 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:46:24 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:46:34 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:46:42 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:46:56 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:47:21 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:47:31 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:48:40 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:50:18 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:51:29 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:56:51 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 12:57:14 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:04:19 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:04:57 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:05:17 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:06:49 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:14:07 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:14:23 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:14:50 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:18:00 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:18:00 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:23:06 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:23:07 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:23:15 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:23:20 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:24:08 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:24:08 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:31:09 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:31:10 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:34:16 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:34:17 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:34:23 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:34:23 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:34:42 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:34:42 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:38:41 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:38:41 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:39:52 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:39:52 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:40:07 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:40:07 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:53:51 [[36mDEBUG[0m] app.core.migrations:56 - Found alembic.ini at: alembic.ini
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:53:51 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:53:51 [[36mDEBUG[0m] app.services:196 - Services module initialized with all services
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.middleware:276 - Setting up middleware...
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:493 - ✅ All routers configured
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:64 - 📊 Environment: development
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:77 - ✅ Database connection established
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:94 - ✅ Redis connection established
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.migrations:348 - 🔄 Initializing Alembic migrations...
+2025-06-02 13:53:51 [[36mDEBUG[0m] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 13:53:51 [[31mERROR[0m] app.core.migrations:140 - Error checking migration status: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2025-06-02 13:53:51 [[31mERROR[0m] app.core.migrations:354 - ❌ Migration check failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:109 - ✅ Database migrations completed
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-02 13:53:51 [[32mINFO[0m] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-02 13:54:00 [[32mINFO[0m] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-02 13:54:00 [[32mINFO[0m] app.core.main:165 - 🔄 Closing database connections...
+2025-06-02 13:54:00 [[32mINFO[0m] app.core.main:167 - ✅ Database connections closed
+2025-06-02 13:54:00 [[32mINFO[0m] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-02 13:54:00 [[32mINFO[0m] app.core.redis:48 - ✅ Redis connection closed
+2025-06-02 13:54:00 [[32mINFO[0m] app.core.main:178 - ✅ Redis disconnected
+2025-06-02 13:54:00 [[32mINFO[0m] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-02 13:54:00 [[32mINFO[0m] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-02 13:57:36 [[36mDEBUG[0m] app.core.migrations:56 - Found alembic.ini at: alembic.ini
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 13:57:36 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 13:57:36 [[36mDEBUG[0m] app.services:196 - Services module initialized with all services
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.middleware:276 - Setting up middleware...
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 13:57:36 [[32mINFO[0m] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:493 - ✅ All routers configured
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:64 - 📊 Environment: development
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:77 - ✅ Database connection established
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:94 - ✅ Redis connection established
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.migrations:348 - 🔄 Initializing Alembic migrations...
+2025-06-02 13:57:37 [[36mDEBUG[0m] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 13:57:37 [[31mERROR[0m] app.core.migrations:140 - Error checking migration status: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2025-06-02 13:57:37 [[31mERROR[0m] app.core.migrations:354 - ❌ Migration check failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:109 - ✅ Database migrations completed
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-02 13:57:37 [[32mINFO[0m] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-02 14:02:41 [[32mINFO[0m] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-02 14:02:41 [[32mINFO[0m] app.core.main:165 - 🔄 Closing database connections...
+2025-06-02 14:02:41 [[32mINFO[0m] app.core.main:167 - ✅ Database connections closed
+2025-06-02 14:02:41 [[32mINFO[0m] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-02 14:02:41 [[32mINFO[0m] app.core.redis:48 - ✅ Redis connection closed
+2025-06-02 14:02:41 [[32mINFO[0m] app.core.main:178 - ✅ Redis disconnected
+2025-06-02 14:02:41 [[32mINFO[0m] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-02 14:02:41 [[32mINFO[0m] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-02 14:02:42 [[36mDEBUG[0m] app.core.migrations:56 - Found alembic.ini at: alembic.ini
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:02:42 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:02:42 [[36mDEBUG[0m] app.services:196 - Services module initialized with all services
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.migrations:348 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:02:42 [[36mDEBUG[0m] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:02:42 [[31mERROR[0m] app.core.migrations:140 - Error checking migration status: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2025-06-02 14:02:42 [[31mERROR[0m] app.core.migrations:354 - ❌ Migration check failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:109 - ✅ Database migrations completed
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-02 14:02:42 [[36mDEBUG[0m] app.core.migrations:56 - Found alembic.ini at: alembic.ini
+2025-06-02 14:02:42 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:02:42 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:02:42 [[36mDEBUG[0m] app.services:196 - Services module initialized with all services
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.migrations:348 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:02:43 [[36mDEBUG[0m] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:02:43 [[31mERROR[0m] app.core.migrations:140 - Error checking migration status: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2025-06-02 14:02:43 [[31mERROR[0m] app.core.migrations:354 - ❌ Migration check failed: greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:109 - ✅ Database migrations completed
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-02 14:02:43 [[32mINFO[0m] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-02 14:04:16 [[32mINFO[0m] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-02 14:04:16 [[32mINFO[0m] app.core.main:165 - 🔄 Closing database connections...
+2025-06-02 14:04:16 [[32mINFO[0m] app.core.main:167 - ✅ Database connections closed
+2025-06-02 14:04:16 [[32mINFO[0m] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-02 14:04:16 [[32mINFO[0m] app.core.redis:48 - ✅ Redis connection closed
+2025-06-02 14:04:16 [[32mINFO[0m] app.core.main:178 - ✅ Redis disconnected
+2025-06-02 14:04:16 [[32mINFO[0m] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-02 14:04:16 [[32mINFO[0m] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-02 14:04:17 [[36mDEBUG[0m] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:04:17 [[33mWARNING[0m] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:04:17 [[36mDEBUG[0m] app.services:196 - Services module initialized with all services
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:04:17 [[36mDEBUG[0m] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.migrations:139 - Migration status: {'current_revision': '0f4151af27cb', 'head_revision': 'a26c92dd7abe', 'is_up_to_date': False, 'total_revisions': 9, 'needs_upgrade': True}
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-02 14:04:17 [[32mINFO[0m] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-02 14:04:40 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-02 14:04:40 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:04:40 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:04:40 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-02 14:04:40 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:04:40 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:04:40 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:04:40 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:04:40 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:04:40 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:04:40 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:04:40 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:04:40 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:04:40 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:04:40 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:04:40 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:04:40 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:04:40 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:04:40 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:04:40 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:04:40 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:04:40 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:04:40 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:04:40 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:04:40 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:04:40 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:04:40 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-02 14:04:40 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-02 14:04:40 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '0f4151af27cb', 'head_revision': 'a26c92dd7abe', 'is_up_to_date': False, 'total_revisions': 9, 'needs_upgrade': True}
+2025-06-02 14:04:40 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-02 14:04:40 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-02 14:07:04 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-02 14:07:04 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:07:04 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:07:04 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-02 14:07:04 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:07:04 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:07:04 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:07:04 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:07:04 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:07:04 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:07:04 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:07:04 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:07:04 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:07:04 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:07:04 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:07:04 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:07:04 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:07:04 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:07:04 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:07:04 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:07:04 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:07:04 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:07:04 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:07:04 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:07:04 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:07:04 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:07:04 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-02 14:07:04 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-02 14:07:04 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '0f4151af27cb', 'head_revision': '0f4151af27cb', 'is_up_to_date': True, 'total_revisions': 8, 'needs_upgrade': False}
+2025-06-02 14:07:04 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-02 14:07:04 [INFO] app.core.main:109 - ✅ Database migrations completed
+2025-06-02 14:07:04 [INFO] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-02 14:07:04 [INFO] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-02 14:07:04 [INFO] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-02 14:09:54 [INFO] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-02 14:09:54 [INFO] app.core.main:165 - 🔄 Closing database connections...
+2025-06-02 14:09:54 [INFO] app.core.main:167 - ✅ Database connections closed
+2025-06-02 14:09:54 [INFO] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-02 14:09:54 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-02 14:09:54 [INFO] app.core.main:178 - ✅ Redis disconnected
+2025-06-02 14:09:54 [INFO] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-02 14:09:54 [INFO] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-02 14:10:14 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-02 14:10:14 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:10:14 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:10:14 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-02 14:10:14 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:10:14 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:10:14 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:10:14 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:10:14 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:10:14 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:10:14 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:10:14 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:10:14 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:10:14 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:10:14 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:10:14 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:10:14 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:10:14 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:10:14 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:10:14 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:10:14 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:10:14 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:10:14 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:10:14 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:10:14 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:10:14 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:10:14 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-02 14:10:14 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-02 14:10:14 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '0f4151af27cb', 'head_revision': '0f4151af27cb', 'is_up_to_date': True, 'total_revisions': 8, 'needs_upgrade': False}
+2025-06-02 14:10:14 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-02 14:10:14 [INFO] app.core.main:109 - ✅ Database migrations completed
+2025-06-02 14:10:14 [INFO] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-02 14:10:14 [INFO] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-02 14:10:14 [INFO] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-02 14:10:50 [INFO] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-02 14:10:50 [INFO] app.core.main:165 - 🔄 Closing database connections...
+2025-06-02 14:10:50 [INFO] app.core.main:167 - ✅ Database connections closed
+2025-06-02 14:10:50 [INFO] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-02 14:10:50 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-02 14:10:50 [INFO] app.core.main:178 - ✅ Redis disconnected
+2025-06-02 14:10:50 [INFO] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-02 14:10:50 [INFO] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-02 14:10:50 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-02 14:10:50 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:10:50 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:10:50 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-02 14:10:50 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:10:50 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:10:50 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:10:50 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:10:50 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:10:50 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:10:50 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:10:50 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:10:50 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:10:50 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:10:50 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:10:50 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:10:50 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:10:50 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:10:50 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:10:50 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:10:50 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:10:50 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:10:50 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:10:50 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:10:50 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:10:51 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:10:51 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-02 14:10:51 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-02 14:10:51 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '0f4151af27cb', 'head_revision': 'f15a6f97eda7', 'is_up_to_date': False, 'total_revisions': 9, 'needs_upgrade': True}
+2025-06-02 14:10:51 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-02 14:10:51 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-02 14:14:26 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-02 14:14:26 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:14:27 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:14:27 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-02 14:14:27 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:14:27 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:14:27 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:14:27 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:14:27 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:14:27 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:14:27 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:14:27 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:14:27 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:14:27 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:14:27 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:14:27 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:14:27 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:14:27 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:14:27 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:14:27 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:14:27 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:14:27 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:14:27 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:14:27 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:14:27 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:14:27 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:14:27 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-02 14:14:27 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-02 14:14:27 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '0f4151af27cb', 'head_revision': 'f15a6f97eda7', 'is_up_to_date': False, 'total_revisions': 9, 'needs_upgrade': True}
+2025-06-02 14:14:27 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-02 14:14:27 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-02 14:14:39 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-02 14:14:39 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:14:39 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:14:39 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-02 14:14:39 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:14:39 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:14:39 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:14:39 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:14:39 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:14:39 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:14:39 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:14:39 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:14:39 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:14:39 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:14:39 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:14:39 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:14:39 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:14:39 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:14:39 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:14:39 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:14:39 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:14:39 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:14:39 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:14:39 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:14:39 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:14:39 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:14:39 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-02 14:14:39 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-02 14:14:39 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '0f4151af27cb', 'head_revision': 'f15a6f97eda7', 'is_up_to_date': False, 'total_revisions': 9, 'needs_upgrade': True}
+2025-06-02 14:14:39 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-02 14:14:39 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-02 14:22:25 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-02 14:22:25 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-02 14:22:25 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-02 14:22:25 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-02 14:22:25 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-02 14:22:25 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-02 14:22:25 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-02 14:22:25 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-02 14:22:25 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-02 14:22:25 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-02 14:22:25 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-02 14:22:25 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-02 14:22:25 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-02 14:22:25 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-02 14:22:25 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-02 14:22:25 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-02 14:22:25 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-02 14:22:25 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-02 14:22:25 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-02 14:22:25 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-02 14:22:25 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-02 14:22:25 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-02 14:22:25 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-02 14:22:25 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-02 14:22:25 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-02 14:22:25 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-02 14:22:25 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-02 14:22:25 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-02 14:22:25 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-02 14:22:25 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-02 14:22:25 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 05:39:51 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 05:39:51 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 05:39:51 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 05:39:51 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 05:39:51 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 05:39:51 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 05:39:51 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 05:39:51 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 05:39:51 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 05:39:51 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 05:39:51 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 05:39:51 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 05:39:51 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 05:39:51 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 05:39:51 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 05:39:51 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 05:39:51 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 05:39:51 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 05:39:51 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 05:39:51 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 05:39:51 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 05:39:51 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 05:39:51 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 05:39:51 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 05:39:51 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 05:39:51 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 05:39:51 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 05:39:51 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 05:39:51 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 05:39:51 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 05:39:51 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 05:40:39 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 05:40:39 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 05:40:40 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 05:40:40 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 05:40:40 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 05:40:40 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 05:40:40 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 05:40:40 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 05:40:40 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 05:40:40 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 05:40:40 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 05:40:40 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 05:40:40 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 05:40:40 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 05:40:41 [INFO] app.core.middleware:62 - [f53387f8] POST /api/v1/auth/register - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:41 [WARNING] app.core.exceptions:251 - Validation error: 1 errors - POST /api/v1/auth/register - Client: testclient
+2025-06-03 05:40:41 [INFO] app.core.middleware:76 - [f53387f8] POST /api/v1/auth/register - Status: 422 - Time: 0.0031s - Size: unknown bytes
+2025-06-03 05:40:41 [INFO] app.core.middleware:62 - [ca71507c] POST /api/v1/auth/login - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:41 [DEBUG] app.services.auth_service:509 - Checking account lockout for wrong@example.com
+2025-06-03 05:40:41 [DEBUG] app.crud.user:327 - User with email wrong@example.com not found
+2025-06-03 05:40:41 [WARNING] app.services.auth_service:218 - Failed login attempt for email: wrong@example.com
+2025-06-03 05:40:41 [WARNING] app.services.auth_service:525 - Incremented failed attempts for wrong@example.com
+2025-06-03 05:40:41 [WARNING] app.core.exceptions:231 - HTTP 401: Incorrect email or password - POST /api/v1/auth/login - Client: testclient
+2025-06-03 05:40:41 [INFO] app.core.middleware:76 - [ca71507c] POST /api/v1/auth/login - Status: 401 - Time: 0.0193s - Size: unknown bytes
+2025-06-03 05:40:41 [INFO] app.core.middleware:62 - [af5dbf20] GET /api/v1/auth/me - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:41 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 05:40:41 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/auth/me - Client: testclient
+2025-06-03 05:40:41 [INFO] app.core.middleware:76 - [af5dbf20] GET /api/v1/auth/me - Status: 401 - Time: 0.0009s - Size: unknown bytes
+2025-06-03 05:40:42 [INFO] app.core.middleware:62 - [bc815510] GET /api/v1/cart/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:42 [ERROR] app.core.middleware:92 - [bc815510] GET /api/v1/cart/ - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0024s
+2025-06-03 05:40:42 [INFO] app.core.middleware:62 - [45d4fb6f] GET /api/v1/nonexistent-endpoint - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:42 [INFO] app.core.middleware:76 - [45d4fb6f] GET /api/v1/nonexistent-endpoint - Status: 404 - Time: 0.0005s - Size: unknown bytes
+2025-06-03 05:40:42 [INFO] app.core.middleware:62 - [855580b6] PUT /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:42 [WARNING] app.core.exceptions:231 - HTTP 405: Method Not Allowed - PUT /api/v1/products/ - Client: testclient
+2025-06-03 05:40:42 [INFO] app.core.middleware:76 - [855580b6] PUT /api/v1/products/ - Status: 405 - Time: 0.0006s - Size: unknown bytes
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [1f879b2a] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [1f879b2a] GET /api/v1/products/ - Status: 500 - Time: 0.0021s - Size: unknown bytes
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [e8535768] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [0d53071e] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [0b6adee5] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [ece47c38] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [20d9d7fc] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [79cdc392] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [75b40a51] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [8a757bc1] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [f2911588] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [INFO] app.core.middleware:62 - [1a31b2fe] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [e8535768] GET /api/v1/products/ - Status: 500 - Time: 0.0296s - Size: unknown bytes
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [0d53071e] GET /api/v1/products/ - Status: 500 - Time: 0.0292s - Size: unknown bytes
+2025-06-03 05:40:43 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [8a757bc1] GET /api/v1/products/ - Status: 500 - Time: 0.0223s - Size: unknown bytes
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [f2911588] GET /api/v1/products/ - Status: 500 - Time: 0.0211s - Size: unknown bytes
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [20d9d7fc] GET /api/v1/products/ - Status: 500 - Time: 0.0289s - Size: unknown bytes
+2025-06-03 05:40:43 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [1a31b2fe] GET /api/v1/products/ - Status: 500 - Time: 0.0212s - Size: unknown bytes
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [75b40a51] GET /api/v1/products/ - Status: 500 - Time: 0.0267s - Size: unknown bytes
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [0b6adee5] GET /api/v1/products/ - Status: 500 - Time: 0.0323s - Size: unknown bytes
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [ece47c38] GET /api/v1/products/ - Status: 500 - Time: 0.0322s - Size: unknown bytes
+2025-06-03 05:40:43 [INFO] app.core.middleware:76 - [79cdc392] GET /api/v1/products/ - Status: 500 - Time: 0.0317s - Size: unknown bytes
+2025-06-03 05:40:44 [INFO] app.core.middleware:62 - [12e97319] GET /api/v1/orders/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:44 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 05:40:44 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/orders/ - Client: testclient
+2025-06-03 05:40:44 [INFO] app.core.middleware:76 - [12e97319] GET /api/v1/orders/ - Status: 401 - Time: 0.0010s - Size: unknown bytes
+2025-06-03 05:40:45 [INFO] app.core.middleware:62 - [56f47772] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:45 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:45 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:45 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:45 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:45 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:45 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:45 [INFO] app.core.middleware:76 - [56f47772] GET /api/v1/products/ - Status: 500 - Time: 0.0014s - Size: unknown bytes
+2025-06-03 05:40:45 [INFO] app.core.middleware:62 - [977d3047] GET /api/v1/products/1 - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:45 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:45 [ERROR] app.core.middleware:92 - [977d3047] GET /api/v1/products/1 - ERROR: 1 validation errors:
+  {'type': 'int_type', 'loc': ('response', 'max_threads'), 'msg': 'Input should be a valid integer', 'input': None}
+ - Time: 0.0020s
+2025-06-03 05:40:45 [INFO] app.core.middleware:62 - [a339a8c5] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:45 [WARNING] app.core.exceptions:251 - Validation error: 1 errors - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:45 [INFO] app.core.middleware:76 - [a339a8c5] GET /api/v1/products/ - Status: 422 - Time: 0.0008s - Size: unknown bytes
+2025-06-03 05:40:45 [INFO] app.core.middleware:62 - [3bec8fe4] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:45 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 05:40:45 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:45 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 05:40:45 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 05:40:45 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 05:40:45 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 05:40:45 [INFO] app.core.middleware:76 - [3bec8fe4] GET /api/v1/products/ - Status: 500 - Time: 0.0013s - Size: unknown bytes
+2025-06-03 05:40:46 [INFO] app.core.middleware:62 - [087a0d3f] GET /api/v1/proxies/my - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:46 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 05:40:46 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/proxies/my - Client: testclient
+2025-06-03 05:40:46 [INFO] app.core.middleware:76 - [087a0d3f] GET /api/v1/proxies/my - Status: 401 - Time: 0.0010s - Size: unknown bytes
+2025-06-03 05:40:46 [INFO] app.core.middleware:62 - [9a352391] GET /api/v1/users/me - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:46 [ERROR] app.core.middleware:92 - [9a352391] GET /api/v1/users/me - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0017s
+2025-06-03 05:40:47 [INFO] app.core.middleware:62 - [c4c39695] GET /api/v1/users/balance - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:47 [ERROR] app.core.middleware:92 - [c4c39695] GET /api/v1/users/balance - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0017s
+2025-06-03 05:40:47 [INFO] app.core.middleware:62 - [b88683af] GET /api/v1/users/me - Client: testclient - User-Agent: testclient...
+2025-06-03 05:40:47 [ERROR] app.core.middleware:92 - [b88683af] GET /api/v1/users/me - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0017s
+2025-06-03 05:40:47 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 05:40:47 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 05:40:47 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 05:40:47 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 05:40:47 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 05:40:47 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 05:40:47 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 05:40:47 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 05:40:47 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 05:40:47 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 05:40:47 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 05:40:47 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 05:40:47 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 05:40:47 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 05:40:47 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 05:40:47 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 05:40:47 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:17:05 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:17:05 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:17:06 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:17:06 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:17:06 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:17:06 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:17:06 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:17:06 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:17:06 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:17:06 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:17:06 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:17:06 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:17:06 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:17:06 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:17:06 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:17:06 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:17:06 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:17:06 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:17:06 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:17:06 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:17:06 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:17:06 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:17:06 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:17:06 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:17:06 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:17:06 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:17:06 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:17:06 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:17:06 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:17:06 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:17:06 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:17:18 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:17:18 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:17:18 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:17:18 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:17:18 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:17:18 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:17:18 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:17:18 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:17:18 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:17:18 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:17:18 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:17:18 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:17:18 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:17:18 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:17:18 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:17:18 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:17:18 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:17:18 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:17:18 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:17:18 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:17:18 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:17:18 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:17:18 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:17:18 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:17:18 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:17:19 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:17:19 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:17:19 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:17:19 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:17:19 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:17:19 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:18:08 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:18:08 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:18:08 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:18:08 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:18:08 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:18:08 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:18:08 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:18:08 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:18:08 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:18:08 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:18:08 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:18:08 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:18:08 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:18:08 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:18:08 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:18:08 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:18:08 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:18:08 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:18:08 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:18:08 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:18:08 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:18:08 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:18:08 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:18:08 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:18:08 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:18:08 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:18:08 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:18:08 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:18:08 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:18:08 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:18:08 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:24:22 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:24:22 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:24:22 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:24:22 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:24:22 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:24:22 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:24:22 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:24:22 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:24:22 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:24:22 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:24:22 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:24:22 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:24:22 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:24:22 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:24:22 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:24:22 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:24:22 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:24:22 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:24:22 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:24:22 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:24:22 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:24:22 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:24:22 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:24:22 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:24:22 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:24:22 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:24:22 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:24:22 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:24:22 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:24:22 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:24:22 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:34:29 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:34:29 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:34:29 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:34:29 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:34:29 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:34:29 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:34:29 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:34:29 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:34:29 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:34:29 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:34:29 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:34:29 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:34:29 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:34:29 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:34:29 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:34:29 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:34:29 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:34:29 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:34:29 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:34:29 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:34:29 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:34:29 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:34:29 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:34:29 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:34:29 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:34:29 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:34:29 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:34:29 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:34:29 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:34:29 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:34:29 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:34:34 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:34:34 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:34:34 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:34:34 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:34:34 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:34:34 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:34:34 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:34:34 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:34:34 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:34:34 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:34:34 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:34:34 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:34:34 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:34:34 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:34:35 [INFO] app.core.middleware:62 - [bbdc9474] POST /api/v1/auth/register - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:35 [WARNING] app.core.exceptions:251 - Validation error: 1 errors - POST /api/v1/auth/register - Client: testclient
+2025-06-03 06:34:35 [INFO] app.core.middleware:76 - [bbdc9474] POST /api/v1/auth/register - Status: 422 - Time: 0.0027s - Size: unknown bytes
+2025-06-03 06:34:35 [INFO] app.core.middleware:62 - [06535bd1] POST /api/v1/auth/login - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:35 [DEBUG] app.services.auth_service:509 - Checking account lockout for wrong@example.com
+2025-06-03 06:34:35 [DEBUG] app.crud.user:327 - User with email wrong@example.com not found
+2025-06-03 06:34:35 [WARNING] app.services.auth_service:218 - Failed login attempt for email: wrong@example.com
+2025-06-03 06:34:35 [WARNING] app.services.auth_service:525 - Incremented failed attempts for wrong@example.com
+2025-06-03 06:34:35 [WARNING] app.core.exceptions:231 - HTTP 401: Incorrect email or password - POST /api/v1/auth/login - Client: testclient
+2025-06-03 06:34:35 [INFO] app.core.middleware:76 - [06535bd1] POST /api/v1/auth/login - Status: 401 - Time: 0.0190s - Size: unknown bytes
+2025-06-03 06:34:36 [INFO] app.core.middleware:62 - [803c4d1d] GET /api/v1/auth/me - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:36 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 06:34:36 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/auth/me - Client: testclient
+2025-06-03 06:34:36 [INFO] app.core.middleware:76 - [803c4d1d] GET /api/v1/auth/me - Status: 401 - Time: 0.0011s - Size: unknown bytes
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [c7b3dd1a] GET /api/v1/cart/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [ERROR] app.core.middleware:92 - [c7b3dd1a] GET /api/v1/cart/ - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0026s
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [375062c5] GET /api/v1/nonexistent-endpoint - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [375062c5] GET /api/v1/nonexistent-endpoint - Status: 404 - Time: 0.0007s - Size: unknown bytes
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [8a6bb142] PUT /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 405: Method Not Allowed - PUT /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [8a6bb142] PUT /api/v1/products/ - Status: 405 - Time: 0.0470s - Size: unknown bytes
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [12f4da54] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [12f4da54] GET /api/v1/products/ - Status: 500 - Time: 0.0021s - Size: unknown bytes
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [22f4d761] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [2498ad9f] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [713eb81a] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [7dfa0d56] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [712bea11] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [fe44b28d] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [ef289a3e] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [8978358e] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [5afc64c0] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [INFO] app.core.middleware:62 - [da2c52f7] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [7dfa0d56] GET /api/v1/products/ - Status: 500 - Time: 0.0123s - Size: unknown bytes
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [713eb81a] GET /api/v1/products/ - Status: 500 - Time: 0.0139s - Size: unknown bytes
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [22f4d761] GET /api/v1/products/ - Status: 500 - Time: 0.0151s - Size: unknown bytes
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [5afc64c0] GET /api/v1/products/ - Status: 500 - Time: 0.0076s - Size: unknown bytes
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [da2c52f7] GET /api/v1/products/ - Status: 500 - Time: 0.0075s - Size: unknown bytes
+2025-06-03 06:34:37 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [2498ad9f] GET /api/v1/products/ - Status: 500 - Time: 0.0150s - Size: unknown bytes
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [8978358e] GET /api/v1/products/ - Status: 500 - Time: 0.0149s - Size: unknown bytes
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [fe44b28d] GET /api/v1/products/ - Status: 500 - Time: 0.0177s - Size: unknown bytes
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [ef289a3e] GET /api/v1/products/ - Status: 500 - Time: 0.0170s - Size: unknown bytes
+2025-06-03 06:34:37 [INFO] app.core.middleware:76 - [712bea11] GET /api/v1/products/ - Status: 500 - Time: 0.0189s - Size: unknown bytes
+2025-06-03 06:34:38 [INFO] app.core.middleware:62 - [67ee66d7] GET /api/v1/orders/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:38 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 06:34:38 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/orders/ - Client: testclient
+2025-06-03 06:34:38 [INFO] app.core.middleware:76 - [67ee66d7] GET /api/v1/orders/ - Status: 401 - Time: 0.0018s - Size: unknown bytes
+2025-06-03 06:34:39 [INFO] app.core.middleware:62 - [7a8e6eaa] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:39 [INFO] app.core.middleware:76 - [7a8e6eaa] GET /api/v1/products/ - Status: 500 - Time: 0.0015s - Size: unknown bytes
+2025-06-03 06:34:40 [INFO] app.core.middleware:62 - [f5e64483] GET /api/v1/products/1 - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:40 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:40 [ERROR] app.core.middleware:92 - [f5e64483] GET /api/v1/products/1 - ERROR: 1 validation errors:
+  {'type': 'int_type', 'loc': ('response', 'max_threads'), 'msg': 'Input should be a valid integer', 'input': None}
+ - Time: 0.0032s
+2025-06-03 06:34:40 [INFO] app.core.middleware:62 - [73d4682d] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:40 [WARNING] app.core.exceptions:251 - Validation error: 1 errors - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:40 [INFO] app.core.middleware:76 - [73d4682d] GET /api/v1/products/ - Status: 422 - Time: 0.0008s - Size: unknown bytes
+2025-06-03 06:34:40 [INFO] app.core.middleware:62 - [3d3cb201] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:40 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:34:40 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:40 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:34:40 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:34:40 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:34:40 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:34:40 [INFO] app.core.middleware:76 - [3d3cb201] GET /api/v1/products/ - Status: 500 - Time: 0.0013s - Size: unknown bytes
+2025-06-03 06:34:40 [INFO] app.core.middleware:62 - [04fa8043] GET /api/v1/proxies/my - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:40 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 06:34:40 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/proxies/my - Client: testclient
+2025-06-03 06:34:40 [INFO] app.core.middleware:76 - [04fa8043] GET /api/v1/proxies/my - Status: 401 - Time: 0.0010s - Size: unknown bytes
+2025-06-03 06:34:41 [INFO] app.core.middleware:62 - [4ec6d6b8] GET /api/v1/users/me - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:41 [ERROR] app.core.middleware:92 - [4ec6d6b8] GET /api/v1/users/me - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0018s
+2025-06-03 06:34:41 [INFO] app.core.middleware:62 - [66012a70] GET /api/v1/users/balance - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:41 [ERROR] app.core.middleware:92 - [66012a70] GET /api/v1/users/balance - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0019s
+2025-06-03 06:34:41 [INFO] app.core.middleware:62 - [0a355528] GET /api/v1/users/me - Client: testclient - User-Agent: testclient...
+2025-06-03 06:34:41 [ERROR] app.core.middleware:92 - [0a355528] GET /api/v1/users/me - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0016s
+2025-06-03 06:34:42 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:34:42 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:34:42 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:34:42 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:34:42 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:34:42 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:34:42 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:34:42 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:34:42 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:34:42 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:34:42 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:34:42 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:34:42 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:34:42 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:34:42 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:34:42 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:34:42 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:36:37 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:36:37 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:36:38 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:36:38 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:36:38 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:36:38 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:36:38 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:36:38 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:36:38 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:36:38 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:36:38 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:36:38 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:36:38 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:36:38 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:36:38 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:36:38 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:36:38 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:36:38 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:36:38 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:36:38 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:36:38 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:36:38 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:36:38 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:36:38 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:36:38 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:36:38 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:36:38 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:36:38 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:36:38 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:36:38 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:36:38 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:37:07 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:37:07 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:37:07 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:37:07 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:37:07 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:37:07 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:37:07 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:37:07 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:37:07 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:37:07 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:37:07 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:37:07 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:37:07 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:37:07 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:37:07 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:37:07 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:37:07 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:37:07 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:37:07 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:37:07 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:37:07 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:37:07 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:37:07 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:37:07 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:37:07 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:37:08 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:37:08 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:37:08 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:37:08 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:37:08 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:37:08 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:37:28 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:37:28 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:37:28 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:37:28 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:37:28 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:37:28 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:37:28 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:37:28 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:37:28 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:37:28 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:37:28 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:37:28 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:37:28 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:37:28 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:37:28 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:37:28 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:37:28 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:37:28 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:37:28 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:37:28 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:37:28 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:37:28 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:37:28 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:37:28 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:37:28 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:37:28 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:37:28 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:37:28 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:37:28 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:37:28 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:37:28 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:43:13 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:43:13 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:43:13 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:43:13 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:43:13 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:43:13 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:43:13 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:43:13 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:43:13 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:43:13 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:43:13 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:43:13 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:43:13 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:43:13 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:43:13 [INFO] app.core.middleware:62 - [86b2c3c7] POST /api/v1/auth/register - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:13 [WARNING] app.core.exceptions:251 - Validation error: 1 errors - POST /api/v1/auth/register - Client: testclient
+2025-06-03 06:43:13 [INFO] app.core.middleware:76 - [86b2c3c7] POST /api/v1/auth/register - Status: 422 - Time: 0.0025s - Size: unknown bytes
+2025-06-03 06:43:14 [INFO] app.core.middleware:62 - [5a8cea37] POST /api/v1/auth/login - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:14 [DEBUG] app.services.auth_service:509 - Checking account lockout for wrong@example.com
+2025-06-03 06:43:14 [DEBUG] app.crud.user:327 - User with email wrong@example.com not found
+2025-06-03 06:43:14 [WARNING] app.services.auth_service:218 - Failed login attempt for email: wrong@example.com
+2025-06-03 06:43:14 [WARNING] app.services.auth_service:525 - Incremented failed attempts for wrong@example.com
+2025-06-03 06:43:14 [WARNING] app.core.exceptions:231 - HTTP 401: Incorrect email or password - POST /api/v1/auth/login - Client: testclient
+2025-06-03 06:43:14 [INFO] app.core.middleware:76 - [5a8cea37] POST /api/v1/auth/login - Status: 401 - Time: 0.0181s - Size: unknown bytes
+2025-06-03 06:43:14 [INFO] app.core.middleware:62 - [80867ad1] GET /api/v1/auth/me - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:14 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 06:43:14 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/auth/me - Client: testclient
+2025-06-03 06:43:14 [INFO] app.core.middleware:76 - [80867ad1] GET /api/v1/auth/me - Status: 401 - Time: 0.0009s - Size: unknown bytes
+2025-06-03 06:43:15 [INFO] app.core.middleware:62 - [5038b49e] GET /api/v1/cart/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:15 [ERROR] app.core.middleware:92 - [5038b49e] GET /api/v1/cart/ - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0027s
+2025-06-03 06:43:15 [INFO] app.core.middleware:62 - [0b9cf219] GET /api/v1/nonexistent-endpoint - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:15 [INFO] app.core.middleware:76 - [0b9cf219] GET /api/v1/nonexistent-endpoint - Status: 404 - Time: 0.0005s - Size: unknown bytes
+2025-06-03 06:43:15 [INFO] app.core.middleware:62 - [a276f1a6] PUT /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:15 [WARNING] app.core.exceptions:231 - HTTP 405: Method Not Allowed - PUT /api/v1/products/ - Client: testclient
+2025-06-03 06:43:15 [INFO] app.core.middleware:76 - [a276f1a6] PUT /api/v1/products/ - Status: 405 - Time: 0.0005s - Size: unknown bytes
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [27940f43] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [27940f43] GET /api/v1/products/ - Status: 500 - Time: 0.0021s - Size: unknown bytes
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [896a2d43] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [607f8b10] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [52403bf7] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [896a2d43] GET /api/v1/products/ - Status: 500 - Time: 0.0036s - Size: unknown bytes
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [6e9235e9] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [beb2a7fe] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [ffb0b07f] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [99f89df2] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [121bca50] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [f9c684c3] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [249a71b4] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [607f8b10] GET /api/v1/products/ - Status: 500 - Time: 0.0131s - Size: unknown bytes
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [6e9235e9] GET /api/v1/products/ - Status: 500 - Time: 0.0138s - Size: unknown bytes
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [52403bf7] GET /api/v1/products/ - Status: 500 - Time: 0.0180s - Size: unknown bytes
+2025-06-03 06:43:16 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [249a71b4] GET /api/v1/products/ - Status: 500 - Time: 0.0114s - Size: unknown bytes
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [beb2a7fe] GET /api/v1/products/ - Status: 500 - Time: 0.0143s - Size: unknown bytes
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [ffb0b07f] GET /api/v1/products/ - Status: 500 - Time: 0.0150s - Size: unknown bytes
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [99f89df2] GET /api/v1/products/ - Status: 500 - Time: 0.0122s - Size: unknown bytes
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [f9c684c3] GET /api/v1/products/ - Status: 500 - Time: 0.0120s - Size: unknown bytes
+2025-06-03 06:43:16 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [121bca50] GET /api/v1/products/ - Status: 500 - Time: 0.0164s - Size: unknown bytes
+2025-06-03 06:43:16 [INFO] app.core.middleware:62 - [45980b9c] GET /api/v1/orders/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:16 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 06:43:16 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/orders/ - Client: testclient
+2025-06-03 06:43:16 [INFO] app.core.middleware:76 - [45980b9c] GET /api/v1/orders/ - Status: 401 - Time: 0.0009s - Size: unknown bytes
+2025-06-03 06:43:18 [INFO] app.core.middleware:62 - [ebfc5b26] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:18 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:18 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:18 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:18 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:18 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:18 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:18 [INFO] app.core.middleware:76 - [ebfc5b26] GET /api/v1/products/ - Status: 500 - Time: 0.0014s - Size: unknown bytes
+2025-06-03 06:43:18 [INFO] app.core.middleware:62 - [9b957800] GET /api/v1/products/1 - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:18 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:18 [ERROR] app.core.middleware:92 - [9b957800] GET /api/v1/products/1 - ERROR: 1 validation errors:
+  {'type': 'int_type', 'loc': ('response', 'max_threads'), 'msg': 'Input should be a valid integer', 'input': None}
+ - Time: 0.0020s
+2025-06-03 06:43:18 [INFO] app.core.middleware:62 - [311dce40] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:18 [WARNING] app.core.exceptions:251 - Validation error: 1 errors - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:18 [INFO] app.core.middleware:76 - [311dce40] GET /api/v1/products/ - Status: 422 - Time: 0.0008s - Size: unknown bytes
+2025-06-03 06:43:18 [INFO] app.core.middleware:62 - [1cdf14b8] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:18 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:43:18 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:18 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:43:18 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:43:18 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:43:18 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:43:18 [INFO] app.core.middleware:76 - [1cdf14b8] GET /api/v1/products/ - Status: 500 - Time: 0.0012s - Size: unknown bytes
+2025-06-03 06:43:18 [INFO] app.core.middleware:62 - [441023b9] GET /api/v1/proxies/my - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:18 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 06:43:18 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/proxies/my - Client: testclient
+2025-06-03 06:43:18 [INFO] app.core.middleware:76 - [441023b9] GET /api/v1/proxies/my - Status: 401 - Time: 0.0009s - Size: unknown bytes
+2025-06-03 06:43:19 [INFO] app.core.middleware:62 - [a380a0b4] GET /api/v1/users/me - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:19 [ERROR] app.core.middleware:92 - [a380a0b4] GET /api/v1/users/me - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0021s
+2025-06-03 06:43:19 [INFO] app.core.middleware:62 - [83e5fd81] GET /api/v1/users/balance - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:19 [ERROR] app.core.middleware:92 - [83e5fd81] GET /api/v1/users/balance - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0017s
+2025-06-03 06:43:20 [INFO] app.core.middleware:62 - [ef1faa4d] GET /api/v1/users/me - Client: testclient - User-Agent: testclient...
+2025-06-03 06:43:20 [ERROR] app.core.middleware:92 - [ef1faa4d] GET /api/v1/users/me - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0016s
+2025-06-03 06:43:20 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:43:20 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:43:20 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:43:20 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:43:20 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:43:20 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:43:20 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:43:20 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:43:20 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:43:20 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:43:20 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:43:20 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:43:20 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:43:20 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:43:20 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '8947218bc455', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:43:20 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:43:20 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:49:57 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:49:57 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:49:57 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:49:57 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:49:57 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:49:57 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:49:57 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:49:57 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:49:57 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:49:57 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:49:57 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:49:57 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:49:57 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:49:57 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:49:57 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:49:57 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:49:57 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:49:57 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:49:57 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:49:57 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:49:57 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:49:57 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:49:57 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:49:57 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:49:57 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:49:57 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:49:57 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:49:57 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:49:57 [INFO] app.core.migrations:139 - Migration status: {'current_revision': 'db873f794314', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:49:57 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:49:57 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:50:30 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:50:30 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:50:30 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:50:30 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:50:30 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:50:30 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:50:30 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:50:30 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:50:30 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:50:30 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:50:30 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:50:30 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:50:30 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:50:30 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:50:30 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:50:30 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:50:30 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:50:30 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:50:30 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:50:30 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:50:30 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:50:30 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:50:30 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:50:30 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:50:30 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:50:30 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:50:30 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:50:30 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:50:31 [INFO] app.core.migrations:139 - Migration status: {'current_revision': 'db873f794314', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:50:31 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:50:31 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-03 06:50:36 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-03 06:50:36 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-03 06:50:36 [WARNING] app.integrations.base.711proxy:56 - Missing 711Proxy configuration: proxy_711_username, proxy_711_password
+2025-06-03 06:50:36 [DEBUG] app.services:196 - Services module initialized with all services
+2025-06-03 06:50:36 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-03 06:50:36 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-03 06:50:36 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-03 06:50:36 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-03 06:50:36 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-03 06:50:36 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-03 06:50:36 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-03 06:50:36 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-03 06:50:36 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-03 06:50:36 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-03 06:50:37 [INFO] app.core.middleware:62 - [d6b68639] POST /api/v1/auth/register - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:37 [WARNING] app.core.exceptions:251 - Validation error: 1 errors - POST /api/v1/auth/register - Client: testclient
+2025-06-03 06:50:37 [INFO] app.core.middleware:76 - [d6b68639] POST /api/v1/auth/register - Status: 422 - Time: 0.0026s - Size: unknown bytes
+2025-06-03 06:50:37 [INFO] app.core.middleware:62 - [e15b8887] POST /api/v1/auth/login - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:37 [DEBUG] app.services.auth_service:509 - Checking account lockout for wrong@example.com
+2025-06-03 06:50:37 [DEBUG] app.crud.user:327 - User with email wrong@example.com not found
+2025-06-03 06:50:37 [WARNING] app.services.auth_service:218 - Failed login attempt for email: wrong@example.com
+2025-06-03 06:50:37 [WARNING] app.services.auth_service:525 - Incremented failed attempts for wrong@example.com
+2025-06-03 06:50:37 [WARNING] app.core.exceptions:231 - HTTP 401: Incorrect email or password - POST /api/v1/auth/login - Client: testclient
+2025-06-03 06:50:37 [INFO] app.core.middleware:76 - [e15b8887] POST /api/v1/auth/login - Status: 401 - Time: 0.0182s - Size: unknown bytes
+2025-06-03 06:50:37 [INFO] app.core.middleware:62 - [fa3590b6] GET /api/v1/auth/me - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:37 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 06:50:37 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/auth/me - Client: testclient
+2025-06-03 06:50:37 [INFO] app.core.middleware:76 - [fa3590b6] GET /api/v1/auth/me - Status: 401 - Time: 0.0009s - Size: unknown bytes
+2025-06-03 06:50:38 [INFO] app.core.middleware:62 - [dcaf8af3] GET /api/v1/cart/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:38 [ERROR] app.core.middleware:92 - [dcaf8af3] GET /api/v1/cart/ - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0023s
+2025-06-03 06:50:38 [INFO] app.core.middleware:62 - [3e1c5a53] GET /api/v1/nonexistent-endpoint - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:38 [INFO] app.core.middleware:76 - [3e1c5a53] GET /api/v1/nonexistent-endpoint - Status: 404 - Time: 0.0005s - Size: unknown bytes
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [a463c8d0] PUT /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 405: Method Not Allowed - PUT /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [a463c8d0] PUT /api/v1/products/ - Status: 405 - Time: 0.0005s - Size: unknown bytes
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [b8019a90] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [b8019a90] GET /api/v1/products/ - Status: 500 - Time: 0.0016s - Size: unknown bytes
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [2b0d1fb7] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [970f5551] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [623015ef] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [e02c6748] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [bdc03098] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [d9ee61f9] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [1ec0b408] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [40ba4567] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [b3e0e018] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [INFO] app.core.middleware:62 - [bb9422b3] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [2b0d1fb7] GET /api/v1/products/ - Status: 500 - Time: 0.0140s - Size: unknown bytes
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [623015ef] GET /api/v1/products/ - Status: 500 - Time: 0.0124s - Size: unknown bytes
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [970f5551] GET /api/v1/products/ - Status: 500 - Time: 0.0145s - Size: unknown bytes
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [bdc03098] GET /api/v1/products/ - Status: 500 - Time: 0.0121s - Size: unknown bytes
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [b3e0e018] GET /api/v1/products/ - Status: 500 - Time: 0.0124s - Size: unknown bytes
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [d9ee61f9] GET /api/v1/products/ - Status: 500 - Time: 0.0153s - Size: unknown bytes
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [e02c6748] GET /api/v1/products/ - Status: 500 - Time: 0.0180s - Size: unknown bytes
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [40ba4567] GET /api/v1/products/ - Status: 500 - Time: 0.0132s - Size: unknown bytes
+2025-06-03 06:50:39 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [1ec0b408] GET /api/v1/products/ - Status: 500 - Time: 0.0174s - Size: unknown bytes
+2025-06-03 06:50:39 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:39 [INFO] app.core.middleware:76 - [bb9422b3] GET /api/v1/products/ - Status: 500 - Time: 0.0161s - Size: unknown bytes
+2025-06-03 06:50:40 [INFO] app.core.middleware:62 - [67748748] GET /api/v1/orders/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:40 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 06:50:40 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/orders/ - Client: testclient
+2025-06-03 06:50:40 [INFO] app.core.middleware:76 - [67748748] GET /api/v1/orders/ - Status: 401 - Time: 0.0010s - Size: unknown bytes
+2025-06-03 06:50:41 [INFO] app.core.middleware:62 - [04c85403] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:41 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:41 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:41 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:41 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:41 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:41 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:41 [INFO] app.core.middleware:76 - [04c85403] GET /api/v1/products/ - Status: 500 - Time: 0.0013s - Size: unknown bytes
+2025-06-03 06:50:41 [INFO] app.core.middleware:62 - [3107df8e] GET /api/v1/products/1 - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:41 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:41 [ERROR] app.core.middleware:92 - [3107df8e] GET /api/v1/products/1 - ERROR: 1 validation errors:
+  {'type': 'int_type', 'loc': ('response', 'max_threads'), 'msg': 'Input should be a valid integer', 'input': None}
+ - Time: 0.0026s
+2025-06-03 06:50:41 [INFO] app.core.middleware:62 - [566fe7e2] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:41 [WARNING] app.core.exceptions:251 - Validation error: 1 errors - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:41 [INFO] app.core.middleware:76 - [566fe7e2] GET /api/v1/products/ - Status: 422 - Time: 0.0008s - Size: unknown bytes
+2025-06-03 06:50:41 [INFO] app.core.middleware:62 - [da5a6b05] GET /api/v1/products/ - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:41 [DEBUG] app.services.product_service:78 - Product business rules validation passed
+2025-06-03 06:50:41 [ERROR] app.crud.proxy_product:86 - Error in get_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:41 [ERROR] app.crud.proxy_product:118 - Error in count_products_with_filter: 'ProductFilter' object has no attribute 'min_points_per_hour'
+2025-06-03 06:50:41 [INFO] app.services.product_service:159 - Retrieved 0 products with filters, total: 0
+2025-06-03 06:50:41 [ERROR] app.routes.products:70 - Error getting products: 1 validation error for ProductListResponse
+pages
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/greater_than_equal
+2025-06-03 06:50:41 [WARNING] app.core.exceptions:231 - HTTP 500: Failed to get products - GET /api/v1/products/ - Client: testclient
+2025-06-03 06:50:41 [INFO] app.core.middleware:76 - [da5a6b05] GET /api/v1/products/ - Status: 500 - Time: 0.0012s - Size: unknown bytes
+2025-06-03 06:50:42 [INFO] app.core.middleware:62 - [ac1b2b09] GET /api/v1/proxies/my - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:42 [WARNING] app.core.dependencies:50 - No authorization credentials provided
+2025-06-03 06:50:42 [WARNING] app.core.exceptions:231 - HTTP 401: Authorization header is required - GET /api/v1/proxies/my - Client: testclient
+2025-06-03 06:50:42 [INFO] app.core.middleware:76 - [ac1b2b09] GET /api/v1/proxies/my - Status: 401 - Time: 0.0009s - Size: unknown bytes
+2025-06-03 06:50:42 [INFO] app.core.middleware:62 - [241f50c6] GET /api/v1/users/me - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:42 [ERROR] app.core.middleware:92 - [241f50c6] GET /api/v1/users/me - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0017s
+2025-06-03 06:50:43 [INFO] app.core.middleware:62 - [d393990b] GET /api/v1/users/balance - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:43 [ERROR] app.core.middleware:92 - [d393990b] GET /api/v1/users/balance - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0017s
+2025-06-03 06:50:43 [INFO] app.core.middleware:62 - [60f69c2f] GET /api/v1/users/me - Client: testclient - User-Agent: testclient...
+2025-06-03 06:50:43 [ERROR] app.core.middleware:92 - [60f69c2f] GET /api/v1/users/me - ERROR: CRUDUser.create_guest_user() got an unexpected keyword argument 'obj_in' - Time: 0.0016s
+2025-06-03 06:50:43 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-03 06:50:43 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-03 06:50:43 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-03 06:50:43 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-03 06:50:43 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-03 06:50:43 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-03 06:50:43 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-03 06:50:43 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-03 06:50:43 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-03 06:50:43 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-03 06:50:43 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-03 06:50:43 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-03 06:50:43 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-03 06:50:43 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-03 06:50:43 [INFO] app.core.migrations:139 - Migration status: {'current_revision': 'db873f794314', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-03 06:50:43 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-03 06:50:43 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head

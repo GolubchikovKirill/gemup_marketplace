@@ -1,3 +1,10 @@
+"""
+Роуты для управления продуктами прокси.
+
+Обеспечивает API endpoints для получения каталога продуктов,
+поиска, фильтрации и получения информации о доступности.
+"""
+
 import logging
 from typing import List, Dict, Any, Optional
 
@@ -8,7 +15,7 @@ from app.core.db import get_db
 from app.models.models import ProxyCategory, ProxyType, ProviderType
 from app.schemas.proxy_product import (
     ProxyProductResponse, ProductFilter, ProductListResponse,
-    ProductsByCategoryResponse
+    ProductsByCategoryResponse  # ИСПРАВЛЕНО: теперь схема существует
 )
 from app.services.product_service import product_service
 
@@ -27,10 +34,6 @@ async def get_products(
         country: Optional[str] = Query(None, description="Код страны"),
         min_price: Optional[float] = Query(None, ge=0, description="Минимальная цена"),
         max_price: Optional[float] = Query(None, ge=0, description="Максимальная цена"),
-        min_points_per_hour: Optional[int] = Query(None, ge=0, description="Минимум поинтов в час"),
-        auto_claim_only: Optional[bool] = Query(None, description="Только с автоклеймом"),
-        min_farm_efficiency: Optional[float] = Query(None, ge=0, description="Минимальная эффективность фарминга"),
-        multi_account_only: Optional[bool] = Query(None, description="Только с поддержкой мультиаккаунтов"),
         sort: Optional[str] = Query("created_at_desc", description="Сортировка"),
         db: AsyncSession = Depends(get_db)
 ):
@@ -38,7 +41,7 @@ async def get_products(
     Получение списка продуктов с фильтрацией и пагинацией
     """
     try:
-        # Создаем фильтр с ВСЕМИ параметрами
+        # ИСПРАВЛЕНО: убрали параметры, которых нет в схеме
         product_filter = ProductFilter(
             search=search,
             proxy_category=proxy_category,
@@ -47,10 +50,6 @@ async def get_products(
             country=country,
             min_price=min_price,
             max_price=max_price,
-            min_points_per_hour=min_points_per_hour,
-            auto_claim_only=auto_claim_only,
-            min_farm_efficiency=min_farm_efficiency,  # ДОБАВЛЕНО
-            multi_account_only=multi_account_only,    # ДОБАВЛЕНО
             sort=sort
         )
 
@@ -114,7 +113,7 @@ async def check_product_availability(
     Проверка доступности продукта
     """
     try:
-        availability = await product_service.check_availability(
+        availability = await product_service.check_product_availability(  # ИСПРАВЛЕНО: правильное имя метода
             db, product_id=product_id, quantity=quantity
         )
 
@@ -128,11 +127,11 @@ async def check_product_availability(
         )
 
 
-@router.get("/categories/stats", response_model=Dict[str, Any])
+@router.get("/categories/stats", response_model=List[Dict[str, Any]])  # ИСПРАВЛЕНО: правильный response_model
 async def get_categories_stats(db: AsyncSession = Depends(get_db)):
     """Получение статистики по категориям"""
     try:
-        stats = await product_service.get_categories_stats(db)
+        stats = await product_service.get_categories_with_stats(db)  # ИСПРАВЛЕНО: правильное имя метода
         return stats
     except Exception as e:
         logger.error(f"Error getting categories stats: {e}")
@@ -151,7 +150,7 @@ async def get_products_by_category(
 ):
     """Получение продуктов по категории"""
     try:
-        products = await product_service.get_products_by_category(
+        products, total = await product_service.get_products_by_category(  # ИСПРАВЛЕНО: получаем total
             db, category=category, skip=(page - 1) * size, limit=size
         )
 
@@ -160,7 +159,7 @@ async def get_products_by_category(
             products=products,
             page=page,
             size=size,
-            total=len(products)
+            total=total  # ИСПРАВЛЕНО: используем total из сервиса
         )
     except Exception as e:
         logger.error(f"Error getting products by category {category}: {e}")
@@ -170,7 +169,7 @@ async def get_products_by_category(
         )
 
 
-@router.get("/meta/countries", response_model=List[Dict[str, str]])
+@router.get("/meta/countries", response_model=List[Dict[str, Any]])  # ИСПРАВЛЕНО: правильный response_model
 async def get_countries(db: AsyncSession = Depends(get_db)):
     """
     Получение списка доступных стран
@@ -184,4 +183,43 @@ async def get_countries(db: AsyncSession = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to get countries"
+        )
+
+
+@router.get("/featured", response_model=List[ProxyProductResponse])  # ДОБАВЛЕНО: новый endpoint
+async def get_featured_products(
+        category: Optional[ProxyCategory] = Query(None, description="Фильтр по категории"),
+        limit: int = Query(5, ge=1, le=20, description="Количество продуктов"),
+        db: AsyncSession = Depends(get_db)
+):
+    """Получение рекомендуемых продуктов"""
+    try:
+        products = await product_service.get_featured_products(db, category=category, limit=limit)
+        return products
+    except Exception as e:
+        logger.error(f"Error getting featured products: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get featured products"
+        )
+
+
+@router.get("/search", response_model=List[ProxyProductResponse])  # ДОБАВЛЕНО: новый endpoint
+async def search_products(
+        q: str = Query(..., min_length=2, description="Поисковый запрос"),
+        skip: int = Query(0, ge=0, description="Пропустить записей"),
+        limit: int = Query(20, ge=1, le=100, description="Максимум записей"),
+        db: AsyncSession = Depends(get_db)
+):
+    """Поиск продуктов по ключевому слову"""
+    try:
+        products, processed_term = await product_service.search_products(
+            db, search_term=q, skip=skip, limit=limit
+        )
+        return products
+    except Exception as e:
+        logger.error(f"Error searching products: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to search products"
         )

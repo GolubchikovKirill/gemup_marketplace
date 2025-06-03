@@ -1,10 +1,17 @@
+"""
+Роуты для управления корзиной покупок.
+
+Обеспечивает API endpoints для добавления товаров в корзину,
+обновления количества и управления содержимым корзины.
+"""
+
 import logging
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
-from app.core.dependencies import get_current_user_or_create_guest
+from app.core.dependencies import get_current_user_or_create_guest  # ИСПРАВЛЕНО: правильный импорт
 from app.schemas.base import MessageResponse
 from app.schemas.cart import CartItemResponse, CartItemCreate, CartItemUpdate, CartResponse
 from app.services.cart_service import cart_service
@@ -12,31 +19,32 @@ from app.services.cart_service import cart_service
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/cart", tags=["Cart"])
 
+
 @router.get("/", response_model=CartResponse)
 async def get_cart(
-    current_user = Depends(get_current_user_or_create_guest),
-    db: AsyncSession = Depends(get_db)
+        current_user=Depends(get_current_user_or_create_guest),
+        db: AsyncSession = Depends(get_db)
 ):
     """
     Получение текущей корзины пользователя
-    
+
     Поддерживает как зарегистрированных пользователей, так и гостей.
     Для гостей корзина привязывается к session_id.
     """
     try:
         user_id = current_user.id if not current_user.is_guest else None
         session_id = current_user.guest_session_id if current_user.is_guest else None
-        
+
         # Получаем элементы корзины
         cart_items = await cart_service.get_user_cart(db, user_id=user_id, session_id=session_id)
-        
+
         # Рассчитываем итоги
         summary = await cart_service.calculate_cart_total(db, user_id=user_id, session_id=session_id)
-        
+
         logger.info(f"Cart retrieved for user {user_id or session_id}: {len(cart_items)} items")
-        
-        return CartResponse(cart_items=cart_items, summary=summary)
-        
+
+        return CartResponse(items=cart_items, summary=summary)  # ИСПРАВЛЕНО: правильные поля
+
     except Exception as e:
         logger.error(f"Error getting cart: {e}")
         raise HTTPException(
@@ -44,49 +52,35 @@ async def get_cart(
             detail="Failed to get cart"
         )
 
+
 @router.post("/items", response_model=CartItemResponse, status_code=status.HTTP_201_CREATED)
 async def add_to_cart(
-    item: CartItemCreate,
-    current_user = Depends(get_current_user_or_create_guest),
-    db: AsyncSession = Depends(get_db)
+        item: CartItemCreate,
+        current_user=Depends(get_current_user_or_create_guest),
+        db: AsyncSession = Depends(get_db)
 ):
     """
     Добавление товара в корзину
-    
+
     - **proxy_product_id**: ID продукта для добавления
     - **quantity**: Количество (должно быть в пределах min/max для продукта)
     - **generation_params**: Дополнительные параметры генерации (JSON)
     """
     try:
-        # ДОБАВЛЕНО: проверка существования продукта
-        from app.crud.proxy_product import proxy_product_crud
-        product = await proxy_product_crud.get(db, obj_id=item.proxy_product_id)
-        if not product:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Product not found"
-            )
+        user_id = current_user.id if not current_user.is_guest else None
+        session_id = current_user.guest_session_id if current_user.is_guest else None
 
-        # Проверяем количество
-        if item.quantity < product.min_quantity or item.quantity > product.max_quantity:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Quantity must be between {product.min_quantity} and {product.max_quantity}"
-            )
-
-        # Устанавливаем идентификатор пользователя
-        if current_user.is_guest:
-            item.session_id = current_user.guest_session_id
-            item.user_id = None
-        else:
-            item.user_id = current_user.id
-            item.session_id = None
-
-        # Добавляем в корзину
-        cart_item = await cart_service.create(db, obj_in=item)
+        # ИСПРАВЛЕНО: используем правильный метод сервиса
+        cart_item = await cart_service.add_item_to_cart(
+            db,
+            product_id=item.proxy_product_id,
+            quantity=item.quantity,
+            user_id=user_id,
+            session_id=session_id,
+            generation_params=item.generation_params
+        )
 
         logger.info(f"Item added to cart: product {item.proxy_product_id}, quantity {item.quantity}")
-
         return cart_item
 
     except HTTPException:
@@ -98,16 +92,17 @@ async def add_to_cart(
             detail="Failed to add item to cart"
         )
 
+
 @router.put("/items/{item_id}", response_model=CartItemResponse)
 async def update_cart_item(
-    item_id: int,
-    item_update: CartItemUpdate,
-    current_user = Depends(get_current_user_or_create_guest),
-    db: AsyncSession = Depends(get_db)
+        item_id: int,
+        item_update: CartItemUpdate,
+        current_user=Depends(get_current_user_or_create_guest),
+        db: AsyncSession = Depends(get_db)
 ):
     """
     Обновление элемента корзины
-    
+
     - **item_id**: ID элемента корзины
     - **quantity**: Новое количество
     - **generation_params**: Обновленные параметры генерации
@@ -115,22 +110,15 @@ async def update_cart_item(
     try:
         user_id = current_user.id if not current_user.is_guest else None
         session_id = current_user.guest_session_id if current_user.is_guest else None
-        
-        # Обновляем количество
-        updated_item = await cart_service.update_cart_item(
+
+        # ИСПРАВЛЕНО: используем правильный метод сервиса
+        updated_item = await cart_service.update_cart_item_quantity(
             db, item_id, item_update.quantity, user_id, session_id
         )
-        
-        # Обновляем параметры генерации если указаны
-        if item_update.generation_params is not None:
-            updated_item.generation_params = item_update.generation_params
-            await db.commit()
-            await db.refresh(updated_item)
-        
+
         logger.info(f"Cart item {item_id} updated: quantity {item_update.quantity}")
-        
         return updated_item
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -140,33 +128,33 @@ async def update_cart_item(
             detail="Failed to update cart item"
         )
 
+
 @router.delete("/items/{item_id}", response_model=MessageResponse)
 async def delete_cart_item(
-    item_id: int,
-    current_user = Depends(get_current_user_or_create_guest),
-    db: AsyncSession = Depends(get_db)
+        item_id: int,
+        current_user=Depends(get_current_user_or_create_guest),
+        db: AsyncSession = Depends(get_db)
 ):
     """
     Удаление товара из корзины
-    
+
     - **item_id**: ID элемента корзины для удаления
     """
     try:
         user_id = current_user.id if not current_user.is_guest else None
         session_id = current_user.guest_session_id if current_user.is_guest else None
-        
+
         success = await cart_service.remove_cart_item(db, item_id, user_id, session_id)
-        
+
         if not success:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Cart item not found"
             )
-        
+
         logger.info(f"Cart item {item_id} removed")
-        
         return MessageResponse(message="Item removed from cart")
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -176,32 +164,32 @@ async def delete_cart_item(
             detail="Failed to remove cart item"
         )
 
+
 @router.delete("/", response_model=MessageResponse)
 async def clear_cart(
-    current_user = Depends(get_current_user_or_create_guest),
-    db: AsyncSession = Depends(get_db)
+        current_user=Depends(get_current_user_or_create_guest),
+        db: AsyncSession = Depends(get_db)
 ):
     """
     Очистка всей корзины
-    
+
     Удаляет все элементы из корзины текущего пользователя.
     """
     try:
         user_id = current_user.id if not current_user.is_guest else None
         session_id = current_user.guest_session_id if current_user.is_guest else None
-        
+
         success = await cart_service.clear_cart(db, user_id, session_id)
-        
+
         if not success:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Failed to clear cart"
             )
-        
+
         logger.info(f"Cart cleared for user {user_id or session_id}")
-        
         return MessageResponse(message="Cart cleared successfully")
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -211,29 +199,26 @@ async def clear_cart(
             detail="Failed to clear cart"
         )
 
+
 @router.get("/summary")
 async def get_cart_summary(
-    current_user = Depends(get_current_user_or_create_guest),
-    db: AsyncSession = Depends(get_db)
+        current_user=Depends(get_current_user_or_create_guest),
+        db: AsyncSession = Depends(get_db)
 ):
     """
     Получение краткой сводки по корзине
-    
+
     Возвращает только итоговую информацию без деталей товаров.
     """
     try:
         user_id = current_user.id if not current_user.is_guest else None
         session_id = current_user.guest_session_id if current_user.is_guest else None
-        
-        summary = await cart_service.calculate_cart_total(db, user_id=user_id, session_id=session_id)
-        
-        return {
-            "total_items": summary["total_items"],
-            "total_amount": summary["total_amount"],
-            "currency": summary["currency"],
-            "user_type": "guest" if current_user.is_guest else "registered"
-        }
-        
+
+        # ИСПРАВЛЕНО: используем новый метод сервиса
+        summary = await cart_service.get_cart_summary(db, user_id=user_id, session_id=session_id)
+
+        return summary
+
     except Exception as e:
         logger.error(f"Error getting cart summary: {e}")
         raise HTTPException(

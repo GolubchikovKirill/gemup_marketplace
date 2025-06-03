@@ -140,3 +140,47 @@ def user_with_balance(test_user, db_session: AsyncSession):
         return test_user
 
     return asyncio.get_event_loop().run_until_complete(update_balance())
+
+
+@pytest.fixture
+def test_admin_user(db_session: AsyncSession):
+    """Создание тестового админа - СИНХРОННАЯ фикстура"""
+    import asyncio
+
+    async def create_admin():
+        from app.crud.user import user_crud
+        from app.schemas.user import UserCreate
+        import uuid
+
+        unique_id = str(uuid.uuid4())[:8]
+        admin_data = UserCreate(
+            email=f"admin-{unique_id}@example.com",
+            username=f"admin-{unique_id}",
+            password="testpassword123",
+            first_name="Admin",
+            last_name="User"
+        )
+
+        admin_user = await user_crud.create_registered_user(db_session, user_in=admin_data)
+        # Если есть поле is_admin
+        if hasattr(admin_user, 'is_admin'):
+            admin_user.is_admin = True
+            await db_session.commit()
+
+        return admin_user
+
+    return asyncio.get_event_loop().run_until_complete(create_admin())
+
+
+@pytest.fixture
+def slow_external_api_mock():
+    """Мок для тестирования медленных внешних API."""
+    import time
+    from unittest.mock import patch
+
+    def slow_response():
+        time.sleep(0.1)  # Имитация медленного ответа
+        return {"status": "success", "data": "slow_response"}
+
+    with patch('app.integrations.external_api.slow_call', side_effect=slow_response):
+        yield

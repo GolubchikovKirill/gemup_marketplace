@@ -1,14 +1,20 @@
 """
-Модуль с моками для тестирования
-Все моки должны находиться здесь, а не в основном коде приложения
+Централизованный доступ к мокам для тестов
 """
 
-from .proxy_mocks import MockProxy711API, MockCryptomusAPI
-from .service_mocks import MockOrderService, MockPaymentService
+from .order_mocks import MockOrderData
+from .proxy_mocks import MockProxyData, MockProxy711API, MockCryptomusAPI
+from .payment_mocks import MockPaymentData
 
 __all__ = [
+    # Order mocks
+    "MockOrderData",
+
+    # Proxy mocks
+    "MockProxyData",
     "MockProxy711API",
     "MockCryptomusAPI",
-    "MockOrderService",
-    "MockPaymentService"
+
+    # Payment mocks
+    "MockPaymentData"
 ]

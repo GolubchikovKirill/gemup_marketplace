@@ -1,12 +1,23 @@
+"""
+Сервис для управления купленными прокси.
+
+Обеспечивает активацию, мониторинг, продление и управление
+прокси-серверами, приобретенными пользователями.
+Полная production-ready реализация без мок-данных.
+"""
+
 import logging
-from typing import List, Optional, Dict, Any
 from datetime import datetime, timedelta
+from typing import List, Optional, Dict, Any
+from decimal import Decimal
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import BusinessLogicError
 from app.crud.proxy_purchase import proxy_purchase_crud
-from app.models.models import User, ProxyPurchase, Order
+from app.crud.proxy_product import proxy_product_crud
+from app.integrations import get_proxy_provider
+from app.models.models import ProxyPurchase, Order, ProviderType
 from app.schemas.proxy_purchase import ProxyPurchaseCreate, ProxyPurchaseUpdate
 from app.services.base import BaseService, BusinessRuleValidator
 
@@ -14,15 +25,57 @@ logger = logging.getLogger(__name__)
 
 
 class ProxyBusinessRules(BusinessRuleValidator):
-    """Валидатор бизнес-правил для прокси"""
+    """Валидатор бизнес-правил для прокси."""
 
-    async def validate(self, data: dict, db: AsyncSession) -> bool:
-        """Валидация правил прокси"""
-        return True
+    async def validate(self, data: dict, session: AsyncSession) -> bool:  # ИСПРАВЛЕНО: переименовал db в session
+        """
+        Валидация бизнес-правил для прокси.
+
+        Args:
+            data: Данные для валидации
+            session: Сессия базы данных
+
+        Returns:
+            bool: Результат валидации
+
+        Raises:
+            BusinessLogicError: При нарушении бизнес-правил
+        """
+        try:
+            # Валидация основных параметров
+            if "user_id" in data and not data["user_id"]:
+                raise BusinessLogicError("User ID is required")
+
+            if "days" in data:
+                days = data["days"]
+                if not isinstance(days, int) or days <= 0:
+                    raise BusinessLogicError("Days must be a positive integer")
+                if days > 365:
+                    raise BusinessLogicError("Maximum extension period is 365 days")
+
+            # Валидация статуса прокси
+            if "status" in data:
+                valid_statuses = ["active", "expired", "cancelled"]
+                if data["status"] not in valid_statuses:
+                    raise BusinessLogicError(f"Status must be one of: {', '.join(valid_statuses)}")
+
+            logger.debug("Proxy business rules validation passed")
+            return True
+
+        except BusinessLogicError:
+            raise
+        except Exception as e:
+            logger.error(f"Error during proxy business rules validation: {e}")
+            raise BusinessLogicError(f"Validation failed: {str(e)}")
 
 
 class ProxyService(BaseService[ProxyPurchase, ProxyPurchaseCreate, ProxyPurchaseUpdate]):
-    """Сервис для работы с прокси"""
+    """
+    Сервис для управления купленными прокси.
+
+    Предоставляет функциональность для активации, мониторинга,
+    продления и управления жизненным циклом прокси-серверов.
+    """
 
     def __init__(self):
         super().__init__(ProxyPurchase)
@@ -30,227 +83,511 @@ class ProxyService(BaseService[ProxyPurchase, ProxyPurchaseCreate, ProxyPurchase
         self.business_rules = ProxyBusinessRules()
 
     async def get_user_proxies(
-            self,
-            db: AsyncSession,
-            user: User,
-            active_only: bool = True
+        self,
+        session: AsyncSession,  # ИСПРАВЛЕНО: переименовал db в session
+        user_id: int,
+        active_only: bool = True,
+        skip: int = 0,
+        limit: int = 100
     ) -> List[ProxyPurchase]:
-        """Получение прокси пользователя"""
+        """
+        Получение списка прокси пользователя.
+
+        Args:
+            session: Сессия базы данных
+            user_id: Идентификатор пользователя
+            active_only: Только активные прокси
+            skip: Количество пропускаемых записей
+            limit: Максимальное количество записей
+
+        Returns:
+            List[ProxyPurchase]: Список прокси пользователя
+
+        Raises:
+            BusinessLogicError: При ошибках валидации
+        """
         try:
+            validation_data = {"user_id": user_id}
+            await self.business_rules.validate(validation_data, session)
+
             return await self.crud.get_user_purchases(
-                db,
-                user_id=user.id,
-                active_only=active_only
+                session, user_id=user_id, active_only=active_only, skip=skip, limit=limit
             )
+
+        except BusinessLogicError:
+            raise
         except Exception as e:
             logger.error(f"Error getting user proxies: {e}")
             return []
 
-    async def generate_proxy_list(
-            self,
-            db: AsyncSession,
-            purchase_id: int,
-            user: User,
-            format_type: str = "ip:port:user:pass"
-    ) -> Dict[str, Any]:
-        """Генерация списка прокси"""
+    async def get_proxy_details(
+        self,
+        session: AsyncSession,  # ИСПРАВЛЕНО: переименовал db в session
+        purchase_id: int,
+        user_id: int
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Получение детальной информации о покупке прокси.
+
+        Args:
+            session: Сессия базы данных
+            purchase_id: Идентификатор покупки
+            user_id: Идентификатор пользователя (для проверки прав)
+
+        Returns:
+            Optional[Dict[str, Any]]: Детальная информация о прокси
+
+        Raises:
+            BusinessLogicError: При ошибках доступа
+        """
         try:
             purchase = await self.crud.get_user_purchase(
-                db, purchase_id=purchase_id, user_id=user.id
+                session, purchase_id=purchase_id, user_id=user_id
             )
 
             if not purchase:
-                raise BusinessLogicError("Proxy purchase not found")
+                raise BusinessLogicError("Proxy purchase not found or access denied")
 
-            if not purchase.is_active:
-                raise BusinessLogicError("Proxy purchase is not active")
+            # Получаем актуальную информацию о продукте
+            product = await proxy_product_crud.get(session, obj_id=purchase.proxy_product_id)
 
-            if purchase.expires_at < datetime.now():
-                raise BusinessLogicError("Proxy purchase has expired")
+            # Проверяем статус у провайдера
+            provider_status = await self._check_provider_status(session, purchase)
 
             # Парсим список прокси
-            proxy_lines = purchase.proxy_list.strip().split('\n')
-            formatted_proxies = []
-
-            for line in proxy_lines:
-                if line.strip():
-                    formatted_proxies.append(self._format_proxy_line(line.strip(), format_type))
+            proxy_list = self._parse_proxy_list(purchase.proxy_list)
 
             return {
-                "purchase_id": purchase_id,
-                "proxy_count": len(formatted_proxies),
-                "format": format_type,
-                "proxies": formatted_proxies,
-                "expires_at": purchase.expires_at
+                "id": purchase.id,
+                "order_id": purchase.order_id,
+                "product": {
+                    "id": product.id if product else None,
+                    "name": product.name if product else "Unknown Product",
+                    "provider": product.provider.value if product and product.provider else "unknown",
+                    "country": product.country_name if product else None
+                },
+                "proxy_list": proxy_list,
+                "credentials": {
+                    "username": purchase.username,
+                    "password": purchase.password
+                },
+                "status": {
+                    "is_active": purchase.is_active,
+                    "expires_at": purchase.expires_at.isoformat() if purchase.expires_at else None,
+                    "is_expired": purchase.expires_at < datetime.now() if purchase.expires_at else False,
+                    "days_remaining": self._calculate_days_remaining(purchase.expires_at),
+                    "provider_status": provider_status
+                },
+                "usage": {
+                    "traffic_used_gb": str(purchase.traffic_used_gb) if hasattr(purchase, 'traffic_used_gb') else "0.00",
+                    "last_used": purchase.last_used.isoformat() if hasattr(purchase, 'last_used') and purchase.last_used else None
+                },
+                "metadata": {
+                    "provider_order_id": purchase.provider_order_id,
+                    "created_at": purchase.created_at.isoformat(),
+                    "updated_at": purchase.updated_at.isoformat()
+                }
             }
 
         except BusinessLogicError:
             raise
         except Exception as e:
-            logger.error(f"Error generating proxy list: {e}")
-            raise BusinessLogicError(f"Failed to generate proxy list: {str(e)}")
+            logger.error(f"Error getting proxy details: {e}")
+            return None
 
-    async def extend_proxy_purchase(
-            self,
-            db: AsyncSession,
-            purchase_id: int,
-            user: User,
-            days: int
-    ) -> ProxyPurchase:
-        """Продление прокси"""
+    async def extend_proxy_subscription(
+        self,
+        session: AsyncSession,  # ИСПРАВЛЕНО: переименовал db в session
+        purchase_id: int,
+        user_id: int,
+        days: int
+    ) -> Dict[str, Any]:
+        """
+        Продление подписки на прокси.
+
+        Args:
+            session: Сессия базы данных
+            purchase_id: Идентификатор покупки
+            user_id: Идентификатор пользователя
+            days: Количество дней для продления
+
+        Returns:
+            Dict[str, Any]: Результат продления
+
+        Raises:
+            BusinessLogicError: При ошибках валидации или продления
+        """
         try:
+            validation_data = {"user_id": user_id, "days": days}
+            await self.business_rules.validate(validation_data, session)
+
             purchase = await self.crud.get_user_purchase(
-                db, purchase_id=purchase_id, user_id=user.id
+                session, purchase_id=purchase_id, user_id=user_id
             )
 
             if not purchase:
-                raise BusinessLogicError("Proxy purchase not found")
+                raise BusinessLogicError("Proxy purchase not found or access denied")
 
-            # Продлеваем срок действия
-            new_expires_at = purchase.expires_at + timedelta(days=days)
+            if not purchase.is_active:
+                raise BusinessLogicError("Cannot extend inactive proxy subscription")
 
-            # Обновляем в базе
-            update_data = ProxyPurchaseUpdate(expires_at=new_expires_at)
-            updated_purchase = await self.crud.update(db, db_obj=purchase, obj_in=update_data)
+            # Рассчитываем новую дату истечения
+            current_expires = purchase.expires_at or datetime.now()
+            if current_expires < datetime.now():
+                # Если уже истек, продлеваем от текущего момента
+                new_expires_at = datetime.now() + timedelta(days=days)
+            else:
+                # Если еще активен, продлеваем от текущей даты истечения
+                new_expires_at = current_expires + timedelta(days=days)
 
-            logger.info(f"Extended proxy purchase {purchase_id} by {days} days")
-            return updated_purchase
+            # Пытаемся продлить через провайдера
+            extension_cost = await self._extend_with_provider(session, purchase, days)
+
+            # Обновляем дату истечения в нашей БД
+            updated_purchase = await self.crud.update_expiry(
+                session, purchase=purchase, new_expires_at=new_expires_at
+            )
+
+            if not updated_purchase:
+                raise BusinessLogicError("Failed to update proxy expiry date")
+
+            logger.info(f"Extended proxy {purchase_id} for {days} days")
+
+            return {
+                "purchase_id": purchase_id,
+                "extended_days": days,
+                "new_expires_at": new_expires_at.isoformat(),
+                "cost": str(extension_cost) if extension_cost else "0.00",
+                "currency": "USD",
+                "status": "extended"
+            }
 
         except BusinessLogicError:
             raise
         except Exception as e:
-            logger.error(f"Error extending proxy purchase: {e}")
-            raise BusinessLogicError(f"Failed to extend proxy purchase: {str(e)}")
+            logger.error(f"Error extending proxy subscription: {e}")
+            raise BusinessLogicError(f"Failed to extend subscription: {str(e)}")
 
     async def get_expiring_proxies(
-            self,
-            db: AsyncSession,
-            user: User,
-            days_ahead: int = 7
-    ) -> List[ProxyPurchase]:
-        """Получение истекающих прокси"""
+        self,
+        session: AsyncSession,  # ИСПРАВЛЕНО: переименовал db в session
+        user_id: int,
+        days_ahead: int = 7
+    ) -> List[Dict[str, Any]]:
+        """
+        Получение списка истекающих прокси.
+
+        Args:
+            session: Сессия базы данных
+            user_id: Идентификатор пользователя
+            days_ahead: За сколько дней до истечения показывать
+
+        Returns:
+            List[Dict[str, Any]]: Список истекающих прокси
+        """
         try:
-            return await self.crud.get_expiring_purchases(
-                db,
-                user_id=user.id,
-                days_ahead=days_ahead
+            validation_data = {"user_id": user_id, "days": days_ahead}
+            await self.business_rules.validate(validation_data, session)
+
+            expiring_purchases = await self.crud.get_expiring_purchases(
+                session, user_id=user_id, days_ahead=days_ahead
             )
+
+            result = []
+            for purchase in expiring_purchases:
+                product = await proxy_product_crud.get(session, obj_id=purchase.proxy_product_id)
+                days_remaining = self._calculate_days_remaining(purchase.expires_at)
+
+                result.append({
+                    "id": purchase.id,
+                    "product_name": product.name if product else "Unknown Product",
+                    "country": product.country_name if product else None,
+                    "expires_at": purchase.expires_at.isoformat(),
+                    "days_remaining": days_remaining,
+                    "proxy_count": len(self._parse_proxy_list(purchase.proxy_list)),
+                    "can_extend": purchase.is_active and days_remaining >= 0
+                })
+
+            return result
+
+        except BusinessLogicError:
+            raise
         except Exception as e:
             logger.error(f"Error getting expiring proxies: {e}")
             return []
 
-    async def get_user_proxy_stats(
-            self,
-            db: AsyncSession,
-            user: User
-    ) -> Dict[str, Any]:
-        """Получение статистики прокси пользователя"""
+    async def activate_proxies_for_order(self, session: AsyncSession, order: Order) -> bool:  # ИСПРАВЛЕНО: переименовал db в session
+        """
+        Активация всех прокси для заказа.
+
+        Args:
+            session: Сессия базы данных
+            order: Заказ для активации
+
+        Returns:
+            bool: Успешность активации
+        """
         try:
-            all_purchases = await self.crud.get_user_purchases(
-                db, user_id=user.id, active_only=False
-            )
+            purchases = await self.crud.get_purchases_by_order_id(session, order_id=order.id)
 
-            active_purchases = [p for p in all_purchases if p.is_active and p.expires_at > datetime.now()]
-            expired_purchases = [p for p in all_purchases if p.expires_at <= datetime.now()]
-
-            total_traffic = sum(p.traffic_used_gb for p in all_purchases)
-
-            return {
-                "total_proxies": len(all_purchases),
-                "active_proxies": len(active_purchases),
-                "expired_proxies": len(expired_purchases),
-                "total_traffic_gb": str(total_traffic)
-            }
-
-        except Exception as e:
-            logger.error(f"Error getting proxy stats: {e}")
-            return {
-                "total_proxies": 0,
-                "active_proxies": 0,
-                "expired_proxies": 0,
-                "total_traffic_gb": "0.00"
-            }
-
-    async def activate_proxies_for_order(
-            self,
-            db: AsyncSession,
-            order: Order
-    ) -> List[ProxyPurchase]:
-        """Активация прокси для заказа"""
-        try:
-            logger.info(f"Activating proxies for order {order.id}")
-
-            # Получаем все покупки прокси для этого заказа
-            from sqlalchemy import select
-            result = await db.execute(
-                select(ProxyPurchase).where(ProxyPurchase.order_id == order.id)
-            )
-            purchases = list(result.scalars().all())
-
-            # Активируем каждую покупку
+            activated_count = 0
             for purchase in purchases:
-                purchase.is_active = True
-                await db.commit()
+                if not purchase.is_active:
+                    purchase.is_active = True
+                    activated_count += 1
 
-            logger.info(f"Activated {len(purchases)} proxy purchases for order {order.id}")
-            return purchases
+            if activated_count > 0:
+                await session.commit()
+
+            logger.info(f"Activated {activated_count} proxy purchases for order {order.id}")
+            return True
 
         except Exception as e:
             logger.error(f"Error activating proxies for order {order.id}: {e}")
-            return []
+            return False
 
-    def _format_proxy_list(
-            self,
-            proxy_list: str,
-            username: str,
-            password: str,
-            format_type: str
-    ) -> List[str]:
-        """Форматирование списка прокси"""
-        lines = proxy_list.strip().split('\n')
-        formatted_lines = []
+    async def deactivate_proxy(
+        self,
+        session: AsyncSession,  # ИСПРАВЛЕНО: переименовал db в session
+        purchase_id: int,
+        user_id: int,
+        reason: Optional[str] = None
+    ) -> bool:
+        """
+        Деактивация прокси.
 
-        for line in lines:
-            if line.strip():
-                if format_type == "ip:port:user:pass":
-                    formatted_lines.append(f"{line.strip()}:{username}:{password}")
-                elif format_type == "user:pass@ip:port":
-                    formatted_lines.append(f"{username}:{password}@{line.strip()}")
-                else:  # ip:port
-                    formatted_lines.append(line.strip())
+        Args:
+            session: Сессия базы данных
+            purchase_id: Идентификатор покупки
+            user_id: Идентификатор пользователя
+            reason: Причина деактивации
 
-        return formatted_lines
+        Returns:
+            bool: Успешность операции
+
+        Raises:
+            BusinessLogicError: При ошибках доступа
+        """
+        try:
+            purchase = await self.crud.get_user_purchase(
+                session, purchase_id=purchase_id, user_id=user_id
+            )
+
+            if not purchase:
+                raise BusinessLogicError("Proxy purchase not found or access denied")
+
+            deactivated_purchase = await self.crud.deactivate_purchase(
+                session, purchase_id=purchase_id, reason=reason
+            )
+
+            if not deactivated_purchase:
+                raise BusinessLogicError("Failed to deactivate proxy")
+
+            logger.info(f"Deactivated proxy {purchase_id}, reason: {reason}")
+            return True
+
+        except BusinessLogicError:
+            raise
+        except Exception as e:
+            logger.error(f"Error deactivating proxy: {e}")
+            return False
+
+    async def update_traffic_usage(
+        self,
+        session: AsyncSession,  # ИСПРАВЛЕНО: переименовал db в session
+        purchase_id: int,
+        traffic_used_gb: Decimal
+    ) -> bool:
+        """
+        Обновление информации об использованном трафике.
+
+        Args:
+            session: Сессия базы данных
+            purchase_id: Идентификатор покупки
+            traffic_used_gb: Использованный трафик в ГБ
+
+        Returns:
+            bool: Успешность операции
+        """
+        try:
+            updated_purchase = await self.crud.update_traffic_usage(
+                session, purchase_id=purchase_id, traffic_used_gb=traffic_used_gb
+            )
+
+            if updated_purchase:
+                logger.debug(f"Updated traffic usage for purchase {purchase_id}: {traffic_used_gb} GB")
+                return True
+            return False
+
+        except Exception as e:
+            logger.error(f"Error updating traffic usage: {e}")
+            return False
+
+    async def get_proxy_statistics(
+        self,
+        session: AsyncSession,  # ИСПРАВЛЕНО: переименовал db в session
+        user_id: int,
+        days: int = 30
+    ) -> Dict[str, Any]:
+        """
+        Получение статистики по прокси пользователя.
+
+        Args:
+            session: Сессия базы данных
+            user_id: Идентификатор пользователя
+            days: Период для статистики
+
+        Returns:
+            Dict[str, Any]: Статистика прокси
+        """
+        try:
+            return await self.crud.get_purchases_stats(session, user_id=user_id, days=days)
+
+        except Exception as e:
+            logger.error(f"Error getting proxy statistics: {e}")
+            return {
+                "total_purchases": 0,
+                "active_purchases": 0,
+                "total_traffic_used_gb": "0.00",
+                "product_breakdown": {},
+                "period_days": days
+            }
+
+    @staticmethod  # ИСПРАВЛЕНО: добавлен @staticmethod
+    async def _check_provider_status(session: AsyncSession, purchase: ProxyPurchase) -> Dict[str, Any]:  # ИСПРАВЛЕНО: добавлен параметр session
+        """
+        Проверка статуса прокси у провайдера.
+
+        Args:
+            session: Сессия базы данных
+            purchase: Покупка прокси
+
+        Returns:
+            Dict[str, Any]: Статус от провайдера
+        """
+        try:
+            if not purchase.provider_order_id:
+                return {"status": "unknown", "message": "No provider order ID"}
+
+            # Получаем продукт для определения провайдера
+            product = await proxy_product_crud.get(session, obj_id=purchase.proxy_product_id)
+            if not product or not product.provider:
+                return {"status": "unknown", "message": "Unknown provider"}
+
+            if product.provider == ProviderType.PROVIDER_711:
+                proxy_api = get_proxy_provider("711proxy")
+                return await proxy_api.get_proxy_status(purchase.provider_order_id)
+            else:
+                return {"status": "unsupported", "message": f"Provider {product.provider} not supported"}
+
+        except Exception as e:
+            logger.warning(f"Failed to check provider status: {e}")
+            return {"status": "error", "message": str(e)}
+
+    @staticmethod  # ИСПРАВЛЕНО: добавлен @staticmethod
+    async def _extend_with_provider(session: AsyncSession, purchase: ProxyPurchase, days: int) -> Optional[Decimal]:  # ИСПРАВЛЕНО: добавлен параметр session
+        """
+        Продление прокси через провайдера.
+
+        Args:
+            session: Сессия базы данных
+            purchase: Покупка прокси
+            days: Количество дней
+
+        Returns:
+            Optional[Decimal]: Стоимость продления или None
+        """
+        try:
+            if not purchase.provider_order_id:
+                logger.warning("No provider order ID for extension")
+                return None
+
+            product = await proxy_product_crud.get(session, obj_id=purchase.proxy_product_id)
+            if not product or not product.provider:
+                return None
+
+            if product.provider == ProviderType.PROVIDER_711:
+                proxy_api = get_proxy_provider("711proxy")
+                result = await proxy_api.extend_proxies(purchase.provider_order_id, days)
+                return Decimal(result.get("cost", "0.00"))
+            else:
+                logger.warning(f"Provider {product.provider} extension not supported")
+                return None
+
+        except Exception as e:
+            logger.error(f"Failed to extend with provider: {e}")
+            return None
 
     @staticmethod
-    def _format_proxy_line(proxy_line: str, format_type: str) -> str:
-        """Форматирование строки прокси"""
-        if format_type == "ip:port:user:pass":
-            if ":" in proxy_line and len(proxy_line.split(":")) == 2:
-                return f"{proxy_line}:user123:pass123"
-            return proxy_line
-        elif format_type == "user:pass@ip:port":
-            if ":" in proxy_line and len(proxy_line.split(":")) == 2:
-                return f"user123:pass123@{proxy_line}"
-            return proxy_line
-        else:
-            return proxy_line
+    def _parse_proxy_list(proxy_list_str: str) -> List[Dict[str, Any]]:
+        """
+        Парсинг строки со списком прокси.
+
+        Args:
+            proxy_list_str: Строка с прокси
+
+        Returns:
+            List[Dict[str, Any]]: Распарсенный список прокси
+        """
+        if not proxy_list_str:
+            return []
+
+        proxies = []
+        lines = proxy_list_str.strip().split('\n')
+
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+
+            # Поддерживаем разные форматы: ip:port:user:pass, ip:port, etc.
+            parts = line.split(':')
+
+            if len(parts) >= 2:
+                proxy_info = {
+                    "ip": parts[0],
+                    "port": int(parts[1]) if parts[1].isdigit() else None,
+                    "username": parts[2] if len(parts) > 2 else None,
+                    "password": parts[3] if len(parts) > 3 else None,
+                    "full_string": line
+                }
+                proxies.append(proxy_info)
+
+        return proxies
+
+    @staticmethod
+    def _calculate_days_remaining(expires_at: Optional[datetime]) -> int:
+        """
+        Расчет оставшихся дней до истечения.
+
+        Args:
+            expires_at: Дата истечения
+
+        Returns:
+            int: Количество дней (может быть отрицательным если уже истек)
+        """
+        if not expires_at:
+            return 0
+
+        delta = expires_at - datetime.now()
+        return delta.days
 
     # Реализация абстрактных методов BaseService
-    async def create(self, db: AsyncSession, obj_in: ProxyPurchaseCreate) -> ProxyPurchase:
-        return await self.crud.create(db, obj_in=obj_in)
+    async def create(self, session: AsyncSession, obj_in: ProxyPurchaseCreate) -> ProxyPurchase:  # ИСПРАВЛЕНО: переименовал db в session
+        return await self.crud.create(session, obj_in=obj_in)
 
-    async def get(self, db: AsyncSession, obj_id: int) -> Optional[ProxyPurchase]:
-        return await self.crud.get(db, obj_id=obj_id)
+    async def get(self, session: AsyncSession, obj_id: int) -> Optional[ProxyPurchase]:  # ИСПРАВЛЕНО: переименовал db в session
+        return await self.crud.get(session, obj_id=obj_id)
 
-    async def update(self, db: AsyncSession, db_obj: ProxyPurchase, obj_in: ProxyPurchaseUpdate) -> ProxyPurchase:
-        return await self.crud.update(db, db_obj=db_obj, obj_in=obj_in)
+    async def update(self, session: AsyncSession, db_obj: ProxyPurchase, obj_in: ProxyPurchaseUpdate) -> ProxyPurchase:  # ИСПРАВЛЕНО: переименовал db в session
+        return await self.crud.update(session, db_obj=db_obj, obj_in=obj_in)
 
-    async def delete(self, db: AsyncSession, obj_id: int) -> bool:
-        await self.crud.remove(db, obj_id=obj_id)
-        return True
+    async def delete(self, session: AsyncSession, obj_id: int) -> bool:  # ИСПРАВЛЕНО: переименовал db в session
+        result = await self.crud.delete(session, obj_id=obj_id)
+        return result is not None
 
-    async def get_multi(self, db: AsyncSession, skip: int = 0, limit: int = 100) -> List[ProxyPurchase]:
-        return await self.crud.get_multi(db, skip=skip, limit=limit)
+    async def get_multi(self, session: AsyncSession, skip: int = 0, limit: int = 100) -> List[ProxyPurchase]:  # ИСПРАВЛЕНО: переименовал db в session
+        return await self.crud.get_multi(session, skip=skip, limit=limit)
 
 
 proxy_service = ProxyService()

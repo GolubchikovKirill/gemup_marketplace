@@ -8,11 +8,9 @@ from unittest.mock import patch
 @pytest.mark.api
 class TestPaymentsAPI:
 
-    @pytest.mark.asyncio
     @patch('app.integrations.cryptomus.cryptomus_api.create_payment')
     async def test_create_payment_success(self, mock_create_payment, client: AsyncClient, auth_headers, test_user):
         """Тест создания платежа с моком"""
-        # Мокаем успешный ответ от Cryptomus
         mock_create_payment.return_value = {
             'state': 0,
             'result': {
@@ -21,9 +19,9 @@ class TestPaymentsAPI:
             }
         }
 
+        # ИСПРАВЛЕНО: убираем currency из данных
         payment_data = {
             "amount": 50.0,
-            "currency": "USD",
             "description": "Test payment"
         }
 
@@ -40,12 +38,10 @@ class TestPaymentsAPI:
         assert data["amount"] == "50.0"
         assert data["currency"] == "USD"
 
-    @pytest.mark.asyncio
     async def test_create_payment_invalid_amount(self, client: AsyncClient, auth_headers):
         """Тест создания платежа с неверной суммой"""
         payment_data = {
-            "amount": 0.5,
-            "currency": "USD"
+            "amount": 0.5
         }
 
         response = await client.post(
@@ -56,7 +52,6 @@ class TestPaymentsAPI:
 
         assert response.status_code in [400, 422]
 
-    @pytest.mark.asyncio
     async def test_get_payment_status(self, client: AsyncClient, auth_headers, db_session, test_user):
         """Тест получения статуса платежа"""
         # Создаем транзакцию напрямую в базе
@@ -82,7 +77,6 @@ class TestPaymentsAPI:
         assert data["transaction_id"] == transaction.transaction_id
         assert data["amount"] in ["25.0", "25.00", "25.0000000000"]
 
-    @pytest.mark.asyncio
     async def test_get_payment_status_not_found(self, client: AsyncClient, auth_headers):
         """Тест получения статуса несуществующего платежа"""
         response = await client.get(
@@ -92,7 +86,6 @@ class TestPaymentsAPI:
 
         assert response.status_code == 404
 
-    @pytest.mark.asyncio
     async def test_get_payment_history(self, client: AsyncClient, auth_headers):
         """Тест получения истории платежей"""
         response = await client.get(
@@ -104,7 +97,6 @@ class TestPaymentsAPI:
         data = response.json()
         assert isinstance(data, list)
 
-    @pytest.mark.asyncio
     @patch('app.services.payment_service.payment_service.process_webhook')
     async def test_cryptomus_webhook(self, mock_process_webhook, client: AsyncClient, db_session, test_user):
         """Тест обработки webhook от Cryptomus"""
@@ -124,7 +116,6 @@ class TestPaymentsAPI:
 
         assert response.status_code == 200
 
-    @pytest.mark.asyncio
     async def test_test_webhook(self, client: AsyncClient):
         """Тест тестового webhook"""
         webhook_data = {

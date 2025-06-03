@@ -1,11 +1,38 @@
 """
-Моки для внешних API провайдеров прокси
-Используются только в тестах
+Моки для ProxyService и внешних API - ТОЛЬКО для тестов
 """
 
-from typing import Dict, Any
-from datetime import datetime, timedelta
+from typing import Dict, Any, List
 import uuid
+from datetime import datetime, timedelta
+
+
+class MockProxyData:
+    """Мок-данные для прокси"""
+
+    @staticmethod
+    def format_proxy_line_mock(proxy_line: str, format_type: str) -> str:
+        """Мок форматирования строки прокси"""
+        if format_type == "ip:port:user:pass":
+            if ":" in proxy_line and len(proxy_line.split(":")) == 2:
+                return f"{proxy_line}:testuser:testpass"
+            return proxy_line
+        elif format_type == "user:pass@ip:port":
+            if ":" in proxy_line and len(proxy_line.split(":")) == 2:
+                return f"testuser:testpass@{proxy_line}"
+            return proxy_line
+        else:
+            return proxy_line
+
+    @staticmethod
+    def generate_mock_proxy_list(quantity: int, format_type: str = "ip:port") -> List[str]:
+        """Генерация списка мок-прокси"""
+        proxies = []
+        for i in range(quantity):
+            base_proxy = f"192.168.{i + 1}.{i + 1}:808{i}"
+            formatted_proxy = MockProxyData.format_proxy_line_mock(base_proxy, format_type)
+            proxies.append(formatted_proxy)
+        return proxies
 
 
 class MockProxy711API:
@@ -19,7 +46,6 @@ class MockProxy711API:
         self,
         product_id: int,
         quantity: int,
-        country: str = "US",
         **kwargs
     ) -> Dict[str, Any]:
         """Мок покупки прокси"""
@@ -32,41 +58,16 @@ class MockProxy711API:
             proxies.append(proxy)
 
         result = {
-            "order_id": order_id,
-            "proxies": proxies,
+            "proxy_list": "\n".join(proxies),
             "username": f"user_{order_id}",
             "password": f"pass_{order_id}",
+            "provider_order_id": order_id,
             "expires_at": (datetime.now() + timedelta(days=30)).isoformat(),
             "status": "active"
         }
 
         self.orders[order_id] = result
         return result
-
-    async def extend_proxies(
-        self,
-        order_id: str,
-        days: int,
-        **kwargs
-    ) -> Dict[str, Any]:
-        """Мок продления прокси"""
-        if order_id not in self.orders:
-            return {
-                "success": False,
-                "error": "Order not found"
-            }
-
-        # Продлеваем срок действия
-        current_expiry = datetime.fromisoformat(self.orders[order_id]["expires_at"])
-        new_expiry = current_expiry + timedelta(days=days)
-
-        self.orders[order_id]["expires_at"] = new_expiry.isoformat()
-
-        return {
-            "success": True,
-            "extended_until": new_expiry.isoformat(),
-            "message": f"Proxies extended by {days} days"
-        }
 
 
 class MockCryptomusAPI:
@@ -107,12 +108,3 @@ class MockCryptomusAPI:
 
         self.payments[payment_uuid] = payment_data["result"]
         return payment_data
-
-    def _verify_webhook_signature(self, data: Dict[str, Any], signature: str) -> bool:
-        """Мок проверки подписи webhook"""
-        # В тестах всегда возвращаем True
-        return True
-
-    def _generate_webhook_sign(self, data: Dict[str, Any]) -> str:
-        """Мок генерации подписи webhook"""
-        return "mock-signature"
