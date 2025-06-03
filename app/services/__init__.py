@@ -2,41 +2,10 @@
 Модуль сервисов приложения.
 
 Содержит бизнес-логику приложения, реализованную в соответствии с принципами
-Clean Architecture и Domain-Driven Design. Каждый сервис отвечает за конкретную
-область бизнес-логики и предоставляет высокоуровневый API для работы с данными.
-
-Сервисы:
-- auth_service: Аутентификация и авторизация пользователей
-- cart_service: Управление корзиной покупок
-- order_service: Обработка заказов и их жизненный цикл
-- payment_service: Интеграция с платежными системами
-- product_service: Управление каталогом продуктов прокси
-- proxy_service: Работа с купленными прокси-серверами
-
-Базовые классы:
-- BaseService: Абстрактный базовый класс для всех сервисов
-- BusinessRuleValidator: Валидатор бизнес-правил
-- EventPublisher: Публикатор событий
-- CacheService: Абстракция для кэширования
-
-Архитектурные принципы:
-- Инверсия зависимостей (Dependency Inversion)
-- Единственная ответственность (Single Responsibility)
-- Открыт/закрыт (Open/Closed)
-- Разделение интерфейса (Interface Segregation)
-
-Использование:
-    from app.services import auth_service, cart_service, order_service
-
-    # Аутентификация пользователя
-    user = await auth_service.authenticate_user(email, password, db)
-
-    # Добавление товара в корзину
-    cart_item = await cart_service.add_item_to_cart(db, product_id, quantity, user_id=user.id)
-
-    # Создание заказа
-    order = await order_service.create_order_from_cart(db, user)
+Clean Architecture. Каждый сервис отвечает за конкретную область бизнес-логики.
 """
+
+import logging
 from typing import Dict
 
 from .auth_service import auth_service, AuthService
@@ -51,7 +20,9 @@ from .base import (
     BaseService,
     BusinessRuleValidator,
     EventPublisher,
-    CacheService
+    CacheService,
+    NotificationService,
+    FileStorageService
 )
 
 __all__ = [
@@ -63,7 +34,7 @@ __all__ = [
     "product_service",
     "proxy_service",
 
-    # Классы сервисов (для наследования или создания новых экземпляров)
+    # Классы сервисов
     "AuthService",
     "CartService",
     "OrderService",
@@ -76,10 +47,12 @@ __all__ = [
     "BusinessRuleValidator",
     "EventPublisher",
     "CacheService",
+    "NotificationService",
+    "FileStorageService",
 ]
 
-# Версия модуля сервисов
-__version__ = "1.0.0"
+# Версия модуля сервисов для MVP
+__version__ = "1.0.0-mvp"
 
 # Реестр всех сервисов для быстрого доступа
 SERVICES_REGISTRY = {
@@ -91,23 +64,21 @@ SERVICES_REGISTRY = {
     "proxy": proxy_service,
 }
 
+logger = logging.getLogger(__name__)
+
 
 def get_service(service_name: str):
     """
     Получение сервиса по имени.
 
     Args:
-        service_name: Имя сервиса (auth, cart, order, payment, product, proxy)
+        service_name: Имя сервиса
 
     Returns:
         Экземпляр запрошенного сервиса
 
     Raises:
         KeyError: Если сервис не найден
-
-    Example:
-        auth_service = get_service("auth")
-        user = await auth_service.authenticate_user(email, password, db)
     """
     if service_name not in SERVICES_REGISTRY:
         available_services = ", ".join(SERVICES_REGISTRY.keys())
@@ -140,17 +111,8 @@ async def health_check_all_services() -> Dict[str, bool]:
     return results
 
 
-# Вспомогательные функции для группового управления сервисами
 async def initialize_all_services():
-    """
-    Инициализация всех сервисов (если требуется).
-
-    Некоторые сервисы могут требовать дополнительной инициализации
-    при старте приложения.
-    """
-    import logging
-    logger = logging.getLogger(__name__)
-
+    """Инициализация всех сервисов при старте приложения."""
     logger.info("Initializing all services...")
 
     for name, service in SERVICES_REGISTRY.items():
@@ -165,15 +127,7 @@ async def initialize_all_services():
 
 
 async def cleanup_all_services():
-    """
-    Очистка ресурсов всех сервисов при завершении приложения.
-
-    Вызывается при shutdown приложения для корректного
-    освобождения ресурсов.
-    """
-    import logging
-    logger = logging.getLogger(__name__)
-
+    """Очистка ресурсов всех сервисов при завершении приложения."""
     logger.info("Cleaning up all services...")
 
     for name, service in SERVICES_REGISTRY.items():
@@ -187,10 +141,5 @@ async def cleanup_all_services():
     logger.info("All services cleanup completed")
 
 
-# Импорт для обратной совместимости
-import logging
-
-logger = logging.getLogger(__name__)
-
 # Логирование инициализации модуля
-logger.debug("Services module initialized with all services")
+logger.debug("Services module initialized with all MVP services")

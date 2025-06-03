@@ -38,22 +38,22 @@ class CryptomusAPI(BaseIntegration):
     @property
     def base_url(self) -> str:
         """Базовый URL Cryptomus API."""
-        return settings.cryptomus_base_url or "https://api.cryptomus.com/v1"
+        return getattr(settings, 'cryptomus_base_url', "https://api.cryptomus.com/v1")
 
     @property
     def api_key(self) -> str:
         """API ключ Cryptomus."""
-        return settings.cryptomus_api_key or ""
+        return getattr(settings, 'cryptomus_api_key', "")
 
     @property
     def merchant_id(self) -> str:
         """ID мерчанта Cryptomus."""
-        return settings.cryptomus_merchant_id or ""
+        return getattr(settings, 'cryptomus_merchant_id', "")
 
     @property
     def webhook_secret(self) -> str:
         """Секрет для webhook подписей."""
-        return settings.cryptomus_webhook_secret or ""
+        return getattr(settings, 'cryptomus_webhook_secret', "")
 
     def _validate_configuration(self):
         """Валидация конфигурации Cryptomus."""
@@ -106,7 +106,7 @@ class CryptomusAPI(BaseIntegration):
 
     def verify_webhook_signature(self, data: Dict[str, Any], received_sign: str) -> bool:
         """
-        Проверка подписи webhook от Cryptomus.
+        Проверка подписи webhook от Cryptomus - КЛЮЧЕВОЕ для MVP.
 
         Args:
             data: Данные webhook
@@ -189,7 +189,7 @@ class CryptomusAPI(BaseIntegration):
         **kwargs
     ) -> Dict[str, Any]:
         """
-        Создание платежа в Cryptomus.
+        Создание платежа в Cryptomus - КЛЮЧЕВОЕ для MVP.
 
         Args:
             amount: Сумма платежа
@@ -215,7 +215,7 @@ class CryptomusAPI(BaseIntegration):
                 raise IntegrationError("Cryptomus API credentials not configured", provider="cryptomus")
 
             # Валидация валюты
-            supported_currencies = ["USD", "EUR", "RUB", "BTC", "ETH", "USDT"]
+            supported_currencies = ["USD", "EUR", "RUB", "BTC", "ETH", "USDT", "LTC", "TRX"]
             if currency not in supported_currencies:
                 raise IntegrationError(f"Unsupported currency: {currency}", provider="cryptomus")
 
@@ -227,6 +227,10 @@ class CryptomusAPI(BaseIntegration):
             if len(order_id) > 50:
                 raise IntegrationError("Order ID too long (max 50 characters)", provider="cryptomus")
 
+            # Получаем базовые URL из настроек
+            base_url = getattr(settings, 'base_url', 'http://localhost:8000')
+            frontend_url = getattr(settings, 'frontend_url', 'http://localhost:3000')
+
             # Подготавливаем данные для запроса
             payment_data = {
                 "amount": str(amount),
@@ -234,9 +238,9 @@ class CryptomusAPI(BaseIntegration):
                 "order_id": order_id,
                 "merchant": self.merchant_id,
                 "network": kwargs.get("network", "tron"),
-                "url_callback": callback_url or f"{settings.base_url}/api/v1/payments/webhook/cryptomus",
-                "url_success": success_url or f"{settings.frontend_url}/payment/success",
-                "url_return": fail_url or f"{settings.frontend_url}/payment/failed",
+                "url_callback": callback_url or f"{base_url}/api/v1/payments/webhook/cryptomus",
+                "url_success": success_url or f"{frontend_url}/payment/success",
+                "url_return": fail_url or f"{frontend_url}/payment/failed",
                 "is_payment_multiple": kwargs.get("is_payment_multiple", False),
                 "lifetime": min(kwargs.get("lifetime", 3600), 7200),  # Максимум 2 часа
                 "to_currency": kwargs.get("to_currency", "USDT")
@@ -358,86 +362,6 @@ class CryptomusAPI(BaseIntegration):
             self.logger.error(f"Error getting Cryptomus payment info: {e}")
             raise IntegrationError(f"Failed to get payment info: {str(e)}", provider="cryptomus")
 
-    async def get_payment_history(
-        self,
-        date_from: Optional[str] = None,
-        date_to: Optional[str] = None,
-        limit: int = 100,
-        cursor: Optional[str] = None
-    ) -> Dict[str, Any]:
-        """
-        Получение истории платежей.
-
-        Args:
-            date_from: Дата начала периода (YYYY-MM-DD)
-            date_to: Дата окончания периода (YYYY-MM-DD)
-            limit: Максимальное количество записей (1-100)
-            cursor: Курсор для пагинации
-
-        Returns:
-            Dict[str, Any]: История платежей
-
-        Raises:
-            IntegrationError: При ошибках получения истории
-        """
-        try:
-            # Валидация параметров
-            if limit <= 0 or limit > 100:
-                limit = 100
-
-            # Валидация дат
-            if date_from and not self._validate_date_format(date_from):
-                raise IntegrationError("Invalid date_from format, expected YYYY-MM-DD", provider="cryptomus")
-
-            if date_to and not self._validate_date_format(date_to):
-                raise IntegrationError("Invalid date_to format, expected YYYY-MM-DD", provider="cryptomus")
-
-            data = {
-                "merchant": self.merchant_id,
-                "limit": limit
-            }
-
-            if date_from:
-                data["date_from"] = date_from
-            if date_to:
-                data["date_to"] = date_to
-            if cursor:
-                data["cursor"] = cursor[:255]  # Ограничиваем длину курсора
-
-            sign = self._generate_sign(data)
-
-            headers = {
-                "merchant": self.merchant_id,
-                "sign": sign
-            }
-
-            result = await self.make_request("POST", "/payment/list", data=data, headers=headers)
-
-            # Проверяем успешность ответа
-            if result.get("state") != 0:
-                error_msg = result.get("message", "Failed to get payment history")
-                error_code = result.get("error_code", "UNKNOWN")
-                raise IntegrationError(
-                    f"Cryptomus history error: {error_msg}",
-                    provider="cryptomus",
-                    error_code=error_code
-                )
-
-            history_data = result.get("result", {})
-
-            self.log_operation("get_payment_history", {
-                "limit": limit,
-                "items_count": len(history_data.get("items", []))
-            })
-
-            return history_data
-
-        except IntegrationError:
-            raise
-        except Exception as e:
-            self.logger.error(f"Error getting Cryptomus payment history: {e}")
-            raise IntegrationError(f"Failed to get payment history: {str(e)}", provider="cryptomus")
-
     async def get_merchant_balance(self) -> Dict[str, Any]:
         """
         Получение баланса мерчанта.
@@ -542,79 +466,21 @@ class CryptomusAPI(BaseIntegration):
 
         return status_mapping.get(cryptomus_status.lower(), "pending")
 
-    @staticmethod
-    def _validate_date_format(date_string: str) -> bool:
-        """
-        Валидация формата даты YYYY-MM-DD.
+    # Реализация абстрактных методов для совместимости
+    async def purchase_proxies(
+        self,
+        product_id: int,
+        quantity: int,
+        duration_days: int = 30,
+        country: Optional[str] = None,
+        **kwargs
+    ) -> Dict[str, Any]:
+        """Cryptomus не поддерживает покупку прокси."""
+        raise IntegrationError("Cryptomus does not support proxy purchases", provider="cryptomus")
 
-        Args:
-            date_string: Строка с датой
-
-        Returns:
-            bool: True если формат корректный
-        """
-        try:
-            from datetime import datetime
-            datetime.strptime(date_string, "%Y-%m-%d")
-            return True
-        except (ValueError, TypeError):
-            return False
-
-    async def cancel_payment(self, payment_uuid: str) -> Dict[str, Any]:
-        """
-        Отмена платежа (если поддерживается).
-
-        Args:
-            payment_uuid: UUID платежа
-
-        Returns:
-            Dict[str, Any]: Результат отмены
-
-        Raises:
-            IntegrationError: При ошибках отмены
-        """
-        try:
-            if not payment_uuid or not payment_uuid.strip():
-                raise IntegrationError("Payment UUID is required", provider="cryptomus")
-
-            data = {
-                "uuid": payment_uuid.strip(),
-                "merchant": self.merchant_id
-            }
-
-            sign = self._generate_sign(data)
-
-            headers = {
-                "merchant": self.merchant_id,
-                "sign": sign
-            }
-
-            result = await self.make_request("POST", "/payment/cancel", data=data, headers=headers)
-
-            # Проверяем успешность ответа
-            if result.get("state") != 0:
-                error_msg = result.get("message", "Failed to cancel payment")
-                error_code = result.get("error_code", "UNKNOWN")
-                raise IntegrationError(
-                    f"Cryptomus cancel error: {error_msg}",
-                    provider="cryptomus",
-                    error_code=error_code
-                )
-
-            cancel_info = result.get("result", {})
-
-            self.log_operation("cancel_payment", {
-                "payment_uuid": payment_uuid,
-                "status": "cancelled"
-            })
-
-            return cancel_info
-
-        except IntegrationError:
-            raise
-        except Exception as e:
-            self.logger.error(f"Error cancelling Cryptomus payment: {e}")
-            raise IntegrationError(f"Failed to cancel payment: {str(e)}", provider="cryptomus")
+    async def get_proxy_status(self, order_id: str) -> Dict[str, Any]:
+        """Cryptomus не поддерживает статус прокси."""
+        raise IntegrationError("Cryptomus does not support proxy status", provider="cryptomus")
 
 
 cryptomus_api = CryptomusAPI()

@@ -5,60 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/core/background_tasks.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/core/circuit_breaker.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/core/rate_limiter.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/core/security.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/crud/api_key.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/crud/permission.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/integrations/base.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/schemas/api_key.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/schemas/payment.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/schemas/permission.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/auth_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/api/test_admin_api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/api/test_error_handling.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/test_full_order_flow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/test_performance.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/test_security.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/mocks/order_mocks.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/mocks/payment_mocks.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_auth_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_crud_transaction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_schemas_validation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/crud/balance_topup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/0f4151af27cb_add_proxy_categories_and_farming_fields.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/0faaafbe3d08_fix_default_values_and_nullable_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/60d83fb5fc6e_rename_metadata_to_provider_metadata_in_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/74a33b705652_fix_user_model_boolean_fields_with_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/7b6395202d50_add_server_default_for_boolean_fields.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/99f794ca3777_fix_default_values_and_nullable_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/final_boolean_fix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/fix_boolean_server_defaults.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/auth_bearer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/auth_bearer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/exceptions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/init.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/logging_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/logging_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/middleware.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/migrations.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/migrations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/api_key.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/api_key.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/base.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/permission.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/permission.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/proxy_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/proxy_product.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/proxy_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/proxy_purchase.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/shopping_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/shopping_cart.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/transaction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/integrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/integrations/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/base.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/integrations/cryptomus.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/cryptomus.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/integrations/proxy_711.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/proxy_711.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/auth.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/cart.py" afterDir="false" />
@@ -68,40 +30,25 @@
       <change beforePath="$PROJECT_DIR$/app/routes/proxies.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/proxies.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/users.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/api_key.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/api_key.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/base.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/cart.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/product.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/payment.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/payment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/permission.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/permission.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/proxy_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/proxy_product.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/proxy_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/proxy_purchase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/shopping_cart.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/transaction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/schemas/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/auth_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/auth_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/base.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/cart_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/cart_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/order_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/order_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/payment_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/payment_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/product_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/product_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/proxy_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/proxy_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytest.ini" beforeDir="false" afterPath="$PROJECT_DIR$/pytest.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/api/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/api/test_payments_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/api/test_payments_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/integration/test_orders_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test_orders_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/integration/test_payments_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/integration/test_payments_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mocks/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mocks/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mocks/proxy_mocks.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mocks/proxy_mocks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_cart_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_cart_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_crud_user.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_crud_user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_cryptomus_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_cryptomus_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_order_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_order_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_payment_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_payment_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_product_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_product_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_proxy_711_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_proxy_711_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_proxy_purchase_crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_proxy_purchase_crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_proxy_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_proxy_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/app.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/app.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -281,7 +228,7 @@
       <workItem from="1748845689088" duration="3576000" />
       <workItem from="1748849677987" duration="24554000" />
       <workItem from="1748929145901" duration="2670000" />
-      <workItem from="1748932127782" duration="1957000" />
+      <workItem from="1748932127782" duration="19867000" />
     </task>
     <servers />
   </component>

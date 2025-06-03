@@ -1,27 +1,26 @@
 """
 CRUD операции для пользователей.
 
-Содержит методы для создания, аутентификации и управления пользователями,
-включая зарегистрированных пользователей и гостевые сессии.
+Содержит методы для управления пользователями, аутентификации,
+баланса и статистики. Оптимизировано для MVP функций.
 """
 
 import logging
-import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
-from typing import Optional, List, Dict, Any
+from typing import List, Optional, Dict, Any
 
 from passlib.context import CryptContext
-from sqlalchemy import select, and_, func, or_, desc
+from sqlalchemy import select, and_, func, desc, update, or_
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from app.crud.base import CRUDBase
-from app.models.models import User, UserRole  # ИСПРАВЛЕНО: импорт UserRole enum
+from app.models.models import User, UserRole, Order, Transaction, ProxyPurchase
 from app.schemas.user import UserCreate, UserUpdate
 
 logger = logging.getLogger(__name__)
 
+# Настройка хеширования паролей
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -29,183 +28,21 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     """
     CRUD для управления пользователями.
 
-    Обеспечивает создание, аутентификацию и управление как зарегистрированными
-    пользователями, так и гостевыми сессиями. Включает работу с балансом,
-    ролями и разрешениями.
+    Обеспечивает регистрацию, аутентификацию, управление балансом
+    и статистикой пользователей. Поддерживает гостевых пользователей.
     """
 
     @staticmethod
     def get_password_hash(password: str) -> str:
-        """
-        Хеширование пароля с использованием bcrypt.
-
-        Args:
-            password: Пароль в открытом виде
-
-        Returns:
-            str: Хешированный пароль
-
-        Raises:
-            ValueError: При некорректном пароле
-        """
-        if not password or len(password.strip()) == 0:
-            raise ValueError("Password cannot be empty")
-
-        if len(password) > 128:
-            raise ValueError("Password is too long (max 128 characters)")
-
-        try:
-            return pwd_context.hash(password)
-        except Exception as e:
-            logger.error(f"Error hashing password: {e}")
-            raise ValueError("Failed to hash password")
+        """Хеширование пароля."""
+        return pwd_context.hash(password)
 
     @staticmethod
     def verify_password(plain_password: str, hashed_password: str) -> bool:
-        """
-        Проверка пароля против хеша.
+        """Проверка пароля."""
+        return pwd_context.verify(plain_password, hashed_password)
 
-        Args:
-            plain_password: Пароль в открытом виде
-            hashed_password: Хешированный пароль
-
-        Returns:
-            bool: True если пароль корректный
-        """
-        if not plain_password or not hashed_password:
-            return False
-
-        try:
-            return pwd_context.verify(plain_password, hashed_password)
-        except Exception as e:
-            logger.error(f"Error verifying password: {e}")
-            return False
-
-    async def create_registered_user(
-            self,
-            db: AsyncSession,
-            *,
-            user_in: UserCreate
-    ) -> Optional[User]:
-        """
-        Создание зарегистрированного пользователя.
-
-        Args:
-            db: Сессия базы данных
-            user_in: Данные для создания пользователя
-
-        Returns:
-            Optional[User]: Созданный пользователь или None
-
-        Raises:
-            ValueError: При некорректных данных
-        """
-        try:
-            # Проверяем уникальность email
-            existing_email = await self.get_by_email(db, email=str(user_in.email))
-            if existing_email:
-                logger.warning(f"Email {user_in.email} already exists")
-                raise ValueError("Email already registered")
-
-            # Проверяем уникальность username если указан
-            if user_in.username:
-                existing_username = await self.get_by_username(db, username=user_in.username)
-                if existing_username:
-                    logger.warning(f"Username {user_in.username} already exists")
-                    raise ValueError("Username already taken")
-
-            # Хешируем пароль
-            hashed_password = self.get_password_hash(user_in.password)
-
-            # Создаем пользователя
-            db_user = User(
-                email=str(user_in.email),
-                username=user_in.username,
-                hashed_password=hashed_password,
-                first_name=user_in.first_name,
-                last_name=user_in.last_name,
-                role=UserRole.USER,  # ИСПРАВЛЕНО: используем enum
-                is_guest=False,
-                is_active=True,
-                is_verified=False
-            )
-
-            db.add(db_user)
-            await db.commit()
-            await db.refresh(db_user)
-
-            logger.info(f"Created registered user {db_user.id} with email {db_user.email}")
-            return db_user
-
-        except ValueError:
-            await db.rollback()
-            raise
-        except Exception as e:
-            await db.rollback()
-            logger.error(f"Error creating registered user: {e}")
-            return None
-
-    async def create_guest_user(
-            self,
-            db: AsyncSession,
-            *,
-            session_id: Optional[str] = None,
-            expires_in_hours: int = 24
-    ) -> Optional[User]:
-        """
-        Создание гостевого пользователя.
-
-        Args:
-            db: Сессия базы данных
-            session_id: ID сессии (если не указан, будет сгенерирован)
-            expires_in_hours: Время жизни гостевой сессии в часах
-
-        Returns:
-            Optional[User]: Созданный гостевой пользователь или None
-        """
-        try:
-            if not session_id:
-                session_id = str(uuid.uuid4())
-
-            # Проверяем уникальность session_id
-            existing_guest = await self.get_guest_by_session_id(db, session_id=session_id)
-            if existing_guest:
-                # Если сессия уже существует и не истекла, возвращаем её
-                if existing_guest.guest_expires_at > datetime.now():
-                    return existing_guest
-                else:
-                    # Удаляем истекшую сессию
-                    await self.delete(db, obj_id=existing_guest.id)
-
-            # Валидация времени жизни
-            if expires_in_hours <= 0 or expires_in_hours > 168:  # Максимум неделя
-                expires_in_hours = 24
-
-            expires_at = datetime.now() + timedelta(hours=expires_in_hours)
-
-            # Создаем гостевого пользователя
-            db_user = User(
-                is_guest=True,
-                is_active=True,
-                guest_session_id=session_id,
-                guest_expires_at=expires_at,
-                role=UserRole.USER  # ИСПРАВЛЕНО: используем enum
-            )
-
-            db.add(db_user)
-            await db.commit()
-            await db.refresh(db_user)
-
-            logger.info(f"Created guest user {db_user.id} with session {session_id}")
-            return db_user
-
-        except Exception as e:
-            await db.rollback()
-            logger.error(f"Error creating guest user: {e}")
-            return None
-
-    @staticmethod
-    async def get_by_email(db: AsyncSession, *, email: str) -> Optional[User]:
+    async def get_by_email(self, db: AsyncSession, *, email: str) -> Optional[User]:
         """
         Получение пользователя по email.
 
@@ -217,141 +54,171 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             Optional[User]: Пользователь или None
         """
         try:
-            if not email or "@" not in email:
-                return None
-
             result = await db.execute(
-                select(User)
-                .options(selectinload(User.permissions))
-                .where(
-                    and_(
-                        User.email == email.lower().strip(),
-                        User.is_guest.is_(False)
-                    )
-                )
+                select(User).where(User.email == email.lower())
             )
             return result.scalar_one_or_none()
-
         except Exception as e:
             logger.error(f"Error getting user by email {email}: {e}")
             return None
 
-    @staticmethod
-    async def get_by_username(db: AsyncSession, *, username: str) -> Optional[User]:
+    async def get_by_username(self, db: AsyncSession, *, username: str) -> Optional[User]:
         """
         Получение пользователя по username.
 
         Args:
             db: Сессия базы данных
-            username: Username пользователя
+            username: Имя пользователя
 
         Returns:
             Optional[User]: Пользователь или None
         """
         try:
-            if not username:
-                return None
-
             result = await db.execute(
-                select(User)
-                .options(selectinload(User.permissions))
-                .where(
-                    and_(
-                        User.username == username.strip(),
-                        User.is_guest.is_(False)
-                    )
-                )
+                select(User).where(User.username == username.lower())
             )
             return result.scalar_one_or_none()
-
         except Exception as e:
             logger.error(f"Error getting user by username {username}: {e}")
             return None
 
-    @staticmethod
-    async def get_guest_by_session_id(
-            db: AsyncSession,
-            *,
-            session_id: str
-    ) -> Optional[User]:
+    async def get_by_session_id(self, db: AsyncSession, *, session_id: str) -> Optional[User]:
         """
         Получение гостевого пользователя по session_id.
 
         Args:
             db: Сессия базы данных
-            session_id: ID гостевой сессии
+            session_id: ID сессии
 
         Returns:
             Optional[User]: Гостевой пользователь или None
         """
         try:
-            if not session_id:
-                return None
-
+            current_time = datetime.now(timezone.utc)
             result = await db.execute(
                 select(User).where(
                     and_(
                         User.guest_session_id == session_id,
                         User.is_guest.is_(True),
-                        User.guest_expires_at > datetime.now()
+                        or_(
+                            User.guest_expires_at.is_(None),
+                            User.guest_expires_at > current_time
+                        )
                     )
                 )
             )
             return result.scalar_one_or_none()
-
         except Exception as e:
-            logger.error(f"Error getting guest by session ID {session_id}: {e}")
+            logger.error(f"Error getting user by session_id {session_id}: {e}")
             return None
 
-    async def authenticate(
-            self,
-            db: AsyncSession,
-            *,
-            email: str,
-            password: str
-    ) -> Optional[User]:
+    async def create_registered_user(self, db: AsyncSession, *, user_in: UserCreate) -> Optional[User]:
         """
-        Аутентификация пользователя.
+        Создание зарегистрированного пользователя - КЛЮЧЕВОЕ для MVP.
 
         Args:
             db: Сессия базы данных
-            email: Email пользователя
-            password: Пароль пользователя
+            user_in: Данные для создания пользователя
 
         Returns:
-            Optional[User]: Аутентифицированный пользователь или None
+            Optional[User]: Созданный пользователь или None
         """
         try:
-            user = await self.get_by_email(db, email=email)
-            if not user:
-                logger.debug(f"User with email {email} not found")
-                return None
+            # Проверяем уникальность email и username
+            existing_email = await self.get_by_email(db, email=str(user_in.email))
+            if existing_email:
+                raise ValueError("User with this email already exists")
 
-            if not user.hashed_password:
-                logger.warning(f"User {user.id} has no password set")
-                return None
+            existing_username = await self.get_by_username(db, username=user_in.username)
+            if existing_username:
+                raise ValueError("User with this username already exists")
 
-            if not self.verify_password(password, user.hashed_password):
-                logger.debug(f"Invalid password for user {user.id}")
-                return None
+            # Создаем пользователя
+            hashed_password = self.get_password_hash(user_in.password)
 
-            if not user.is_active:
-                logger.warning(f"Inactive user {user.id} attempted to authenticate")
-                return None
+            db_user = User(
+                email=str(user_in.email).lower(),
+                username=user_in.username.lower(),
+                hashed_password=hashed_password,
+                first_name=user_in.first_name,
+                last_name=user_in.last_name,
+                is_active=True,
+                is_verified=False,
+                is_guest=False,
+                role=UserRole.USER,
+                balance=Decimal('0.00000000'),
+                created_at=datetime.now(timezone.utc),
+                updated_at=datetime.now(timezone.utc)
+            )
 
-            logger.info(f"User {user.id} authenticated successfully")
-            return user
+            db.add(db_user)
+            await db.commit()
+            await db.refresh(db_user)
+
+            logger.info(f"Created registered user: {db_user.email}")
+            return db_user
+
+        except ValueError:
+            await db.rollback()
+            raise
+        except Exception as e:
+            await db.rollback()
+            logger.error(f"Error creating registered user: {e}")
+            return None
+
+    async def create_guest_user(self, db: AsyncSession, *, session_id: str) -> Optional[User]:
+        """
+        Создание гостевого пользователя - КЛЮЧЕВОЕ для покупок без регистрации.
+
+        Args:
+            db: Сессия базы данных
+            session_id: ID сессии
+
+        Returns:
+            Optional[User]: Созданный гостевой пользователь или None
+        """
+        try:
+            # Проверяем, нет ли уже такого гостя
+            existing_guest = await self.get_by_session_id(db, session_id=session_id)
+            if existing_guest:
+                return existing_guest
+
+            # Создаем гостевого пользователя
+            expires_at = datetime.now(timezone.utc) + timedelta(days=30)
+
+            db_user = User(
+                email=None,
+                username=None,
+                hashed_password=None,
+                is_active=True,
+                is_verified=False,
+                is_guest=True,
+                role=UserRole.USER,
+                balance=Decimal('0.00000000'),
+                guest_session_id=session_id,
+                guest_expires_at=expires_at,
+                created_at=datetime.now(timezone.utc),
+                updated_at=datetime.now(timezone.utc)
+            )
+
+            db.add(db_user)
+            await db.commit()
+            await db.refresh(db_user)
+
+            logger.info(f"Created guest user with session_id: {session_id}")
+            return db_user
 
         except Exception as e:
-            logger.error(f"Error during authentication for {email}: {e}")
+            await db.rollback()
+            logger.error(f"Error creating guest user: {e}")
             return None
 
     async def convert_guest_to_registered(
-            self,
-            db: AsyncSession,
-            *,
-            guest_user: User,
-            user_data: UserCreate
+        self,
+        db: AsyncSession,
+        *,
+        guest_user: User,
+        user_data: UserCreate
     ) -> Optional[User]:
         """
         Конвертация гостевого пользователя в зарегистрированного.
@@ -368,36 +235,30 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             if not guest_user.is_guest:
                 raise ValueError("User is not a guest")
 
-            # Проверяем уникальность email
+            # Проверяем уникальность email и username
             existing_email = await self.get_by_email(db, email=str(user_data.email))
             if existing_email:
-                raise ValueError("Email already registered")
+                raise ValueError("User with this email already exists")
 
-            # Проверяем уникальность username если указан
-            if user_data.username:
-                existing_username = await self.get_by_username(db, username=user_data.username)
-                if existing_username:
-                    raise ValueError("Username already taken")
-
-            # Хешируем пароль
-            hashed_password = self.get_password_hash(user_data.password)
+            existing_username = await self.get_by_username(db, username=user_data.username)
+            if existing_username:
+                raise ValueError("User with this username already exists")
 
             # Обновляем гостевого пользователя
-            guest_user.email = str(user_data.email)
-            guest_user.username = user_data.username
-            guest_user.hashed_password = hashed_password
+            guest_user.email = str(user_data.email).lower()
+            guest_user.username = user_data.username.lower()
+            guest_user.hashed_password = self.get_password_hash(user_data.password)
             guest_user.first_name = user_data.first_name
             guest_user.last_name = user_data.last_name
             guest_user.is_guest = False
-            guest_user.is_verified = False
             guest_user.guest_session_id = None
             guest_user.guest_expires_at = None
-            guest_user.updated_at = datetime.now()
+            guest_user.updated_at = datetime.now(timezone.utc)
 
             await db.commit()
             await db.refresh(guest_user)
 
-            logger.info(f"Converted guest user {guest_user.id} to registered user {guest_user.email}")
+            logger.info(f"Converted guest user to registered: {guest_user.email}")
             return guest_user
 
         except ValueError:
@@ -405,47 +266,66 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             raise
         except Exception as e:
             await db.rollback()
-            logger.error(f"Error converting guest to registered user: {e}")
+            logger.error(f"Error converting guest to registered: {e}")
             return None
 
-    @staticmethod
+    async def authenticate(self, db: AsyncSession, *, email: str, password: str) -> Optional[User]:
+        """
+        Аутентификация пользователя.
+
+        Args:
+            db: Сессия базы данных
+            email: Email пользователя
+            password: Пароль
+
+        Returns:
+            Optional[User]: Аутентифицированный пользователь или None
+        """
+        try:
+            user = await self.get_by_email(db, email=email)
+            if not user or user.is_guest:
+                return None
+
+            if not self.verify_password(password, user.hashed_password):
+                return None
+
+            return user
+
+        except Exception as e:
+            logger.error(f"Error authenticating user {email}: {e}")
+            return None
+
     async def update_balance(
-            db: AsyncSession,
-            *,
-            user: User,
-            amount: Decimal
+        self,
+        db: AsyncSession,
+        *,
+        user: User,
+        amount: Decimal
     ) -> Optional[User]:
         """
-        Обновление баланса пользователя.
+        Обновление баланса пользователя - КЛЮЧЕВОЕ для системы баланса.
 
         Args:
             db: Сессия базы данных
             user: Пользователь
-            amount: Сумма для изменения баланса (может быть отрицательной)
+            amount: Сумма изменения (может быть отрицательной)
 
         Returns:
-            Optional[User]: Пользователь с обновленным балансом или None
+            Optional[User]: Обновленный пользователь или None
         """
         try:
-            # Валидация суммы
-            if not isinstance(amount, Decimal):
-                amount = Decimal(str(amount))
-
             new_balance = user.balance + amount
 
-            # Проверяем, что баланс не становится отрицательным
             if new_balance < 0:
-                logger.warning(f"Insufficient balance for user {user.id}: {user.balance} + {amount} = {new_balance}")
                 raise ValueError("Insufficient balance")
 
-            old_balance = user.balance
             user.balance = new_balance
-            user.updated_at = datetime.now()
+            user.updated_at = datetime.now(timezone.utc)
 
             await db.commit()
             await db.refresh(user)
 
-            logger.info(f"Updated balance for user {user.id}: {old_balance} -> {new_balance}")
+            logger.info(f"Updated balance for user {user.id}: {amount} (new balance: {new_balance})")
             return user
 
         except ValueError:
@@ -454,49 +334,6 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         except Exception as e:
             await db.rollback()
             logger.error(f"Error updating balance for user {user.id}: {e}")
-            return None
-
-    @staticmethod
-    async def set_balance(
-            db: AsyncSession,
-            *,
-            user: User,
-            new_balance: Decimal
-    ) -> Optional[User]:
-        """
-        Установка нового баланса пользователя.
-
-        Args:
-            db: Сессия базы данных
-            user: Пользователь
-            new_balance: Новый баланс
-
-        Returns:
-            Optional[User]: Пользователь с обновленным балансом или None
-        """
-        try:
-            if not isinstance(new_balance, Decimal):
-                new_balance = Decimal(str(new_balance))
-
-            if new_balance < 0:
-                raise ValueError("Balance cannot be negative")
-
-            old_balance = user.balance
-            user.balance = new_balance
-            user.updated_at = datetime.now()
-
-            await db.commit()
-            await db.refresh(user)
-
-            logger.info(f"Set balance for user {user.id}: {old_balance} -> {new_balance}")
-            return user
-
-        except ValueError:
-            await db.rollback()
-            raise
-        except Exception as e:
-            await db.rollback()
-            logger.error(f"Error setting balance for user {user.id}: {e}")
             return None
 
     async def update_last_login(self, db: AsyncSession, *, user_id: int) -> bool:
@@ -508,48 +345,45 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             user_id: ID пользователя
 
         Returns:
-            bool: True если обновление прошло успешно
+            bool: Успешность операции
         """
         try:
-            user = await self.get(db, obj_id=user_id)
-            if user:
-                user.last_login = datetime.now()
-                await db.commit()
-                logger.debug(f"Updated last login for user {user_id}")
-                return True
-            return False
+            result = await db.execute(
+                update(User)
+                .where(User.id == user_id)
+                .values(
+                    last_login=datetime.now(timezone.utc),
+                    updated_at=datetime.now(timezone.utc)
+                )
+            )
+            await db.commit()
+            return result.rowcount > 0
 
         except Exception as e:
             await db.rollback()
             logger.error(f"Error updating last login for user {user_id}: {e}")
             return False
 
-    async def verify_user_email(
-            self,
-            db: AsyncSession,
-            *,
-            user_id: int
-    ) -> Optional[User]:
+    async def verify_user_email(self, db: AsyncSession, *, user_id: int) -> Optional[User]:
         """
-        Верификация email пользователя.
+        Подтверждение email пользователя.
 
         Args:
             db: Сессия базы данных
             user_id: ID пользователя
 
         Returns:
-            Optional[User]: Верифицированный пользователь или None
+            Optional[User]: Пользователь с подтвержденным email или None
         """
         try:
-            user = await self.get(db, obj_id=user_id)
+            user = await self.get(db, id=user_id)
             if not user:
                 return None
 
-            if user.is_verified:
-                return user  # Уже верифицирован
-
             user.is_verified = True
-            user.updated_at = datetime.now()
+            user.email_verification_token = None
+            user.email_verification_expires = None
+            user.updated_at = datetime.now(timezone.utc)
 
             await db.commit()
             await db.refresh(user)
@@ -559,114 +393,228 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
         except Exception as e:
             await db.rollback()
-            logger.error(f"Error verifying user {user_id}: {e}")
+            logger.error(f"Error verifying email for user {user_id}: {e}")
             return None
 
-    async def change_user_role(
-            self,
-            db: AsyncSession,
-            *,
-            user_id: int,
-            new_role: UserRole,  # ИСПРАВЛЕНО: используем enum
-            is_admin: bool = False
-    ) -> Optional[User]:
+    async def get_user_order_stats(
+        self,
+        db: AsyncSession,
+        *,
+        user_id: int,
+        days: int = 30
+    ) -> Dict[str, Any]:
         """
-        Изменение роли пользователя.
+        Получение статистики заказов пользователя - для раздела "Мои покупки".
 
         Args:
             db: Сессия базы данных
             user_id: ID пользователя
-            new_role: Новая роль
-            is_admin: Флаг администратора
+            days: Период в днях
 
         Returns:
-            Optional[User]: Пользователь с обновленной ролью или None
+            Dict[str, Any]: Статистика заказов
         """
         try:
-            user = await self.get(db, obj_id=user_id)
-            if not user:
-                return None
+            start_date = datetime.now(timezone.utc) - timedelta(days=days)
 
-            old_role = user.role
-            old_admin = user.is_admin
+            # Общее количество заказов
+            total_orders_result = await db.execute(
+                select(func.count(Order.id))
+                .where(
+                    and_(
+                        Order.user_id == user_id,
+                        Order.created_at >= start_date
+                    )
+                )
+            )
+            total_orders = total_orders_result.scalar() or 0
 
-            user.role = new_role
-            user.is_admin = is_admin
-            user.updated_at = datetime.now()
+            # Общая сумма
+            total_amount_result = await db.execute(
+                select(func.sum(Order.total_amount))
+                .where(
+                    and_(
+                        Order.user_id == user_id,
+                        Order.created_at >= start_date,
+                        Order.status.in_(["paid", "completed"])
+                    )
+                )
+            )
+            total_amount = total_amount_result.scalar() or Decimal('0.00000000')
 
-            await db.commit()
-            await db.refresh(user)
+            # Последний заказ
+            last_order_result = await db.execute(
+                select(Order.created_at)
+                .where(Order.user_id == user_id)
+                .order_by(desc(Order.created_at))
+                .limit(1)
+            )
+            last_order_date = last_order_result.scalar()
 
-            logger.info(f"Changed user {user_id} role: {old_role}/{old_admin} -> {new_role}/{is_admin}")
-            return user
+            # Средняя сумма заказа
+            average_amount = total_amount / max(total_orders, 1)
+
+            return {
+                "total_orders": total_orders,
+                "total_amount": str(total_amount),
+                "average_amount": str(average_amount),
+                "last_order_date": last_order_date.isoformat() if last_order_date else None
+            }
 
         except Exception as e:
-            await db.rollback()
-            logger.error(f"Error changing role for user {user_id}: {e}")
-            return None
+            logger.error(f"Error getting order stats for user {user_id}: {e}")
+            return {
+                "total_orders": 0,
+                "total_amount": "0.00000000",
+                "average_amount": "0.00000000",
+                "last_order_date": None
+            }
 
-    @staticmethod
-    async def get_active_users(
-            db: AsyncSession,
-            *,
-            skip: int = 0,
-            limit: int = 100
-    ) -> List[User]:
+    async def get_user_proxy_stats(
+        self,
+        db: AsyncSession,
+        *,
+        user_id: int,
+        days: int = 30
+    ) -> Dict[str, Any]:
         """
-        Получение активных пользователей.
+        Получение статистики прокси пользователя.
 
         Args:
             db: Сессия базы данных
-            skip: Количество пропускаемых записей
-            limit: Максимальное количество записей
+            user_id: ID пользователя
+            days: Период в днях
 
         Returns:
-            List[User]: Список активных пользователей
+            Dict[str, Any]: Статистика прокси
+        """
+        try:
+            start_date = datetime.now(timezone.utc) - timedelta(days=days)
+            current_time = datetime.now(timezone.utc)
+
+            # Активные прокси
+            active_count_result = await db.execute(
+                select(func.count(ProxyPurchase.id))
+                .where(
+                    and_(
+                        ProxyPurchase.user_id == user_id,
+                        ProxyPurchase.is_active.is_(True),
+                        ProxyPurchase.expires_at > current_time
+                    )
+                )
+            )
+            active_count = active_count_result.scalar() or 0
+
+            # Всего куплено за период
+            total_purchased_result = await db.execute(
+                select(func.count(ProxyPurchase.id))
+                .where(
+                    and_(
+                        ProxyPurchase.user_id == user_id,
+                        ProxyPurchase.created_at >= start_date
+                    )
+                )
+            )
+            total_purchased = total_purchased_result.scalar() or 0
+
+            return {
+                "active_count": active_count,
+                "total_purchased": total_purchased
+            }
+
+        except Exception as e:
+            logger.error(f"Error getting proxy stats for user {user_id}: {e}")
+            return {
+                "active_count": 0,
+                "total_purchased": 0
+            }
+
+    async def deactivate_user(self, db: AsyncSession, *, user_id: int) -> bool:
+        """
+        Деактивация пользователя.
+
+        Args:
+            db: Сессия базы данных
+            user_id: ID пользователя
+
+        Returns:
+            bool: Успешность операции
         """
         try:
             result = await db.execute(
-                select(User)
-                .where(
-                    and_(
-                        User.is_active.is_(True),
-                        User.is_guest.is_(False)
-                    )
+                update(User)
+                .where(User.id == user_id)
+                .values(
+                    is_active=False,
+                    updated_at=datetime.now(timezone.utc)
                 )
-                .order_by(desc(User.created_at))
-                .offset(skip)
-                .limit(limit)
             )
-            return list(result.scalars().all())
+            await db.commit()
+
+            success = result.rowcount > 0
+            if success:
+                logger.info(f"Deactivated user {user_id}")
+            return success
 
         except Exception as e:
-            logger.error(f"Error getting active users: {e}")
-            return []
+            await db.rollback()
+            logger.error(f"Error deactivating user {user_id}: {e}")
+            return False
 
-    @staticmethod
-    async def search_users(
-            db: AsyncSession,
-            *,
-            search_term: str,
-            skip: int = 0,
-            limit: int = 100
-    ) -> List[User]:
+    async def reactivate_user(self, db: AsyncSession, *, user_id: int) -> bool:
         """
-        Поиск пользователей по email, username или имени.
+        Реактивация пользователя.
 
         Args:
             db: Сессия базы данных
-            search_term: Поисковый термин
-            skip: Количество пропускаемых записей
-            limit: Максимальное количество записей
+            user_id: ID пользователя
+
+        Returns:
+            bool: Успешность операции
+        """
+        try:
+            result = await db.execute(
+                update(User)
+                .where(User.id == user_id)
+                .values(
+                    is_active=True,
+                    updated_at=datetime.now(timezone.utc)
+                )
+            )
+            await db.commit()
+
+            success = result.rowcount > 0
+            if success:
+                logger.info(f"Reactivated user {user_id}")
+            return success
+
+        except Exception as e:
+            await db.rollback()
+            logger.error(f"Error reactivating user {user_id}: {e}")
+            return False
+
+    async def search_users(
+        self,
+        db: AsyncSession,
+        *,
+        query: str,
+        skip: int = 0,
+        limit: int = 100
+    ) -> List[User]:
+        """
+        Поиск пользователей.
+
+        Args:
+            db: Сессия базы данных
+            query: Поисковый запрос
+            skip: Пропустить записей
+            limit: Максимум записей
 
         Returns:
             List[User]: Список найденных пользователей
         """
         try:
-            if not search_term or len(search_term.strip()) < 2:
-                return []
-
-            search_pattern = f"%{search_term.strip()}%"
+            search_pattern = f"%{query.strip()}%"
 
             result = await db.execute(
                 select(User)
@@ -688,153 +636,212 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             return list(result.scalars().all())
 
         except Exception as e:
-            logger.error(f"Error searching users with term '{search_term}': {e}")
+            logger.error(f"Error searching users: {e}")
             return []
 
-    @staticmethod
-    async def get_users_stats(
-            db: AsyncSession,
-            *,
-            days: int = 30
-    ) -> Dict[str, Any]:
+    async def count_search_results(self, db: AsyncSession, *, query: str) -> int:
         """
-        Получение статистики пользователей.
+        Подсчет результатов поиска пользователей.
 
         Args:
             db: Сессия базы данных
-            days: Период для статистики в днях
+            query: Поисковый запрос
 
         Returns:
-            Dict[str, Any]: Статистика пользователей
+            int: Количество найденных пользователей
         """
         try:
-            start_date = datetime.now() - timedelta(days=days)
+            search_pattern = f"%{query.strip()}%"
 
-            # Общее количество зарегистрированных пользователей
-            total_result = await db.execute(
-                select(func.count(User.id))
-                .where(User.is_guest.is_(False))
-            )
-            total_users = total_result.scalar() or 0
-
-            # Активные пользователи
-            active_result = await db.execute(
+            result = await db.execute(
                 select(func.count(User.id))
                 .where(
                     and_(
-                        User.is_active.is_(True),
-                        User.is_guest.is_(False)
+                        User.is_guest.is_(False),
+                        or_(
+                            User.email.ilike(search_pattern),
+                            User.username.ilike(search_pattern),
+                            User.first_name.ilike(search_pattern),
+                            User.last_name.ilike(search_pattern)
+                        )
                     )
                 )
             )
-            active_users = active_result.scalar() or 0
+            return result.scalar() or 0
 
-            # Верифицированные пользователи
-            verified_result = await db.execute(
-                select(func.count(User.id))
+        except Exception as e:
+            logger.error(f"Error counting search results: {e}")
+            return 0
+
+    async def get_user_activity(
+        self,
+        db: AsyncSession,
+        *,
+        user_id: int,
+        days: int = 30
+    ) -> Dict[str, Any]:
+        """
+        Получение активности пользователя.
+
+        Args:
+            db: Сессия базы данных
+            user_id: ID пользователя
+            days: Период в днях
+
+        Returns:
+            Dict[str, Any]: Данные активности
+        """
+        try:
+            start_date = datetime.now(timezone.utc) - timedelta(days=days)
+
+            # Количество заказов
+            orders_result = await db.execute(
+                select(func.count(Order.id))
                 .where(
                     and_(
-                        User.is_verified.is_(True),
-                        User.is_guest.is_(False)
+                        Order.user_id == user_id,
+                        Order.created_at >= start_date
                     )
                 )
             )
-            verified_users = verified_result.scalar() or 0
+            orders_count = orders_result.scalar() or 0
 
-            # Новые пользователи за период
-            new_users_result = await db.execute(
-                select(func.count(User.id))
+            # Количество транзакций
+            transactions_result = await db.execute(
+                select(func.count(Transaction.id))
                 .where(
                     and_(
-                        User.created_at >= start_date,
-                        User.is_guest.is_(False)
+                        Transaction.user_id == user_id,
+                        Transaction.created_at >= start_date
                     )
                 )
             )
-            new_users = new_users_result.scalar() or 0
-
-            # Пользователи с балансом > 0
-            users_with_balance_result = await db.execute(
-                select(func.count(User.id))
-                .where(
-                    and_(
-                        User.balance > 0,
-                        User.is_guest.is_(False)
-                    )
-                )
-            )
-            users_with_balance = users_with_balance_result.scalar() or 0
-
-            # Общий баланс всех пользователей
-            total_balance_result = await db.execute(
-                select(func.sum(User.balance))
-                .where(User.is_guest.is_(False))
-            )
-            total_balance = total_balance_result.scalar() or Decimal('0.00')
+            transactions_count = transactions_result.scalar() or 0
 
             return {
-                "total_users": total_users,
-                "active_users": active_users,
-                "verified_users": verified_users,
-                "new_users_last_30d": new_users,
-                "users_with_balance": users_with_balance,
-                "total_balance": str(total_balance),
-                "verification_rate": round((verified_users / max(total_users, 1)) * 100, 2),
+                "orders_count": orders_count,
+                "transactions_count": transactions_count,
                 "period_days": days
             }
 
         except Exception as e:
-            logger.error(f"Error getting users stats: {e}")
+            logger.error(f"Error getting user activity: {e}")
             return {
-                "total_users": 0,
-                "active_users": 0,
-                "verified_users": 0,
-                "new_users_last_30d": 0,
-                "users_with_balance": 0,
-                "total_balance": "0.00",
-                "verification_rate": 0,
+                "orders_count": 0,
+                "transactions_count": 0,
                 "period_days": days
             }
 
-    @staticmethod
-    async def cleanup_expired_guests(db: AsyncSession) -> int:
+    async def export_user_data(
+        self,
+        db: AsyncSession,
+        *,
+        user_id: int,
+        include_orders: bool = True,
+        include_transactions: bool = True,
+        include_proxies: bool = True
+    ) -> Dict[str, Any]:
         """
-        Очистка просроченных гостевых пользователей.
+        Экспорт данных пользователя (GDPR).
 
         Args:
             db: Сессия базы данных
+            user_id: ID пользователя
+            include_orders: Включать заказы
+            include_transactions: Включать транзакции
+            include_proxies: Включать прокси
 
         Returns:
-            int: Количество удаленных пользователей
+            Dict[str, Any]: Экспортированные данные
         """
         try:
-            current_time = datetime.now()
+            user = await self.get(db, id=user_id)
+            if not user:
+                return {}
 
-            # Получаем просроченных гостей
+            export_data = {
+                "user_profile": {
+                    "id": user.id,
+                    "email": user.email,
+                    "username": user.username,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "balance": str(user.balance),
+                    "created_at": user.created_at.isoformat() if user.created_at else None,
+                    "last_login": user.last_login.isoformat() if user.last_login else None
+                }
+            }
+
+            if include_orders:
+                orders_result = await db.execute(
+                    select(Order)
+                    .where(Order.user_id == user_id)
+                    .order_by(desc(Order.created_at))
+                )
+                orders = list(orders_result.scalars().all())
+                export_data["orders"] = [
+                    {
+                        "order_number": order.order_number,
+                        "total_amount": str(order.total_amount),
+                        "status": order.status.value,
+                        "created_at": order.created_at.isoformat()
+                    }
+                    for order in orders
+                ]
+
+            if include_transactions:
+                transactions_result = await db.execute(
+                    select(Transaction)
+                    .where(Transaction.user_id == user_id)
+                    .order_by(desc(Transaction.created_at))
+                )
+                transactions = list(transactions_result.scalars().all())
+                export_data["transactions"] = [
+                    {
+                        "amount": str(transaction.amount),
+                        "transaction_type": transaction.transaction_type.value,
+                        "status": transaction.status.value,
+                        "created_at": transaction.created_at.isoformat()
+                    }
+                    for transaction in transactions
+                ]
+
+            return export_data
+
+        except Exception as e:
+            logger.error(f"Error exporting user data: {e}")
+            return {}
+
+    async def deactivate_user_proxies(self, db: AsyncSession, *, user_id: int) -> int:
+        """
+        Деактивация всех прокси пользователя.
+
+        Args:
+            db: Сессия базы данных
+            user_id: ID пользователя
+
+        Returns:
+            int: Количество деактивированных прокси
+        """
+        try:
             result = await db.execute(
-                select(User).where(
-                    and_(
-                        User.is_guest.is_(True),
-                        User.guest_expires_at < current_time
-                    )
+                update(ProxyPurchase)
+                .where(ProxyPurchase.user_id == user_id)
+                .values(
+                    is_active=False,
+                    updated_at=datetime.now(timezone.utc)
                 )
             )
-            expired_guests = list(result.scalars().all())
-
-            # Удаляем их
-            for guest in expired_guests:
-                await db.delete(guest)
-
             await db.commit()
 
-            if expired_guests:
-                logger.info(f"Cleaned up {len(expired_guests)} expired guest users")
-
-            return len(expired_guests)
+            count = result.rowcount or 0
+            if count > 0:
+                logger.info(f"Deactivated {count} proxies for user {user_id}")
+            return count
 
         except Exception as e:
             await db.rollback()
-            logger.error(f"Error cleaning up expired guests: {e}")
+            logger.error(f"Error deactivating proxies for user {user_id}: {e}")
             return 0
 
 

@@ -1,126 +1,152 @@
 """
-Модуль интеграций с внешними сервисами.
+Модуль интеграций с внешними сервисами - оптимизировано для MVP.
 
-Содержит клиенты для работы с:
+Содержит интеграции с:
+- Провайдерами прокси (711proxy)
 - Платежными системами (Cryptomus)
-- Провайдерами прокси (711Proxy, и другие)
-- Внешними API
-
-Все интеграции следуют единому стандарту обработки ошибок,
-логирования и конфигурации.
 """
-from typing import Dict
+
+from typing import Dict, Any
 
 from .base import BaseIntegration, IntegrationError
-from .cryptomus import cryptomus_api, CryptomusAPI
-from .proxy_711 import proxy_711_api, Proxy711API
+from .cryptomus import cryptomus_api
+from .proxy_711 import proxy_711_api
 
-# Попытка импорта дополнительных интеграций
-try:
-    from .other_providers import *
-except ImportError:
-    # Дополнительные провайдеры пока не реализованы
-    pass
+# Реестр провайдеров прокси для MVP
+PROXY_PROVIDERS = {
+    "711proxy": proxy_711_api,
+}
 
-__all__ = [
-    # Базовые классы
-    "BaseIntegration",
-    "IntegrationError",
-
-    # Платежные системы
-    "CryptomusAPI",
-    "cryptomus_api",
-
-    # Провайдеры прокси
-    "Proxy711API",
-    "proxy_711_api",
-
-    # Функции для получения провайдеров
-    "get_payment_provider",
-    "get_proxy_provider",  # ИСПРАВЛЕНО: добавлено в __all__
-]
-
-# Версия модуля интеграций
-__version__ = "1.0.0"
-
-# Реестр всех доступных интеграций
-INTEGRATIONS_REGISTRY = {
-    "payment": {
-        "cryptomus": cryptomus_api,
-    },
-    "proxy": {
-        "711proxy": proxy_711_api,
-    }
+# Реестр платежных провайдеров для MVP
+PAYMENT_PROVIDERS = {
+    "cryptomus": cryptomus_api,
 }
 
 
-def get_payment_provider(provider_name: str = "cryptomus"):
+def get_proxy_provider(provider_name: str) -> BaseIntegration:
     """
-    Получение провайдера платежей.
+    Получение провайдера прокси по имени.
 
     Args:
-        provider_name: Имя провайдера платежей
+        provider_name: Имя провайдера
 
     Returns:
-        Экземпляр API провайдера платежей
+        BaseIntegration: Экземпляр провайдера
 
     Raises:
-        KeyError: Если провайдер не найден
+        ValueError: Если провайдер не найден
     """
-    if provider_name not in INTEGRATIONS_REGISTRY["payment"]:
-        available = ", ".join(INTEGRATIONS_REGISTRY["payment"].keys())
-        raise KeyError(f"Payment provider '{provider_name}' not found. Available: {available}")
+    if provider_name not in PROXY_PROVIDERS:
+        available = ", ".join(PROXY_PROVIDERS.keys())
+        raise ValueError(f"Unknown proxy provider '{provider_name}'. Available: {available}")
 
-    return INTEGRATIONS_REGISTRY["payment"][provider_name]
+    return PROXY_PROVIDERS[provider_name]
 
 
-def get_proxy_provider(provider_name: str):
+def get_payment_provider(provider_name: str) -> BaseIntegration:
     """
-    Получение провайдера прокси.
+    Получение платежного провайдера по имени.
 
     Args:
-        provider_name: Имя провайдера прокси
+        provider_name: Имя провайдера
 
     Returns:
-        Экземпляр API провайдера прокси
+        BaseIntegration: Экземпляр провайдера
 
     Raises:
-        KeyError: Если провайдер не найден
+        ValueError: Если провайдер не найден
     """
-    if provider_name not in INTEGRATIONS_REGISTRY["proxy"]:
-        available = ", ".join(INTEGRATIONS_REGISTRY["proxy"].keys())
-        raise KeyError(f"Proxy provider '{provider_name}' not found. Available: {available}")
+    if provider_name not in PAYMENT_PROVIDERS:
+        available = ", ".join(PAYMENT_PROVIDERS.keys())
+        raise ValueError(f"Unknown payment provider '{provider_name}'. Available: {available}")
 
-    return INTEGRATIONS_REGISTRY["proxy"][provider_name]
+    return PAYMENT_PROVIDERS[provider_name]
 
 
-async def test_all_integrations() -> Dict[str, bool]:
+async def test_all_integrations() -> Dict[str, Dict[str, Any]]:
     """
-    Тестирование всех интеграций.
+    Тестирование всех интеграций - для проверки MVP.
 
     Returns:
-        Dict[str, bool]: Результаты тестирования для каждой интеграции
+        Dict[str, Dict[str, Any]]: Результаты тестирования
     """
-    results = {}
-
-    # Тестируем платежные системы
-    for name, provider in INTEGRATIONS_REGISTRY["payment"].items():
-        try:
-            if hasattr(provider, 'test_connection'):
-                results[f"payment_{name}"] = await provider.test_connection()
-            else:
-                results[f"payment_{name}"] = True  # Предполагаем что работает
-        except Exception:
-            results[f"payment_{name}"] = False
+    results = {
+        "proxy_providers": {},
+        "payment_providers": {}
+    }
 
     # Тестируем провайдеров прокси
-    for name, provider in INTEGRATIONS_REGISTRY["proxy"].items():
+    for name, provider in PROXY_PROVIDERS.items():
         try:
-            if hasattr(provider, 'test_connection'):
-                results[f"proxy_{name}"] = await provider.test_connection()
-            else:
-                results[f"proxy_{name}"] = True
-        except Exception:
-            results[f"proxy_{name}"] = False
+            is_connected = await provider.test_connection()
+            results["proxy_providers"][name] = {
+                "status": "connected" if is_connected else "failed",
+                "error": None
+            }
+        except Exception as e:
+            results["proxy_providers"][name] = {
+                "status": "error",
+                "error": str(e)
+            }
+
+    # Тестируем платежных провайдеров
+    for name, provider in PAYMENT_PROVIDERS.items():
+        try:
+            is_connected = await provider.test_connection()
+            results["payment_providers"][name] = {
+                "status": "connected" if is_connected else "failed",
+                "error": None
+            }
+        except Exception as e:
+            results["payment_providers"][name] = {
+                "status": "error",
+                "error": str(e)
+            }
 
     return results
+
+
+async def get_integration_status() -> Dict[str, Any]:
+    """
+    Получение статуса всех интеграций.
+
+    Returns:
+        Dict[str, Any]: Сводная информация о статусе
+    """
+    test_results = await test_all_integrations()
+
+    total_proxy = len(PROXY_PROVIDERS)
+    connected_proxy = sum(1 for r in test_results["proxy_providers"].values() if r["status"] == "connected")
+
+    total_payment = len(PAYMENT_PROVIDERS)
+    connected_payment = sum(1 for r in test_results["payment_providers"].values() if r["status"] == "connected")
+
+    return {
+        "proxy_providers": {
+            "total": total_proxy,
+            "connected": connected_proxy,
+            "available": list(PROXY_PROVIDERS.keys()),
+            "details": test_results["proxy_providers"]
+        },
+        "payment_providers": {
+            "total": total_payment,
+            "connected": connected_payment,
+            "available": list(PAYMENT_PROVIDERS.keys()),
+            "details": test_results["payment_providers"]
+        },
+        "overall_status": "healthy" if (connected_proxy > 0 and connected_payment > 0) else "degraded"
+    }
+
+
+__all__ = [
+    "BaseIntegration",
+    "IntegrationError",
+    "proxy_711_api",
+    "cryptomus_api",
+    "get_proxy_provider",
+    "get_payment_provider",
+    "test_all_integrations",
+    "get_integration_status",
+    "PROXY_PROVIDERS",
+    "PAYMENT_PROVIDERS"
+]

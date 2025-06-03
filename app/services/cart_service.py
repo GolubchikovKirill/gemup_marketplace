@@ -3,7 +3,6 @@
 
 Обеспечивает функциональность добавления товаров в корзину,
 расчета итоговой стоимости и управления содержимым корзины.
-Полная production-ready реализация без мок-данных.
 """
 
 import logging
@@ -25,7 +24,7 @@ logger = logging.getLogger(__name__)
 class CartBusinessRules(BusinessRuleValidator):
     """Валидатор бизнес-правил для корзины."""
 
-    async def validate(self, data: dict, db: AsyncSession) -> bool:
+    async def validate(self, data: Dict[str, Any], db: AsyncSession) -> bool:
         """
         Валидация бизнес-правил для корзины.
 
@@ -54,7 +53,7 @@ class CartBusinessRules(BusinessRuleValidator):
                 raise BusinessLogicError("Quantity cannot exceed 1000 items")
 
             # Проверка существования продукта
-            product = await proxy_product_crud.get(db, obj_id=product_id)
+            product = await proxy_product_crud.get(db, id=product_id)
             if not product:
                 raise BusinessLogicError("Product not found")
 
@@ -103,6 +102,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def get_user_cart(
         self,
         db: AsyncSession,
+        *,
         user_id: Optional[int] = None,
         session_id: Optional[str] = None
     ) -> List[ShoppingCart]:
@@ -141,6 +141,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def calculate_cart_total(
         self,
         db: AsyncSession,
+        *,
         user_id: Optional[int] = None,
         session_id: Optional[str] = None
     ) -> Dict[str, Any]:
@@ -156,7 +157,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
             Dict[str, Any]: Детальная информация о стоимости корзины
         """
         try:
-            cart_items = await self.get_user_cart(db, user_id, session_id)
+            cart_items = await self.get_user_cart(db, user_id=user_id, session_id=session_id)
 
             total_items = 0
             total_amount = Decimal('0.00')
@@ -164,7 +165,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
 
             for item in cart_items:
                 # Проверяем актуальность цены
-                current_product = await proxy_product_crud.get(db, obj_id=item.proxy_product_id)
+                current_product = await proxy_product_crud.get(db, id=item.proxy_product_id)
                 if not current_product or not current_product.is_active:
                     logger.warning(f"Inactive product {item.proxy_product_id} found in cart")
                     continue
@@ -208,10 +209,10 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
             return {
                 "total_items": 0,
                 "items_count": 0,
-                "subtotal": "0.00",
-                "tax_amount": "0.00",
-                "discount_amount": "0.00",
-                "total_amount": "0.00",
+                "subtotal": "0.00000000",
+                "tax_amount": "0.00000000",
+                "discount_amount": "0.00000000",
+                "total_amount": "0.00000000",
                 "currency": "USD",
                 "items": []
             }
@@ -219,6 +220,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def add_item_to_cart(
         self,
         db: AsyncSession,
+        *,
         product_id: int,
         quantity: int,
         user_id: Optional[int] = None,
@@ -253,7 +255,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
             await self.business_rules.validate(validation_data, db)
 
             # Проверка лимита товаров в корзине
-            current_cart = await self.get_user_cart(db, user_id, session_id)
+            current_cart = await self.get_user_cart(db, user_id=user_id, session_id=session_id)
             if len(current_cart) >= self.max_cart_items:
                 # Проверяем, есть ли уже этот товар в корзине
                 existing_item = next((item for item in current_cart if item.proxy_product_id == product_id), None)
@@ -284,6 +286,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def update_cart_item_quantity(
         self,
         db: AsyncSession,
+        *,
         item_id: int,
         new_quantity: int,
         user_id: Optional[int] = None,
@@ -306,7 +309,25 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
             BusinessLogicError: При ошибках валидации или доступа
         """
         try:
-            cart_item = await self.crud.update_cart_item_quantity(
+            # Получаем элемент корзины для валидации
+            cart_item = await self.crud.get(db, id=item_id)
+            if not cart_item:
+                raise BusinessLogicError("Cart item not found")
+
+            # Проверяем права доступа
+            if user_id and cart_item.user_id != user_id:
+                raise BusinessLogicError("Access denied")
+            if session_id and cart_item.session_id != session_id:
+                raise BusinessLogicError("Access denied")
+
+            # Валидация нового количества
+            validation_data = {
+                "product_id": cart_item.proxy_product_id,
+                "quantity": new_quantity
+            }
+            await self.business_rules.validate(validation_data, db)
+
+            updated_cart_item = await self.crud.update_cart_item_quantity(
                 db,
                 cart_item_id=item_id,
                 new_quantity=new_quantity,
@@ -314,11 +335,11 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
                 session_id=session_id
             )
 
-            if not cart_item:
-                raise BusinessLogicError("Cart item not found or access denied")
+            if not updated_cart_item:
+                raise BusinessLogicError("Failed to update cart item")
 
             logger.info(f"Updated cart item {item_id}: quantity {new_quantity}")
-            return cart_item
+            return updated_cart_item
 
         except BusinessLogicError:
             raise
@@ -329,6 +350,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def remove_cart_item(
         self,
         db: AsyncSession,
+        *,
         item_id: int,
         user_id: Optional[int] = None,
         session_id: Optional[str] = None
@@ -371,6 +393,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def clear_cart(
         self,
         db: AsyncSession,
+        *,
         user_id: Optional[int] = None,
         session_id: Optional[str] = None
     ) -> bool:
@@ -411,6 +434,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def merge_guest_cart_to_user(
         self,
         db: AsyncSession,
+        *,
         session_id: str,
         user_id: int
     ) -> bool:
@@ -450,6 +474,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def validate_cart_before_checkout(
         self,
         db: AsyncSession,
+        *,
         user_id: Optional[int] = None,
         session_id: Optional[str] = None
     ) -> Dict[str, Any]:
@@ -468,7 +493,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
             BusinessLogicError: При критических ошибках валидации
         """
         try:
-            cart_items = await self.get_user_cart(db, user_id, session_id)
+            cart_items = await self.get_user_cart(db, user_id=user_id, session_id=session_id)
 
             if not cart_items:
                 raise BusinessLogicError("Cart is empty")
@@ -482,7 +507,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
 
             for item in cart_items:
                 # Проверяем актуальность продукта
-                current_product = await proxy_product_crud.get(db, obj_id=item.proxy_product_id)
+                current_product = await proxy_product_crud.get(db, id=item.proxy_product_id)
 
                 if not current_product:
                     validation_result["errors"].append(f"Product {item.proxy_product_id} no longer exists")
@@ -508,10 +533,6 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
                         validation_result["errors"].append(f"Product '{current_product.name}' is out of stock")
                         validation_result["is_valid"] = False
 
-                # ИСПРАВЛЕНО: убрал проверку несуществующего атрибута cached_price
-                # Проверка изменения цены теперь происходит при расчете итоговой стоимости
-                # в методе calculate_cart_total
-
             return validation_result
 
         except BusinessLogicError:
@@ -523,6 +544,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def get_cart_summary(
         self,
         db: AsyncSession,
+        *,
         user_id: Optional[int] = None,
         session_id: Optional[str] = None
     ) -> Dict[str, Any]:
@@ -538,8 +560,8 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
             Dict[str, Any]: Краткая информация о корзине
         """
         try:
-            cart_items = await self.get_user_cart(db, user_id, session_id)
-            cart_total = await self.calculate_cart_total(db, user_id, session_id)
+            cart_items = await self.get_user_cart(db, user_id=user_id, session_id=session_id)
+            cart_total = await self.calculate_cart_total(db, user_id=user_id, session_id=session_id)
 
             return {
                 "items_count": len(cart_items),
@@ -554,7 +576,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
             return {
                 "items_count": 0,
                 "total_quantity": 0,
-                "total_amount": "0.00",
+                "total_amount": "0.00000000",
                 "currency": "USD",
                 "last_updated": None
             }
@@ -562,6 +584,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
     async def check_cart_item_changes(
         self,
         db: AsyncSession,
+        *,
         user_id: Optional[int] = None,
         session_id: Optional[str] = None
     ) -> Dict[str, Any]:
@@ -577,7 +600,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
             Dict[str, Any]: Информация об изменениях
         """
         try:
-            cart_items = await self.get_user_cart(db, user_id, session_id)
+            cart_items = await self.get_user_cart(db, user_id=user_id, session_id=session_id)
             changes = {
                 "price_changes": [],
                 "availability_changes": [],
@@ -585,7 +608,7 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
             }
 
             for item in cart_items:
-                current_product = await proxy_product_crud.get(db, obj_id=item.proxy_product_id)
+                current_product = await proxy_product_crud.get(db, id=item.proxy_product_id)
 
                 if not current_product:
                     changes["availability_changes"].append({
@@ -623,21 +646,98 @@ class CartService(BaseService[ShoppingCart, CartItemCreate, CartItemUpdate]):
                 "stock_changes": []
             }
 
+    async def apply_discount_code(
+        self,
+        db: AsyncSession,
+        *,
+        discount_code: str,
+        user_id: Optional[int] = None,
+        session_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Применение промокода к корзине.
+
+        Args:
+            db: Сессия базы данных
+            discount_code: Промокод
+            user_id: Идентификатор пользователя
+            session_id: Идентификатор сессии
+
+        Returns:
+            Dict[str, Any]: Результат применения промокода
+        """
+        try:
+            # Здесь можно добавить логику проверки и применения промокодов
+            # Пока возвращаем заглушку
+            return {
+                "is_valid": False,
+                "message": "Discount codes are not implemented yet",
+                "discount_amount": "0.00000000",
+                "discount_percentage": 0
+            }
+
+        except Exception as e:
+            logger.error(f"Error applying discount code: {e}")
+            return {
+                "is_valid": False,
+                "message": "Failed to apply discount code",
+                "discount_amount": "0.00000000",
+                "discount_percentage": 0
+            }
+
+    async def estimate_shipping(
+        self,
+        db: AsyncSession,
+        *,
+        user_id: Optional[int] = None,
+        session_id: Optional[str] = None,
+        country_code: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Расчет стоимости доставки (для цифровых товаров не применимо).
+
+        Args:
+            db: Сессия базы данных
+            user_id: Идентификатор пользователя
+            session_id: Идентификатор сессии
+            country_code: Код страны доставки
+
+        Returns:
+            Dict[str, Any]: Информация о доставке
+        """
+        try:
+            # Для цифровых товаров доставка не нужна
+            return {
+                "shipping_required": False,
+                "shipping_cost": "0.00000000",
+                "delivery_time": "Instant",
+                "message": "Digital products are delivered instantly"
+            }
+
+        except Exception as e:
+            logger.error(f"Error estimating shipping: {e}")
+            return {
+                "shipping_required": False,
+                "shipping_cost": "0.00000000",
+                "delivery_time": "Unknown",
+                "message": "Error calculating shipping"
+            }
+
     # Реализация абстрактных методов BaseService
-    async def create(self, db: AsyncSession, obj_in: CartItemCreate) -> ShoppingCart:
+    async def create(self, db: AsyncSession, *, obj_in: CartItemCreate) -> ShoppingCart:
         return await self.crud.create(db, obj_in=obj_in)
 
-    async def get(self, db: AsyncSession, obj_id: int) -> Optional[ShoppingCart]:
-        return await self.crud.get(db, obj_id=obj_id)
+    async def get(self, db: AsyncSession, *, id: int) -> Optional[ShoppingCart]:
+        return await self.crud.get(db, id=id)
 
-    async def update(self, db: AsyncSession, db_obj: ShoppingCart, obj_in: CartItemUpdate) -> ShoppingCart:
+    async def update(self, db: AsyncSession, *, db_obj: ShoppingCart, obj_in: CartItemUpdate) -> ShoppingCart:
         return await self.crud.update(db, db_obj=db_obj, obj_in=obj_in)
 
-    async def delete(self, db: AsyncSession, obj_id: int) -> bool:
-        result = await self.crud.delete(db, obj_id=obj_id)
+    async def delete(self, db: AsyncSession, *, id: int) -> bool:
+        result = await self.crud.delete(db, id=id)
         return result is not None
 
-    async def get_multi(self, db: AsyncSession, skip: int = 0, limit: int = 100) -> List[ShoppingCart]:
+    async def get_multi(self, db: AsyncSession, *, skip: int = 0, limit: int = 100) -> List[ShoppingCart]:
         return await self.crud.get_multi(db, skip=skip, limit=limit)
 
 

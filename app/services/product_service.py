@@ -3,19 +3,20 @@
 
 Обеспечивает функциональность поиска, фильтрации и получения
 информации о продуктах прокси-сервисов.
-Полная production-ready реализация без мок-данных.
 """
 
 import logging
 from typing import List, Optional, Dict, Any, Tuple
-from decimal import Decimal
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import BusinessLogicError
 from app.crud.proxy_product import proxy_product_crud
 from app.models.models import ProxyProduct, ProxyCategory, ProviderType
-from app.schemas.proxy_product import ProxyProductCreate, ProxyProductUpdate, ProductFilter
+from app.schemas.proxy_product import (
+    ProxyProductCreate, ProxyProductUpdate, ProductFilter,
+    ProductAvailabilityRequest
+)
 from app.services.base import BaseService, BusinessRuleValidator
 
 logger = logging.getLogger(__name__)
@@ -24,7 +25,7 @@ logger = logging.getLogger(__name__)
 class ProductBusinessRules(BusinessRuleValidator):
     """Валидатор бизнес-правил для продуктов."""
 
-    async def validate(self, data: dict, db: AsyncSession) -> bool:
+    async def validate(self, data: Dict[str, Any], db: AsyncSession) -> bool:
         """
         Валидация бизнес-правил для продуктов.
 
@@ -123,6 +124,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
     async def get_products_with_filter(
         self,
         db: AsyncSession,
+        *,
         filter_params: ProductFilter,
         skip: int = 0,
         limit: int = 20
@@ -168,6 +170,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
     async def get_product_by_id(
         self,
         db: AsyncSession,
+        *,
         product_id: int,
         check_availability: bool = True
     ) -> Optional[ProxyProduct]:
@@ -189,7 +192,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
             validation_data = {"product_id": product_id}
             await self.business_rules.validate(validation_data, db)
 
-            product = await self.crud.get(db, obj_id=product_id)
+            product = await self.crud.get(db, id=product_id)
 
             if product and check_availability and not product.is_active:
                 logger.warning(f"Requested inactive product: {product_id}")
@@ -206,6 +209,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
     async def check_product_availability(
         self,
         db: AsyncSession,
+        *,
         product_id: int,
         quantity: int
     ) -> Dict[str, Any]:
@@ -227,61 +231,15 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
             validation_data = {"product_id": product_id, "quantity": quantity}
             await self.business_rules.validate(validation_data, db)
 
-            product = await self.crud.get(db, obj_id=product_id)
+            # Используем CRUD метод для проверки доступности
+            availability_request = ProductAvailabilityRequest(
+                product_id=product_id,
+                quantity=quantity
+            )
 
-            if not product:
-                return {
-                    "product_id": product_id,
-                    "requested_quantity": quantity,
-                    "is_available": False,
-                    "stock_available": 0,
-                    "max_quantity": 0,
-                    "price_per_unit": "0.00",
-                    "total_price": "0.00",
-                    "message": "Product not found"
-                }
-
-            # Проверка активности продукта
-            if not product.is_active:
-                return {
-                    "product_id": product_id,
-                    "requested_quantity": quantity,
-                    "is_available": False,
-                    "stock_available": product.stock_available,
-                    "max_quantity": getattr(product, 'max_quantity', 0) or 0,
-                    "price_per_unit": str(product.price_per_proxy),
-                    "total_price": "0.00",
-                    "message": "Product is not available"
-                }
-
-            # Проверка наличия на складе
-            is_available = product.stock_available >= quantity
-
-            # Проверка максимального количества
-            max_quantity = getattr(product, 'max_quantity', None)
-            if max_quantity and quantity > max_quantity:
-                is_available = False
-
-            total_price = product.price_per_proxy * quantity if is_available else Decimal('0.00')
-
-            message = "Available"
-            if not is_available:
-                if product.stock_available < quantity:
-                    message = f"Only {product.stock_available} items available in stock"
-                elif max_quantity and quantity > max_quantity:
-                    message = f"Maximum quantity for this product is {max_quantity}"
-
-            return {
-                "product_id": product_id,
-                "requested_quantity": quantity,
-                "is_available": is_available,
-                "stock_available": product.stock_available,
-                "max_quantity": max_quantity or 10000,
-                "price_per_unit": str(product.price_per_proxy),
-                "total_price": str(total_price),
-                "currency": "USD",
-                "message": message
-            }
+            return await self.crud.check_product_availability(
+                db, availability_request=availability_request
+            )
 
         except BusinessLogicError:
             raise
@@ -293,14 +251,16 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
                 "is_available": False,
                 "stock_available": 0,
                 "max_quantity": 0,
-                "price_per_unit": "0.00",
-                "total_price": "0.00",
+                "price_per_unit": "0.00000000",
+                "total_price": "0.00000000",
+                "currency": "USD",
                 "message": "Error checking availability"
             }
 
     async def get_products_by_category(
         self,
         db: AsyncSession,
+        *,
         category: ProxyCategory,
         skip: int = 0,
         limit: int = 20
@@ -322,7 +282,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
                 db, category=category, skip=skip, limit=limit
             )
 
-            total = await self.crud.count_products_by_category(db, category)
+            total = await self.crud.count_products_by_category(db, category=category)
 
             return products, total
 
@@ -344,7 +304,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
             categories_data = []
 
             for category in ProxyCategory:
-                count = await self.crud.count_products_by_category(db, category)
+                count = await self.crud.count_products_by_category(db, category=category)
 
                 # Получаем несколько продуктов для демонстрации
                 sample_products = await self.crud.get_products_by_category(
@@ -353,21 +313,25 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
 
                 # Рассчитываем ценовой диапазон
                 price_range = {"min": None, "max": None}
+                avg_price = "0.00"
                 if sample_products:
                     prices = [p.price_per_proxy for p in sample_products]
                     price_range = {"min": str(min(prices)), "max": str(max(prices))}
+                    avg_price = str(sum(prices) / len(prices))
 
                 categories_data.append({
-                    "category": category.value,
-                    "name": category.value.replace('_', ' ').title(),
+                    "category": category,
+                    "category_name": category.value.replace('_', ' ').title(),
                     "products_count": count,
                     "price_range": price_range,
+                    "avg_price": avg_price,
                     "sample_products": [
                         {
                             "id": p.id,
                             "name": p.name,
-                            "price": str(p.price_per_proxy),
-                            "country": p.country_name
+                            "price_per_proxy": str(p.price_per_proxy),
+                            "country_name": p.country_name,
+                            "is_featured": p.is_featured
                         }
                         for p in sample_products[:2]  # Показываем только 2 примера
                     ]
@@ -397,15 +361,12 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
 
             countries_data = []
             for country in countries:
-                # Подсчитываем количество продуктов в стране
-                filter_params = ProductFilter(country=country.country_code)
-                country_products_count = await self.crud.count_products_with_filter(db, filter_params=filter_params)
-
                 countries_data.append({
                     "code": country.country_code,
                     "name": country.country_name,
-                    "products_count": country_products_count,
-                    "flag_emoji": _get_country_flag_emoji(country.country_code)
+                    "products_count": country.products_count,
+                    "flag_emoji": _get_country_flag_emoji(country.country_code),
+                    "price_range": None  # Можно добавить расчет ценового диапазона
                 })
 
             # Сортируем по количеству продуктов
@@ -420,6 +381,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
     async def get_featured_products(
         self,
         db: AsyncSession,
+        *,
         category: Optional[ProxyCategory] = None,
         limit: int = 5
     ) -> List[ProxyProduct]:
@@ -435,7 +397,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
             List[ProxyProduct]: Список рекомендуемых продуктов
         """
         try:
-            return await self.crud.get_top_products(db, limit=limit, category=category)
+            return await self.crud.get_featured_products(db, limit=limit, category=category)
 
         except Exception as e:
             logger.error(f"Error getting featured products: {e}")
@@ -444,6 +406,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
     async def search_products(
         self,
         db: AsyncSession,
+        *,
         search_term: str,
         skip: int = 0,
         limit: int = 20
@@ -488,6 +451,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
     async def get_products_by_provider(
         self,
         db: AsyncSession,
+        *,
         provider: ProviderType,
         skip: int = 0,
         limit: int = 20
@@ -516,6 +480,7 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
     async def get_product_recommendations(
         self,
         db: AsyncSession,
+        *,
         product_id: int,
         limit: int = 5
     ) -> List[ProxyProduct]:
@@ -531,14 +496,14 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
             List[ProxyProduct]: Список рекомендованных продуктов
         """
         try:
-            base_product = await self.crud.get(db, obj_id=product_id)
+            base_product = await self.crud.get(db, id=product_id)
             if not base_product:
                 return []
 
             # Ищем похожие продукты по категории и стране
             filter_params = ProductFilter(
                 proxy_category=base_product.proxy_category,
-                country=base_product.country_code
+                country_code=base_product.country_code
             )
 
             similar_products = await self.crud.get_products_with_filter(
@@ -571,15 +536,19 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
             logger.error(f"Error getting product statistics: {e}")
             return {
                 "total_products": 0,
+                "active_products": 0,
+                "featured_products": 0,
+                "total_stock": 0,
                 "average_price": "0.00",
                 "countries_available": 0,
-                "total_stock": 0,
-                "categories_breakdown": {}
+                "categories_breakdown": {},
+                "providers_breakdown": {}
             }
 
     async def update_product_stock(
         self,
         db: AsyncSession,
+        *,
         product_id: int,
         stock_change: int
     ) -> Optional[ProxyProduct]:
@@ -612,20 +581,20 @@ class ProductService(BaseService[ProxyProduct, ProxyProductCreate, ProxyProductU
             return None
 
     # Реализация абстрактных методов BaseService
-    async def create(self, db: AsyncSession, obj_in: ProxyProductCreate) -> ProxyProduct:
+    async def create(self, db: AsyncSession, *, obj_in: ProxyProductCreate) -> ProxyProduct:
         return await self.crud.create(db, obj_in=obj_in)
 
-    async def get(self, db: AsyncSession, obj_id: int) -> Optional[ProxyProduct]:
-        return await self.crud.get(db, obj_id=obj_id)
+    async def get(self, db: AsyncSession, *, id: int) -> Optional[ProxyProduct]:
+        return await self.crud.get(db, id=id)
 
-    async def update(self, db: AsyncSession, db_obj: ProxyProduct, obj_in: ProxyProductUpdate) -> ProxyProduct:
+    async def update(self, db: AsyncSession, *, db_obj: ProxyProduct, obj_in: ProxyProductUpdate) -> ProxyProduct:
         return await self.crud.update(db, db_obj=db_obj, obj_in=obj_in)
 
-    async def delete(self, db: AsyncSession, obj_id: int) -> bool:
-        result = await self.crud.delete(db, obj_id=obj_id)
+    async def delete(self, db: AsyncSession, *, id: int) -> bool:
+        result = await self.crud.delete(db, id=id)
         return result is not None
 
-    async def get_multi(self, db: AsyncSession, skip: int = 0, limit: int = 100) -> List[ProxyProduct]:
+    async def get_multi(self, db: AsyncSession, *, skip: int = 0, limit: int = 100) -> List[ProxyProduct]:
         return await self.crud.get_multi(db, skip=skip, limit=limit)
 
 

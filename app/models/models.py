@@ -22,7 +22,7 @@ class Base(DeclarativeBase):
     pass
 
 
-# Ассоциативные таблицы (используем Column для Table)
+# Ассоциативные таблицы
 user_permissions = Table(
     "user_permissions",
     Base.metadata,
@@ -63,7 +63,11 @@ class SessionType(str, Enum):
 
 class ProviderType(str, Enum):
     """Провайдеры прокси."""
-    PROVIDER_711 = "provider_711"
+    PROVIDER_711 = "711proxy"
+    WEBSHARE = "webshare"
+    PROXY_SELLER = "proxy_seller"
+    SMARTPROXY = "smartproxy"
+    BRIGHT_DATA = "bright_data"
     INTERNAL = "internal"
 
 
@@ -84,6 +88,7 @@ class TransactionType(str, Enum):
     PURCHASE = "purchase"
     REFUND = "refund"
     WITHDRAWAL = "withdrawal"
+    BALANCE_TOPUP = "balance_topup"  # ДОБАВЛЕНО для пополнения баланса
 
 
 class TransactionStatus(str, Enum):
@@ -96,13 +101,19 @@ class TransactionStatus(str, Enum):
     REFUNDED = "refunded"
 
 
-# ИСПРАВЛЕНО: Добавлен enum для ролей пользователей
 class UserRole(str, Enum):
     """Роли пользователей."""
     USER = "user"
     ADMIN = "admin"
     MODERATOR = "moderator"
     MANAGER = "manager"
+
+
+class PaymentProvider(str, Enum):
+    """Платежные провайдеры."""
+    CRYPTOMUS = "cryptomus"
+    BALANCE = "balance"  # Оплата с баланса
+    MANUAL = "manual"    # Ручное пополнение
 
 
 class User(Base):
@@ -126,17 +137,17 @@ class User(Base):
     is_guest: Mapped[bool] = mapped_column(Boolean, default=False, server_default='false')
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False, server_default='false')
 
-    # Добавлено поле role
+    # Роль пользователя
     role: Mapped[UserRole] = mapped_column(default=UserRole.USER, server_default='user')
 
-    # Финансы
+    # Финансы - КЛЮЧЕВОЕ для MVP
     balance: Mapped[Decimal] = mapped_column(
         DECIMAL(precision=18, scale=8),
         default=Decimal('0.00000000'),
         server_default='0.00000000'
     )
 
-    # Гостевые данные
+    # Гостевые данные - КЛЮЧЕВОЕ для покупок без регистрации
     guest_session_id: Mapped[Optional[str]] = mapped_column(String(255), index=True)
     guest_expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
 
@@ -165,8 +176,6 @@ class User(Base):
     transactions: Mapped[List["Transaction"]] = relationship("Transaction", back_populates="user")
     proxy_purchases: Mapped[List["ProxyPurchase"]] = relationship("ProxyPurchase", back_populates="user")
     cart_items: Mapped[List["ShoppingCart"]] = relationship("ShoppingCart", back_populates="user")
-
-    # Добавлены недостающие relationships
     api_keys: Mapped[List["APIKey"]] = relationship("APIKey", back_populates="user")
     permissions: Mapped[List["Permission"]] = relationship(
         "Permission",
@@ -212,7 +221,7 @@ class ProxyProduct(Base):
     session_type: Mapped[SessionType] = mapped_column(nullable=False)
     provider: Mapped[ProviderType] = mapped_column(nullable=False)
 
-    # География
+    # География - КЛЮЧЕВОЕ для генерации прокси
     country_code: Mapped[str] = mapped_column(String(2), nullable=False, index=True)
     country_name: Mapped[str] = mapped_column(String(100), nullable=False)
     city: Mapped[Optional[str]] = mapped_column(String(100))
@@ -299,6 +308,7 @@ class Order(Base):
     # Статус и метаданные
     status: Mapped[OrderStatus] = mapped_column(default=OrderStatus.PENDING)
     payment_method: Mapped[Optional[str]] = mapped_column(String(50))
+    notes: Mapped[Optional[str]] = mapped_column(Text)
 
     # Временные ограничения
     expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
@@ -346,7 +356,7 @@ class OrderItem(Base):
     unit_price: Mapped[Decimal] = mapped_column(DECIMAL(precision=10, scale=2), nullable=False)
     total_price: Mapped[Decimal] = mapped_column(DECIMAL(precision=18, scale=8), nullable=False)
 
-    # Параметры генерации
+    # Параметры генерации - КЛЮЧЕВОЕ для страницы генерации прокси
     generation_params: Mapped[Optional[str]] = mapped_column(Text)
 
     # Временные метки
@@ -373,11 +383,10 @@ class OrderItem(Base):
 
 
 class Transaction(Base):
-    """Модель транзакции."""
+    """Модель транзакции - КЛЮЧЕВОЕ для системы баланса."""
     __tablename__ = "transactions"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    transaction_id: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False, index=True)
 
     # Финансовая информация
@@ -387,14 +396,14 @@ class Transaction(Base):
     # Тип и статус
     transaction_type: Mapped[TransactionType] = mapped_column(nullable=False)
     status: Mapped[TransactionStatus] = mapped_column(default=TransactionStatus.PENDING)
+    payment_method: Mapped[str] = mapped_column(String(50), nullable=False)
 
     # Связи
     order_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("orders.id"), index=True)
-    parent_transaction_id: Mapped[Optional[str]] = mapped_column(String(255), ForeignKey("transactions.transaction_id"))
 
     # Метаданные
     description: Mapped[Optional[str]] = mapped_column(Text)
-    provider_transaction_id: Mapped[Optional[str]] = mapped_column(String(255))
+    provider_payment_id: Mapped[Optional[str]] = mapped_column(String(255))
     provider_metadata: Mapped[Optional[str]] = mapped_column(Text)
 
     # Временные метки
@@ -414,26 +423,21 @@ class Transaction(Base):
     # Relationships
     user: Mapped["User"] = relationship("User", back_populates="transactions")
     order: Mapped[Optional["Order"]] = relationship("Order", back_populates="transactions")
-    refund_transactions: Mapped[List["Transaction"]] = relationship(
-        "Transaction",
-        foreign_keys=[parent_transaction_id],
-        remote_side=[transaction_id]
-    )
 
     # Constraints
     __table_args__ = (
         CheckConstraint('amount != 0', name='non_zero_amount'),
         Index('idx_transaction_user_type', 'user_id', 'transaction_type'),
         Index('idx_transaction_status_created', 'status', 'created_at'),
-        Index('idx_transaction_provider', 'provider_transaction_id'),
+        Index('idx_transaction_provider', 'provider_payment_id'),
     )
 
     def __repr__(self) -> str:
-        return f"<Transaction(id={self.transaction_id}, type={self.transaction_type}, amount={self.amount})>"
+        return f"<Transaction(id={self.id}, type={self.transaction_type}, amount={self.amount})>"
 
 
 class ProxyPurchase(Base):
-    """Модель покупки прокси."""
+    """Модель покупки прокси - КЛЮЧЕВОЕ для раздела "Мои покупки"."""
     __tablename__ = "proxy_purchases"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
@@ -441,12 +445,12 @@ class ProxyPurchase(Base):
     proxy_product_id: Mapped[int] = mapped_column(Integer, ForeignKey("proxy_products.id"), nullable=False)
     order_id: Mapped[int] = mapped_column(Integer, ForeignKey("orders.id"), nullable=False)
 
-    # Данные прокси
+    # Данные прокси - КЛЮЧЕВОЕ для генерации списков
     proxy_list: Mapped[str] = mapped_column(Text, nullable=False)
     username: Mapped[Optional[str]] = mapped_column(String(255))
     password: Mapped[Optional[str]] = mapped_column(String(255))
 
-    # Статус и сроки
+    # Статус и сроки - КЛЮЧЕВОЕ для продления услуг
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, server_default='true')
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, index=True)
 
@@ -458,7 +462,7 @@ class ProxyPurchase(Base):
     )
     last_used: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
 
-    # Провайдер
+    # Провайдер - КЛЮЧЕВОЕ для интеграции с 711
     provider_order_id: Mapped[Optional[str]] = mapped_column(String(255), index=True)
     provider_metadata: Mapped[Optional[str]] = mapped_column(Text)
 
@@ -493,12 +497,12 @@ class ProxyPurchase(Base):
 
 
 class ShoppingCart(Base):
-    """Модель корзины покупок."""
+    """Модель корзины покупок - КЛЮЧЕВОЕ для корзины."""
     __tablename__ = "shopping_cart"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
 
-    # Пользователь или сессия
+    # Пользователь или сессия - поддержка покупок без регистрации
     user_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("users.id"), index=True)
     guest_session_id: Mapped[Optional[str]] = mapped_column(String(255), index=True)
 
@@ -548,7 +552,50 @@ class ShoppingCart(Base):
         return f"<ShoppingCart(session={self.guest_session_id}, product_id={self.proxy_product_id}, qty={self.quantity})>"
 
 
-# Дополнительные модели для системы разрешений
+# ДОБАВЛЕНО: Модель для истории пополнений баланса
+class BalanceTopup(Base):
+    """Модель пополнения баланса - для интерфейса пополнения."""
+    __tablename__ = "balance_topups"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    transaction_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("transactions.id"), index=True)
+
+    # Сумма пополнения
+    amount: Mapped[Decimal] = mapped_column(DECIMAL(precision=18, scale=8), nullable=False)
+    currency: Mapped[str] = mapped_column(String(3), default="USD", server_default="USD")
+
+    # Провайдер платежа
+    payment_provider: Mapped[PaymentProvider] = mapped_column(nullable=False)
+    provider_payment_id: Mapped[Optional[str]] = mapped_column(String(255))
+
+    # Статус
+    status: Mapped[TransactionStatus] = mapped_column(default=TransactionStatus.PENDING)
+
+    # Временные метки
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        server_default=func.now()
+    )
+    completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+
+    # Relationships
+    user: Mapped["User"] = relationship("User")
+    transaction: Mapped[Optional["Transaction"]] = relationship("Transaction")
+
+    # Constraints
+    __table_args__ = (
+        CheckConstraint('amount > 0', name='positive_topup_amount'),
+        Index('idx_topup_user_status', 'user_id', 'status'),
+        Index('idx_topup_provider', 'payment_provider', 'provider_payment_id'),
+    )
+
+    def __repr__(self) -> str:
+        return f"<BalanceTopup(user_id={self.user_id}, amount={self.amount}, status={self.status})>"
+
+
+# Дополнительные модели для системы разрешений (можно оставить для будущего)
 class Permission(Base):
     """Модель разрешения."""
     __tablename__ = "permissions"
@@ -565,7 +612,6 @@ class Permission(Base):
         default=lambda: datetime.now(timezone.utc),
         server_default=func.now()
     )
-
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
@@ -599,7 +645,6 @@ class Role(Base):
         default=lambda: datetime.now(timezone.utc),
         server_default=func.now()
     )
-
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
@@ -669,4 +714,3 @@ class APIKey(Base):
 
     def __repr__(self) -> str:
         return f"<APIKey(name={self.name}, user_id={self.user_id}, active={self.is_active})>"
-

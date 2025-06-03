@@ -1,14 +1,14 @@
 """
 Сервис для управления платежами.
 
-Обеспечивает создание платежей, обработку webhook-уведомлений,
-интеграцию с платежными системами и управление транзакциями.
-Полная production-ready реализация без мок-данных.
+Обеспечивает создание платежей, обработку webhook'ов и управление
+транзакциями через различные платежные системы.
 """
 
 import logging
+from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,9 +16,13 @@ from app.core.exceptions import BusinessLogicError
 from app.crud.order import order_crud
 from app.crud.transaction import transaction_crud
 from app.crud.user import user_crud
-from app.integrations.cryptomus import cryptomus_api
-from app.models.models import User, Transaction, TransactionType, TransactionStatus
-from app.services.base import BusinessRuleValidator
+from app.integrations import get_payment_provider, IntegrationError
+from app.models.models import Transaction, TransactionStatus, OrderStatus
+from app.schemas.payment import (
+    PaymentCreateRequest, PaymentResponse, PaymentVerificationRequest, PaymentVerificationResponse
+)
+from app.schemas.transaction import TransactionCreate, TransactionUpdate
+from app.services.base import BaseService, BusinessRuleValidator
 
 logger = logging.getLogger(__name__)
 
@@ -26,12 +30,12 @@ logger = logging.getLogger(__name__)
 class PaymentBusinessRules(BusinessRuleValidator):
     """Валидатор бизнес-правил для платежей."""
 
-    async def validate(self, data: dict, db: AsyncSession) -> bool:
+    async def validate(self, data: Dict[str, Any], db: AsyncSession) -> bool:
         """
         Валидация бизнес-правил для платежей.
 
         Args:
-            data: Данные для валидации (amount, user_id, currency)
+            data: Данные для валидации
             db: Сессия базы данных
 
         Returns:
@@ -41,39 +45,32 @@ class PaymentBusinessRules(BusinessRuleValidator):
             BusinessLogicError: При нарушении бизнес-правил
         """
         try:
-            amount = data.get("amount", Decimal('0'))
-            user_id = data.get("user_id")
+            amount = data.get("amount")
             currency = data.get("currency", "USD")
+            order_id = data.get("order_id")
 
-            if not user_id:
-                raise BusinessLogicError("User ID is required")
-
-            if amount <= 0:
+            # Валидация суммы
+            if not amount or amount <= 0:
                 raise BusinessLogicError("Payment amount must be positive")
 
-            if amount < Decimal("1.00"):
-                raise BusinessLogicError("Minimum payment amount is $1.00")
+            if amount > Decimal('100000.00'):  # Максимальная сумма платежа
+                raise BusinessLogicError("Payment amount exceeds maximum limit")
 
-            if amount > Decimal("50000.00"):
-                raise BusinessLogicError("Maximum payment amount is $50,000.00")
-
-            # Проверка поддерживаемых валют
-            supported_currencies = ["USD", "EUR", "RUB"]
+            # Валидация валюты
+            supported_currencies = ["USD", "EUR", "RUB", "BTC", "ETH", "USDT"]
             if currency not in supported_currencies:
-                raise BusinessLogicError(f"Currency {currency} is not supported")
+                raise BusinessLogicError(f"Unsupported currency: {currency}")
 
-            # Проверка существования пользователя
-            user = await user_crud.get(db, obj_id=user_id)
-            if not user:
-                raise BusinessLogicError("User not found")
+            # Валидация заказа
+            if order_id:
+                order = await order_crud.get(db, id=order_id)
+                if not order:
+                    raise BusinessLogicError("Order not found")
 
-            if not user.is_active:
-                raise BusinessLogicError("User account is inactive")
+                if order.status not in [OrderStatus.PENDING]:
+                    raise BusinessLogicError(f"Cannot create payment for order with status {order.status}")
 
-            if user.is_guest:
-                raise BusinessLogicError("Guest users cannot make payments")
-
-            logger.debug(f"Payment business rules validation passed for user {user_id}")
+            logger.debug("Payment business rules validation passed")
             return True
 
         except BusinessLogicError:
@@ -83,580 +80,703 @@ class PaymentBusinessRules(BusinessRuleValidator):
             raise BusinessLogicError(f"Validation failed: {str(e)}")
 
 
-class PaymentService:
+class PaymentService(BaseService[Transaction, TransactionCreate, TransactionUpdate]):
     """
     Сервис для управления платежами.
 
-    Предоставляет функциональность для создания платежей,
-    обработки уведомлений от платежных систем и управления балансом пользователей.
-    Интегрируется с внешними платежными провайдерами.
+    Предоставляет функциональность для создания платежей через различные
+    платежные системы, обработки webhook'ов и управления транзакциями.
     """
 
     def __init__(self):
+        super().__init__(Transaction)
+        self.crud = transaction_crud
         self.business_rules = PaymentBusinessRules()
-        self.min_payment_amount = Decimal("1.00")
-        self.max_payment_amount = Decimal("50000.00")
-        self.supported_currencies = ["USD", "EUR", "RUB"]
 
     async def create_payment(
         self,
         db: AsyncSession,
-        user: User,
-        amount: Decimal,
-        currency: str = "USD",
-        description: Optional[str] = None
-    ) -> Dict[str, Any]:
+        *,
+        payment_request: PaymentCreateRequest,
+        user_id: Optional[int] = None
+    ) -> PaymentResponse:
         """
-        Создание нового платежа.
+        Создание платежа через выбранную платежную систему.
 
         Args:
             db: Сессия базы данных
-            user: Пользователь, создающий платеж
-            amount: Сумма платежа
-            currency: Валюта платежа
-            description: Описание платежа
+            payment_request: Параметры платежа
+            user_id: ID пользователя (опционально)
 
         Returns:
-            Dict[str, Any]: Данные созданного платежа
+            PaymentResponse: Данные созданного платежа
 
         Raises:
-            BusinessLogicError: При ошибках валидации или создания
+            BusinessLogicError: При ошибках создания платежа
         """
         try:
             # Валидация бизнес-правил
             validation_data = {
-                "amount": amount,
-                "user_id": user.id,
-                "currency": currency
+                "amount": payment_request.amount,
+                "currency": payment_request.currency,
+                "order_id": payment_request.order_id
             }
             await self.business_rules.validate(validation_data, db)
 
-            # Создание транзакции
-            transaction = await transaction_crud.create_transaction(
-                db,
-                user_id=user.id,
-                amount=amount,
-                currency=currency,
-                transaction_type=TransactionType.DEPOSIT,
-                description=description or f"Balance top-up {amount} {currency}"
+            # Получаем заказ если указан
+            if payment_request.order_id:
+                order = await order_crud.get(db, id=payment_request.order_id)
+                if not order:
+                    raise BusinessLogicError("Order not found")
+
+            # Создаем транзакцию в нашей БД
+            transaction_data = TransactionCreate(
+                user_id=user_id,
+                order_id=payment_request.order_id,
+                amount=payment_request.amount,
+                currency=payment_request.currency,
+                payment_method=payment_request.payment_method,
+                status=TransactionStatus.PENDING,
+                description=payment_request.description or f"Payment for order {payment_request.order_id}"
             )
 
-            # Создание платежа через Cryptomus
-            payment_response = await cryptomus_api.create_payment(
-                amount=amount,
-                currency=currency,
-                order_id=transaction.transaction_id,
-                description=description
-            )
+            transaction = await self.crud.create(db, obj_in=transaction_data)
 
-            # Обновление транзакции с внешним ID
-            if payment_response.get("uuid"):
-                await transaction_crud.update_status(
-                    db,
-                    transaction=transaction,
-                    status=TransactionStatus.PENDING,
-                    external_transaction_id=payment_response["uuid"],
-                    payment_url=payment_response.get("url")
+            # Создаем платеж через провайдера
+            if payment_request.payment_method == "cryptomus":
+                payment_data = await self._create_cryptomus_payment(
+                    transaction, payment_request
                 )
+            else:
+                raise BusinessLogicError(f"Unsupported payment method: {payment_request.payment_method}")
 
-            logger.info(f"Payment created: {transaction.transaction_id}")
-            return {
-                "transaction_id": transaction.transaction_id,
-                "payment_url": payment_response.get("url"),
-                "amount": str(amount),
-                "currency": currency,
-                "status": "pending",
-                "expires_in": 3600  # 1 час на оплату
-            }
+            # Обновляем транзакцию с данными провайдера
+            transaction.provider_payment_id = payment_data.get("uuid")
+            transaction.provider_metadata = str(payment_data)
+            await db.commit()
+
+            logger.info(f"Payment created: {transaction.id} via {payment_request.payment_method}")
+
+            return PaymentResponse(
+                transaction_id=transaction.id,
+                payment_url=payment_data.get("url", ""),
+                payment_id=payment_data.get("uuid", ""),
+                amount=str(payment_request.amount),
+                currency=payment_request.currency,
+                status="pending",
+                expires_at=payment_data.get("expires_at"),
+                qr_code=payment_data.get("qr", ""),
+                payment_method=payment_request.payment_method
+            )
 
         except BusinessLogicError:
             raise
+        except IntegrationError as e:
+            logger.error(f"Integration error creating payment: {e}")
+            raise BusinessLogicError(f"Payment creation failed: {e.message}")
         except Exception as e:
             logger.error(f"Error creating payment: {e}")
             raise BusinessLogicError(f"Failed to create payment: {str(e)}")
 
-    async def get_payment_status(
+    async def handle_webhook(
         self,
         db: AsyncSession,
-        transaction_id: str,
-        user_id: Optional[int] = None
+        *,
+        provider: str,
+        webhook_data: Dict[str, Any]
     ) -> Dict[str, Any]:
         """
-        Получение статуса платежа.
+        Обработка webhook от платежной системы.
 
         Args:
             db: Сессия базы данных
-            transaction_id: Идентификатор транзакции
-            user_id: Идентификатор пользователя (для проверки прав доступа)
+            provider: Название провайдера
+            webhook_data: Данные webhook
 
         Returns:
-            Dict[str, Any]: Статус платежа
+            Dict[str, Any]: Результат обработки
 
         Raises:
-            BusinessLogicError: Если транзакция не найдена или нет доступа
+            BusinessLogicError: При ошибках обработки
         """
         try:
-            transaction = await transaction_crud.get_by_transaction_id(db, transaction_id=transaction_id)
-
-            if not transaction:
-                raise BusinessLogicError("Transaction not found")
-
-            # Проверка прав доступа
-            if user_id and transaction.user_id != user_id:
-                raise BusinessLogicError("Access denied")
-
-            # Синхронизация статуса с провайдером
-            if transaction.external_transaction_id and transaction.status == TransactionStatus.PENDING:
-                await self._sync_payment_status(db, transaction)
-
-            return {
-                "transaction_id": transaction.transaction_id,
-                "amount": str(transaction.amount),
-                "currency": transaction.currency,
-                "status": transaction.status.value,
-                "description": transaction.description,
-                "payment_url": transaction.payment_url,
-                "created_at": transaction.created_at.isoformat(),
-                "updated_at": transaction.updated_at.isoformat(),
-                "completed_at": transaction.completed_at.isoformat() if transaction.completed_at else None
-            }
+            if provider == "cryptomus":
+                return await self._handle_cryptomus_webhook(db, webhook_data)
+            else:
+                raise BusinessLogicError(f"Unsupported webhook provider: {provider}")
 
         except BusinessLogicError:
             raise
         except Exception as e:
-            logger.error(f"Error getting payment status: {e}")
-            raise BusinessLogicError(f"Failed to get payment status: {str(e)}")
+            logger.error(f"Error handling webhook from {provider}: {e}")
+            raise BusinessLogicError(f"Webhook processing failed: {str(e)}")
 
-    async def process_webhook(
+    async def verify_payment(
         self,
         db: AsyncSession,
-        webhook_data: Dict[str, Any]
-    ) -> bool:
+        *,
+        verification_request: PaymentVerificationRequest
+    ) -> PaymentVerificationResponse:
         """
-        Обработка webhook-уведомления от платежной системы.
+        Проверка статуса платежа у провайдера.
 
         Args:
             db: Сессия базы данных
-            webhook_data: Данные webhook
+            verification_request: Параметры проверки
 
         Returns:
-            bool: Успешность обработки
-        """
-        try:
-            order_id = webhook_data.get("order_id")
-            status = webhook_data.get("status")
-            amount = webhook_data.get("amount")
-            signature = webhook_data.get("sign", "")
-
-            if not order_id:
-                logger.warning("Webhook without order_id received")
-                return False
-
-            # Проверяем подпись webhook
-            if not cryptomus_api.verify_webhook_signature(webhook_data, signature):
-                logger.warning(f"Invalid webhook signature for order {order_id}")
-                return False
-
-            transaction = await transaction_crud.get_by_transaction_id(db, transaction_id=order_id)
-
-            if not transaction:
-                logger.warning(f"Transaction {order_id} not found for webhook")
-                return False
-
-            # Обрабатываем различные статусы
-            if status in ["paid", "confirmed"]:
-                await self._process_successful_payment(db, transaction, amount)
-                return True
-            elif status in ["cancel", "cancelled", "failed"]:
-                await transaction_crud.update_status(
-                    db,
-                    transaction=transaction,
-                    status=TransactionStatus.CANCELLED
-                )
-                logger.info(f"Transaction {order_id} cancelled via webhook")
-                return True
-            elif status == "expired":
-                await transaction_crud.update_status(
-                    db,
-                    transaction=transaction,
-                    status=TransactionStatus.FAILED
-                )
-                logger.info(f"Transaction {order_id} expired via webhook")
-                return True
-
-            logger.warning(f"Unknown webhook status: {status} for order {order_id}")
-            return False
-
-        except Exception as e:
-            logger.error(f"Error processing webhook: {e}")
-            return False
-
-    @staticmethod
-    async def cancel_payment(
-            db: AsyncSession,
-        transaction_id: str,
-        user_id: int,
-        reason: Optional[str] = None
-    ) -> bool:
-        """
-        Отмена платежа пользователем.
-
-        Args:
-            db: Сессия базы данных
-            transaction_id: Идентификатор транзакции
-            user_id: Идентификатор пользователя
-            reason: Причина отмены
-
-        Returns:
-            bool: Успешность операции
+            PaymentVerificationResponse: Результат проверки
 
         Raises:
-            BusinessLogicError: При ошибках доступа или отмены
+            BusinessLogicError: При ошибках проверки
         """
         try:
-            transaction = await transaction_crud.get_by_transaction_id(db, transaction_id=transaction_id)
-
+            transaction = await self.crud.get(db, id=verification_request.transaction_id)
             if not transaction:
                 raise BusinessLogicError("Transaction not found")
 
-            if transaction.user_id != user_id:
+            if not transaction.provider_payment_id:
+                raise BusinessLogicError("No provider payment ID")
+
+            # Проверяем статус у провайдера
+            if transaction.payment_method == "cryptomus":
+                payment_info = await self._verify_cryptomus_payment(
+                    transaction.provider_payment_id
+                )
+            else:
+                raise BusinessLogicError(f"Unsupported payment method: {transaction.payment_method}")
+
+            # Обновляем статус транзакции если изменился
+            new_status = self._map_provider_status(
+                transaction.payment_method,
+                payment_info.get("status", "")
+            )
+
+            if new_status != transaction.status:
+                await self._update_transaction_status(db, transaction, new_status, payment_info)
+
+            return PaymentVerificationResponse(
+                transaction_id=transaction.id,
+                status=transaction.status.value,
+                provider_status=payment_info.get("status", ""),
+                amount=str(transaction.amount),
+                currency=transaction.currency,
+                verified_at=datetime.now(timezone.utc).isoformat()
+            )
+
+        except BusinessLogicError:
+            raise
+        except Exception as e:
+            logger.error(f"Error verifying payment: {e}")
+            raise BusinessLogicError(f"Payment verification failed: {str(e)}")
+
+    async def get_payment_methods(self) -> List[Dict[str, Any]]:
+        """
+        Получение списка доступных методов оплаты.
+
+        Returns:
+            List[Dict[str, Any]]: Список методов оплаты
+        """
+        try:
+            methods = []
+
+            # Проверяем доступность Cryptomus
+            try:
+                cryptomus_api = get_payment_provider("cryptomus")
+                if await cryptomus_api.test_connection():
+                    methods.append({
+                        "id": "cryptomus",
+                        "name": "Cryptomus",
+                        "type": "crypto",
+                        "currencies": ["USD", "EUR", "RUB", "BTC", "ETH", "USDT"],
+                        "min_amount": "1.00",
+                        "max_amount": "100000.00",
+                        "description": "Cryptocurrency payments",
+                        "available": True
+                    })
+                else:
+                    methods.append({
+                        "id": "cryptomus",
+                        "name": "Cryptomus",
+                        "type": "crypto",
+                        "available": False,
+                        "error": "Service temporarily unavailable"
+                    })
+            except Exception as e:
+                logger.warning(f"Cryptomus availability check failed: {e}")
+
+            return methods
+
+        except Exception as e:
+            logger.error(f"Error getting payment methods: {e}")
+            return []
+
+    async def get_transaction_history(
+        self,
+        db: AsyncSession,
+        *,
+        user_id: Optional[int] = None,
+        skip: int = 0,
+        limit: int = 100
+    ) -> List[Transaction]:
+        """
+        Получение истории транзакций.
+
+        Args:
+            db: Сессия базы данных
+            user_id: ID пользователя (опционально)
+            skip: Количество пропускаемых записей
+            limit: Максимальное количество записей
+
+        Returns:
+            List[Transaction]: Список транзакций
+        """
+        try:
+            if user_id:
+                return await self.crud.get_user_transactions(
+                    db, user_id=user_id, skip=skip, limit=limit
+                )
+            else:
+                return await self.crud.get_multi(db, skip=skip, limit=limit)
+
+        except Exception as e:
+            logger.error(f"Error getting transaction history: {e}")
+            return []
+
+    async def cancel_payment(
+        self,
+        db: AsyncSession,
+        *,
+        transaction_id: int,
+        user_id: Optional[int] = None
+    ) -> bool:
+        """
+        Отмена платежа.
+
+        Args:
+            db: Сессия базы данных
+            transaction_id: ID транзакции
+            user_id: ID пользователя (для проверки прав)
+
+        Returns:
+            bool: Успешность отмены
+
+        Raises:
+            BusinessLogicError: При ошибках отмены
+        """
+        try:
+            transaction = await self.crud.get(db, id=transaction_id)
+            if not transaction:
+                raise BusinessLogicError("Transaction not found")
+
+            if user_id and transaction.user_id != user_id:
                 raise BusinessLogicError("Access denied")
 
             if transaction.status != TransactionStatus.PENDING:
-                raise BusinessLogicError(f"Cannot cancel transaction with status {transaction.status.value}")
+                raise BusinessLogicError(f"Cannot cancel transaction with status {transaction.status}")
 
-            # Пытаемся отменить платеж у провайдера
-            try:
-                if transaction.external_transaction_id:
-                    await cryptomus_api.cancel_payment(transaction.external_transaction_id)
-            except Exception as e:
-                logger.warning(f"Failed to cancel payment with provider: {e}")
-                # Продолжаем отмену в нашей системе
+            # Пытаемся отменить у провайдера
+            if transaction.payment_method == "cryptomus" and transaction.provider_payment_id:
+                try:
+                    cryptomus_api = get_payment_provider("cryptomus")
+                    await cryptomus_api.cancel_payment(transaction.provider_payment_id)
+                except Exception as e:
+                    logger.warning(f"Failed to cancel payment with provider: {e}")
 
-            # Обновляем статус транзакции
-            await transaction_crud.update_status(
-                db,
-                transaction=transaction,
-                status=TransactionStatus.CANCELLED
-            )
+            # Обновляем статус в нашей БД
+            transaction.status = TransactionStatus.CANCELLED
+            transaction.updated_at = datetime.now(timezone.utc)
+            await db.commit()
 
-            logger.info(f"Payment cancelled by user {user_id}: {transaction_id}, reason: {reason}")
+            logger.info(f"Payment cancelled: {transaction_id}")
             return True
 
         except BusinessLogicError:
             raise
         except Exception as e:
             logger.error(f"Error cancelling payment: {e}")
-            raise BusinessLogicError(f"Failed to cancel payment: {str(e)}")
+            return False
 
-    @staticmethod
-    async def get_user_transactions(
-            db: AsyncSession,
-        user_id: int,
-        transaction_type: Optional[TransactionType] = None,
-        status: Optional[TransactionStatus] = None,
-        skip: int = 0,
-        limit: int = 100
-    ) -> Dict[str, Any]:
-        """
-        Получение списка транзакций пользователя.
-
-        Args:
-            db: Сессия базы данных
-            user_id: Идентификатор пользователя
-            transaction_type: Фильтр по типу транзакции
-            status: Фильтр по статусу
-            skip: Количество пропускаемых записей
-            limit: Максимальное количество записей
-
-        Returns:
-            Dict[str, Any]: Список транзакций с метаданными
-        """
-        try:
-            transactions = await transaction_crud.get_user_transactions(
-                db, user_id=user_id, transaction_type=transaction_type, status=status, skip=skip, limit=limit
-            )
-
-            total_count = await transaction_crud.count(db, filters={"user_id": user_id})
-
-            return {
-                "transactions": [
-                    {
-                        "transaction_id": t.transaction_id,
-                        "amount": str(t.amount),
-                        "currency": t.currency,
-                        "type": t.transaction_type.value,
-                        "status": t.status.value,
-                        "description": t.description,
-                        "payment_url": t.payment_url,
-                        "created_at": t.created_at.isoformat(),
-                        "updated_at": t.updated_at.isoformat(),
-                        "completed_at": t.completed_at.isoformat() if t.completed_at else None
-                    }
-                    for t in transactions
-                ],
-                "total": total_count,
-                "page": (skip // limit) + 1 if limit > 0 else 1,
-                "limit": limit,
-                "has_next": (skip + limit) < total_count
-            }
-
-        except Exception as e:
-            logger.error(f"Error getting user transactions: {e}")
-            return {"transactions": [], "total": 0, "page": 1, "limit": limit, "has_next": False}
-
-    @staticmethod
     async def get_payment_statistics(
-            db: AsyncSession,
-        user_id: int,
+        self,
+        db: AsyncSession,
+        *,
+        user_id: Optional[int] = None,
         days: int = 30
     ) -> Dict[str, Any]:
         """
-        Получение статистики платежей пользователя.
+        Получение статистики платежей.
 
         Args:
             db: Сессия базы данных
-            user_id: Идентификатор пользователя
-            days: Период для статистики в днях
+            user_id: ID пользователя (опционально)
+            days: Период в днях
 
         Returns:
             Dict[str, Any]: Статистика платежей
         """
         try:
-            stats = await transaction_crud.get_transactions_stats(db, user_id=user_id, days=days)
-            return stats
+            return await self.crud.get_payment_stats(db, user_id=user_id, days=days)
+
         except Exception as e:
             logger.error(f"Error getting payment statistics: {e}")
             return {
                 "total_transactions": 0,
-                "total_amount": "0.00",
-                "status_breakdown": {},
-                "type_breakdown": {},
+                "completed_transactions": 0,
+                "total_amount": "0.00000000",
+                "success_rate": 0.0,
                 "period_days": days
             }
 
-    async def retry_failed_payment(
+    # Приватные методы для работы с провайдерами
+
+    async def _create_cryptomus_payment(
         self,
-        db: AsyncSession,
-        transaction_id: str,
-        user_id: int
+        transaction: Transaction,
+        payment_request: PaymentCreateRequest
     ) -> Dict[str, Any]:
         """
-        Повторная попытка неудачного платежа.
+        Создание платежа через Cryptomus.
+
+        Args:
+            transaction: Транзакция
+            payment_request: Параметры платежа
+
+        Returns:
+            Dict[str, Any]: Данные платежа от Cryptomus
+        """
+        try:
+            cryptomus_api = get_payment_provider("cryptomus")
+
+            return await cryptomus_api.create_payment(
+                amount=payment_request.amount,
+                currency=payment_request.currency,
+                order_id=str(transaction.id),
+                callback_url=payment_request.callback_url,
+                success_url=payment_request.success_url,
+                fail_url=payment_request.fail_url,
+                description=payment_request.description
+            )
+
+        except Exception as e:
+            logger.error(f"Error creating Cryptomus payment: {e}")
+            raise
+
+    async def _handle_cryptomus_webhook(
+        self,
+        db: AsyncSession,
+        webhook_data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Обработка webhook от Cryptomus.
 
         Args:
             db: Сессия базы данных
-            transaction_id: Идентификатор исходной транзакции
-            user_id: Идентификатор пользователя
+            webhook_data: Данные webhook
 
         Returns:
-            Dict[str, Any]: Данные нового платежа
-
-        Raises:
-            BusinessLogicError: При ошибках доступа или валидации
+            Dict[str, Any]: Результат обработки
         """
         try:
-            original_transaction = await transaction_crud.get_by_transaction_id(db, transaction_id=transaction_id)
+            # Проверяем подпись webhook
+            cryptomus_api = get_payment_provider("cryptomus")
+            received_sign = webhook_data.get("sign", "")
 
-            if not original_transaction:
-                raise BusinessLogicError("Original transaction not found")
+            if not cryptomus_api.verify_webhook_signature(webhook_data, received_sign):
+                raise BusinessLogicError("Invalid webhook signature")
 
-            if original_transaction.user_id != user_id:
-                raise BusinessLogicError("Access denied")
+            # Получаем транзакцию
+            order_id = webhook_data.get("order_id")
+            if not order_id:
+                raise BusinessLogicError("No order_id in webhook")
 
-            if original_transaction.status not in [TransactionStatus.FAILED, TransactionStatus.CANCELLED]:
-                raise BusinessLogicError("Can only retry failed or cancelled transactions")
+            transaction = await self.crud.get(db, id=int(order_id))
+            if not transaction:
+                raise BusinessLogicError(f"Transaction {order_id} not found")
 
-            user = await user_crud.get(db, obj_id=user_id)
-            if not user:
-                raise BusinessLogicError("User not found")
+            # Обновляем статус
+            provider_status = webhook_data.get("status", "")
+            new_status = self._map_cryptomus_status(provider_status)
 
-            # Создаем новый платеж с теми же параметрами
-            return await self.create_payment(
-                db,
-                user=user,
-                amount=original_transaction.amount,
-                currency=original_transaction.currency,
-                description=f"Retry of {original_transaction.transaction_id}"
-            )
+            await self._update_transaction_status(db, transaction, new_status, webhook_data)
 
-        except BusinessLogicError:
-            raise
+            logger.info(f"Processed Cryptomus webhook for transaction {transaction.id}")
+
+            return {
+                "status": "success",
+                "transaction_id": transaction.id,
+                "new_status": new_status.value
+            }
+
         except Exception as e:
-            logger.error(f"Error retrying payment: {e}")
-            raise BusinessLogicError(f"Failed to retry payment: {str(e)}")
+            logger.error(f"Error processing Cryptomus webhook: {e}")
+            raise
 
-    async def _process_successful_payment(
+    async def _verify_cryptomus_payment(self, payment_uuid: str) -> Dict[str, Any]:
+        """
+        Проверка статуса платежа в Cryptomus.
+
+        Args:
+            payment_uuid: UUID платежа
+
+        Returns:
+            Dict[str, Any]: Информация о платеже
+        """
+        try:
+            cryptomus_api = get_payment_provider("cryptomus")
+            return await cryptomus_api.get_payment_info(payment_uuid)
+
+        except Exception as e:
+            logger.error(f"Error verifying Cryptomus payment: {e}")
+            raise
+
+    def _map_provider_status(self, payment_method: str, provider_status: str) -> TransactionStatus:
+        """
+        Маппинг статуса провайдера в наш внутренний статус.
+
+        Args:
+            payment_method: Метод оплаты
+            provider_status: Статус от провайдера
+
+        Returns:
+            TransactionStatus: Внутренний статус
+        """
+        if payment_method == "cryptomus":
+            return self._map_cryptomus_status(provider_status)
+        else:
+            return TransactionStatus.PENDING
+
+    def _map_cryptomus_status(self, cryptomus_status: str) -> TransactionStatus:
+        """
+        Маппинг статуса Cryptomus в наш внутренний статус.
+
+        Args:
+            cryptomus_status: Статус от Cryptomus
+
+        Returns:
+            TransactionStatus: Внутренний статус
+        """
+        status_mapping = {
+            "pending": TransactionStatus.PENDING,
+            "process": TransactionStatus.PENDING,
+            "paid": TransactionStatus.COMPLETED,
+            "paid_over": TransactionStatus.COMPLETED,
+            "payment_wait": TransactionStatus.PENDING,
+            "confirming": TransactionStatus.PENDING,
+            "confirmed": TransactionStatus.COMPLETED,
+            "check": TransactionStatus.PENDING,
+            "cancel": TransactionStatus.CANCELLED,
+            "fail": TransactionStatus.FAILED,
+            "wrong_amount": TransactionStatus.FAILED,
+            "timeout": TransactionStatus.FAILED,
+            "expired": TransactionStatus.FAILED
+        }
+
+        return status_mapping.get(cryptomus_status.lower(), TransactionStatus.PENDING)
+
+    async def _update_transaction_status(
         self,
         db: AsyncSession,
         transaction: Transaction,
-        amount: str
+        new_status: TransactionStatus,
+        provider_data: Dict[str, Any]
     ) -> None:
+        """
+        Обновление статуса транзакции и связанных объектов.
+
+        Args:
+            db: Сессия базы данных
+            transaction: Транзакция
+            new_status: Новый статус
+            provider_data: Данные от провайдера
+        """
+        try:
+            old_status = transaction.status
+            transaction.status = new_status
+            transaction.provider_metadata = str(provider_data)
+            transaction.updated_at = datetime.now(timezone.utc)
+
+            # Если платеж завершен успешно
+            if new_status == TransactionStatus.COMPLETED and old_status != TransactionStatus.COMPLETED:
+                await self._process_successful_payment(db, transaction)
+
+            # Если платеж отменен или провален
+            elif new_status in [TransactionStatus.CANCELLED, TransactionStatus.FAILED]:
+                await self._process_failed_payment(db, transaction)
+
+            await db.commit()
+            logger.info(f"Transaction {transaction.id} status updated: {old_status} -> {new_status}")
+
+        except Exception as e:
+            await db.rollback()
+            logger.error(f"Error updating transaction status: {e}")
+            raise
+
+    async def _process_successful_payment(self, db: AsyncSession, transaction: Transaction) -> None:
         """
         Обработка успешного платежа.
 
         Args:
             db: Сессия базы данных
             transaction: Транзакция
-            amount: Сумма платежа
         """
         try:
-            # Обновление статуса транзакции
-            await transaction_crud.update_status(
-                db,
-                transaction=transaction,
-                status=TransactionStatus.COMPLETED
-            )
+            # Обновляем баланс пользователя
+            if transaction.user_id:
+                user = await user_crud.get(db, id=transaction.user_id)
+                if user:
+                    await user_crud.update_balance(db, user=user, amount=transaction.amount)
 
-            # Пополнение баланса пользователя
-            user = await user_crud.get(db, obj_id=transaction.user_id)
-            if user:
-                await user_crud.update_balance(
-                    db,
-                    user=user,
-                    amount=Decimal(amount)
-                )
-
-                logger.info(f"Balance updated for user {user.id}: +{amount}")
-
-            # Активация заказа если есть
+            # Обновляем статус заказа
             if transaction.order_id:
-                await self._activate_order_after_payment(db, transaction.order_id)
+                order = await order_crud.get(db, id=transaction.order_id)
+                if order:
+                    await order_crud.update_status(db, order=order, status=OrderStatus.PAID)
+
+            logger.info(f"Processed successful payment for transaction {transaction.id}")
 
         except Exception as e:
             logger.error(f"Error processing successful payment: {e}")
             raise
 
-    @staticmethod
-    async def _activate_order_after_payment(db: AsyncSession, order_id: int) -> None:
+    async def _process_failed_payment(self, db: AsyncSession, transaction: Transaction) -> None:
         """
-        Активация заказа после успешной оплаты.
+        Обработка неудачного платежа.
 
         Args:
             db: Сессия базы данных
-            order_id: Идентификатор заказа
+            transaction: Транзакция
         """
         try:
-            from app.models.models import OrderStatus
+            # Обновляем статус заказа
+            if transaction.order_id:
+                order = await order_crud.get(db, id=transaction.order_id)
+                if order and order.status == OrderStatus.PENDING:
+                    await order_crud.update_status(db, order=order, status=OrderStatus.CANCELLED)
 
-            order = await order_crud.get(db, obj_id=order_id)
-            if order:
-                await order_crud.update_status(
-                    db,
-                    order=order,
-                    status=OrderStatus.PAID
-                )
-
-                # Активация прокси для заказа
-                from app.services.proxy_service import proxy_service
-                await proxy_service.activate_proxies_for_order(db, order)
-
-                logger.info(f"Order {order_id} activated after payment")
+            logger.info(f"Processed failed payment for transaction {transaction.id}")
 
         except Exception as e:
-            logger.error(f"Error activating order {order_id} after payment: {e}")
+            logger.error(f"Error processing failed payment: {e}")
+            raise
 
-    async def _sync_payment_status(self, db: AsyncSession, transaction: Transaction) -> None:
+    async def _send_payment_notification(
+        self,
+        transaction: Transaction,
+        status: str,
+        user_email: Optional[str] = None
+    ) -> None:
         """
-        Синхронизация статуса платежа с провайдером.
+        Отправка уведомления о платеже.
 
         Args:
-            db: Сессия базы данных
-            transaction: Транзакция для синхронизации
+            transaction: Транзакция
+            status: Статус платежа
+            user_email: Email пользователя
         """
         try:
-            if not transaction.external_transaction_id:
-                return
-
-            payment_info = await cryptomus_api.get_payment_info(transaction.external_transaction_id)
-
-            if payment_info:
-                provider_status = payment_info.get("status", "").lower()
-                internal_status = cryptomus_api.get_payment_status_mapping(provider_status)
-
-                if internal_status == "completed" and transaction.status == TransactionStatus.PENDING:
-                    await self._process_successful_payment(db, transaction, str(transaction.amount))
-                elif internal_status in ["failed", "cancelled"] and transaction.status == TransactionStatus.PENDING:
-                    new_status = TransactionStatus.FAILED if internal_status == "failed" else TransactionStatus.CANCELLED
-                    await transaction_crud.update_status(db, transaction=transaction, status=new_status)
+            # Здесь можно добавить отправку email/SMS уведомлений
+            logger.info(f"Payment notification sent for transaction {transaction.id}: {status}")
 
         except Exception as e:
-            logger.error(f"Error syncing payment status for transaction {transaction.transaction_id}: {e}")
+            logger.error(f"Error sending payment notification: {e}")
 
-    @staticmethod
-    async def create_refund(
-            db: AsyncSession,
-        transaction_id: str,
-        refund_amount: Optional[Decimal] = None,
-        reason: Optional[str] = None
-    ) -> Dict[str, Any]:
+    async def _calculate_fees(self, amount: Decimal, payment_method: str) -> Decimal:
         """
-        Создание возврата средств.
+        Расчет комиссий за платеж.
 
         Args:
-            db: Сессия базы данных
-            transaction_id: Идентификатор исходной транзакции
-            refund_amount: Сумма возврата (если не указана, возвращается полная сумма)
-            reason: Причина возврата
+            amount: Сумма платежа
+            payment_method: Метод оплаты
 
         Returns:
-            Dict[str, Any]: Данные возврата
-
-        Raises:
-            BusinessLogicError: При ошибках валидации или создания возврата
+            Decimal: Размер комиссии
         """
         try:
-            original_transaction = await transaction_crud.get_by_transaction_id(db, transaction_id=transaction_id)
-
-            if not original_transaction:
-                raise BusinessLogicError("Original transaction not found")
-
-            if original_transaction.status != TransactionStatus.COMPLETED:
-                raise BusinessLogicError("Can only refund completed transactions")
-
-            if refund_amount is None:
-                refund_amount = original_transaction.amount
-            elif refund_amount > original_transaction.amount:
-                raise BusinessLogicError("Refund amount cannot exceed original amount")
-
-            # Создаем транзакцию возврата
-            refund_transaction = await transaction_crud.create_transaction(
-                db,
-                user_id=original_transaction.user_id,
-                amount=refund_amount,
-                currency=original_transaction.currency,
-                transaction_type=TransactionType.REFUND,
-                description=f"Refund for {transaction_id}: {reason or 'No reason provided'}"
-            )
-
-            # Обновляем баланс пользователя
-            user = await user_crud.get(db, obj_id=original_transaction.user_id)
-            if user:
-                await user_crud.update_balance(db, user=user, amount=refund_amount)
-
-            # Отмечаем как выполненный
-            await transaction_crud.update_status(
-                db,
-                transaction=refund_transaction,
-                status=TransactionStatus.COMPLETED
-            )
-
-            logger.info(f"Refund created: {refund_transaction.transaction_id} for {refund_amount}")
-
-            return {
-                "refund_transaction_id": refund_transaction.transaction_id,
-                "original_transaction_id": transaction_id,
-                "refund_amount": str(refund_amount),
-                "currency": original_transaction.currency,
-                "reason": reason,
-                "status": "completed"
+            # Комиссии по методам оплаты
+            fee_rates = {
+                "cryptomus": Decimal("0.02"),  # 2%
+                "card": Decimal("0.03"),       # 3%
+                "bank": Decimal("0.01")        # 1%
             }
+
+            fee_rate = fee_rates.get(payment_method, Decimal("0.025"))  # 2.5% по умолчанию
+            return amount * fee_rate
+
+        except Exception as e:
+            logger.error(f"Error calculating fees: {e}")
+            return Decimal("0")
+
+    async def _validate_payment_limits(
+        self,
+        db: AsyncSession,
+        user_id: Optional[int],
+        amount: Decimal,
+        currency: str
+    ) -> bool:
+        """
+        Проверка лимитов платежей.
+
+        Args:
+            db: Сессия базы данных
+            user_id: ID пользователя
+            amount: Сумма платежа
+            currency: Валюта
+
+        Returns:
+            bool: True если лимиты не превышены
+
+        Raises:
+            BusinessLogicError: При превышении лимитов
+        """
+        try:
+            # Дневные лимиты
+            daily_limit = Decimal("10000.00")  # $10,000 в день
+
+            if user_id:
+                # Проверяем дневной лимит пользователя
+                daily_total = await self.crud.get_daily_total(db, user_id=user_id)
+                if daily_total + amount > daily_limit:
+                    raise BusinessLogicError(f"Daily limit exceeded. Limit: {daily_limit}, Current: {daily_total}")
+
+            # Минимальные суммы
+            min_amounts = {
+                "USD": Decimal("1.00"),
+                "EUR": Decimal("1.00"),
+                "RUB": Decimal("100.00"),
+                "BTC": Decimal("0.0001"),
+                "ETH": Decimal("0.001"),
+                "USDT": Decimal("1.00")
+            }
+
+            min_amount = min_amounts.get(currency, Decimal("1.00"))
+            if amount < min_amount:
+                raise BusinessLogicError(f"Amount below minimum. Minimum: {min_amount} {currency}")
+
+            return True
 
         except BusinessLogicError:
             raise
         except Exception as e:
-            logger.error(f"Error creating refund: {e}")
-            raise BusinessLogicError(f"Failed to create refund: {str(e)}")
+            logger.error(f"Error validating payment limits: {e}")
+            return True  # Разрешаем в случае ошибки
+
+    # Реализация абстрактных методов BaseService
+    async def create(self, db: AsyncSession, *, obj_in: TransactionCreate) -> Transaction:
+        return await self.crud.create(db, obj_in=obj_in)
+
+    async def get(self, db: AsyncSession, *, id: int) -> Optional[Transaction]:
+        return await self.crud.get(db, id=id)
+
+    async def update(self, db: AsyncSession, *, db_obj: Transaction, obj_in: TransactionUpdate) -> Transaction:
+        return await self.crud.update(db, db_obj=db_obj, obj_in=obj_in)
+
+    async def delete(self, db: AsyncSession, *, id: int) -> bool:
+        result = await self.crud.delete(db, id=id)
+        return result is not None
+
+    async def get_multi(self, db: AsyncSession, *, skip: int = 0, limit: int = 100) -> List[Transaction]:
+        return await self.crud.get_multi(db, skip=skip, limit=limit)
 
 
 payment_service = PaymentService()

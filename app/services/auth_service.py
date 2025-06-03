@@ -3,11 +3,10 @@
 
 Обеспечивает функциональность регистрации, входа в систему,
 создания токенов доступа и валидации пользователей.
-Полная production-ready реализация без мок-данных.
 """
 
 import logging
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 from typing import Optional, Dict, Any
 
 from fastapi import HTTPException, status
@@ -26,7 +25,7 @@ logger = logging.getLogger(__name__)
 class AuthBusinessRules(BusinessRuleValidator):
     """Валидатор бизнес-правил для аутентификации."""
 
-    async def validate(self, data: dict, db: AsyncSession) -> bool:
+    async def validate(self, data: Dict[str, Any], db: AsyncSession) -> bool:
         """
         Валидация бизнес-правил для аутентификации.
 
@@ -210,13 +209,13 @@ class AuthService:
         """
         try:
             # Проверка на заблокированный аккаунт
-            self._check_account_lockout(email)  # ИСПРАВЛЕНО: убрал параметр db
+            self._check_account_lockout(email)
 
             user = await user_crud.authenticate(db, email=email, password=password)
 
             if not user:
                 logger.warning(f"Failed login attempt for email: {email}")
-                self._increment_failed_attempts(email)  # ИСПРАВЛЕНО: убрал параметр db
+                self._increment_failed_attempts(email)
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Incorrect email or password",
@@ -231,7 +230,7 @@ class AuthService:
                 )
 
             # Сброс счетчика неудачных попыток
-            self._reset_failed_attempts(email)  # ИСПРАВЛЕНО: убрал параметр db
+            self._reset_failed_attempts(email)
 
             # Обновление времени последнего входа
             await user_crud.update_last_login(db, user_id=user.id)
@@ -313,7 +312,7 @@ class AuthService:
                 detail="Refresh token creation failed"
             )
 
-    @staticmethod  # ИСПРАВЛЕНО: добавлен @staticmethod
+    @staticmethod
     def logout_user(user: User) -> bool:
         """
         Выход пользователя из системы.
@@ -399,7 +398,7 @@ class AuthService:
                 "is_verified": user.is_verified,
                 "is_active": user.is_active,
                 "is_guest": user.is_guest,
-                "balance": str(user.balance) if hasattr(user, 'balance') else "0.00",
+                "balance": str(user.balance) if hasattr(user, 'balance') else "0.00000000",
                 "created_at": user.created_at.isoformat() if user.created_at else None
             }
         }
@@ -409,7 +408,7 @@ class AuthService:
 
         return response
 
-    @staticmethod  # ИСПРАВЛЕНО: добавлен @staticmethod
+    @staticmethod
     async def verify_user_email(user_id: int, db: AsyncSession) -> bool:
         """
         Подтверждение email пользователя.
@@ -469,7 +468,7 @@ class AuthService:
             # Обновляем пароль
             new_hashed_password = user_crud.get_password_hash(new_password)
             user.hashed_password = new_hashed_password
-            user.updated_at = datetime.now()
+            user.updated_at = datetime.now(timezone.utc)
 
             await db.commit()
             await db.refresh(user)
@@ -491,8 +490,8 @@ class AuthService:
                 detail="Password change failed"
             )
 
-    @staticmethod  # ИСПРАВЛЕНО: добавлен @staticmethod
-    def _check_account_lockout(email: str) -> None:  # ИСПРАВЛЕНО: убрал параметр db
+    @staticmethod
+    def _check_account_lockout(email: str) -> None:
         """
         Проверка блокировки аккаунта.
 
@@ -505,14 +504,13 @@ class AuthService:
         try:
             # В production здесь можно использовать Redis для хранения состояния блокировок
             # Пока упрощенная реализация
-            # ИСПРАВЛЕНО: убрал неиспользуемую переменную lockout_key
             logger.debug(f"Checking account lockout for {email}")
 
         except Exception as e:
             logger.error(f"Error checking account lockout: {e}")
 
-    @staticmethod  # ИСПРАВЛЕНО: добавлен @staticmethod
-    def _increment_failed_attempts(email: str) -> None:  # ИСПРАВЛЕНО: убрал параметр db
+    @staticmethod
+    def _increment_failed_attempts(email: str) -> None:
         """
         Увеличение счетчика неудачных попыток входа.
 
@@ -521,14 +519,13 @@ class AuthService:
         """
         try:
             # В production здесь будет инкремент счетчика в Redis
-            # ИСПРАВЛЕНО: убрал неиспользуемую переменную attempts_key
             logger.warning(f"Incremented failed attempts for {email}")
 
         except Exception as e:
             logger.error(f"Error incrementing failed attempts: {e}")
 
-    @staticmethod  # ИСПРАВЛЕНО: добавлен @staticmethod
-    def _reset_failed_attempts(email: str) -> None:  # ИСПРАВЛЕНО: убрал параметр db
+    @staticmethod
+    def _reset_failed_attempts(email: str) -> None:
         """
         Сброс счетчика неудачных попыток входа.
 
@@ -537,13 +534,12 @@ class AuthService:
         """
         try:
             # В production здесь будет сброс счетчика в Redis
-            # ИСПРАВЛЕНО: убрал неиспользуемую переменную attempts_key
             logger.debug(f"Reset failed attempts for {email}")
 
         except Exception as e:
             logger.error(f"Error resetting failed attempts: {e}")
 
-    @staticmethod  # ИСПРАВЛЕНО: добавлен @staticmethod
+    @staticmethod
     async def generate_password_reset_token(email: str, db: AsyncSession) -> Optional[str]:
         """
         Генерация токена для сброса пароля.
@@ -611,7 +607,7 @@ class AuthService:
                     detail="Invalid reset token"
                 )
 
-            user = await user_crud.get(db, obj_id=int(user_id))
+            user = await user_crud.get(db, id=int(user_id))
             if not user:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -625,7 +621,7 @@ class AuthService:
             # Обновляем пароль
             new_hashed_password = user_crud.get_password_hash(new_password)
             user.hashed_password = new_hashed_password
-            user.updated_at = datetime.now()
+            user.updated_at = datetime.now(timezone.utc)
 
             await db.commit()
             await db.refresh(user)
@@ -645,6 +641,129 @@ class AuthService:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Password reset failed"
+            )
+
+    async def create_guest_user(self, db: AsyncSession, session_id: str) -> User:
+        """
+        Создание гостевого пользователя.
+
+        Args:
+            db: Сессия базы данных
+            session_id: Идентификатор сессии
+
+        Returns:
+            User: Созданный гостевой пользователь
+
+        Raises:
+            HTTPException: При ошибках создания
+        """
+        try:
+            guest_user = await user_crud.create_guest_user(db, session_id=session_id)
+            if not guest_user:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Failed to create guest user"
+                )
+
+            logger.info(f"Guest user created with session_id: {session_id}")
+            return guest_user
+
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Error creating guest user: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Guest user creation failed"
+            )
+
+    async def convert_guest_to_registered(
+        self,
+        guest_user: User,
+        user_data: UserCreate,
+        db: AsyncSession
+    ) -> User:
+        """
+        Конвертация гостевого пользователя в зарегистрированного.
+
+        Args:
+            guest_user: Гостевой пользователь
+            user_data: Данные для регистрации
+            db: Сессия базы данных
+
+        Returns:
+            User: Конвертированный пользователь
+
+        Raises:
+            HTTPException: При ошибках конвертации
+        """
+        try:
+            # Валидация данных
+            await self.validate_user_data(user_data, db)
+
+            # Конвертируем пользователя
+            converted_user = await user_crud.convert_guest_to_registered(
+                db, guest_user=guest_user, user_data=user_data
+            )
+
+            if not converted_user:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Failed to convert guest user"
+                )
+
+            logger.info(f"Guest user converted to registered: {converted_user.email}")
+            return converted_user
+
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Error converting guest user: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="User conversion failed"
+            )
+
+    async def validate_token_and_get_user(self, token: str, db: AsyncSession) -> Optional[User]:
+        """
+        Валидация токена и получение пользователя.
+
+        Args:
+            token: JWT токен
+            db: Сессия базы данных
+
+        Returns:
+            Optional[User]: Пользователь или None
+
+        Raises:
+            HTTPException: При невалидном токене
+        """
+        try:
+            payload = auth_handler.decode_token(token)
+            user_id = auth_handler.get_token_subject(payload)
+
+            if not user_id:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid token"
+                )
+
+            user = await user_crud.get(db, id=int(user_id))
+            if not user or not user.is_active:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="User not found or inactive"
+                )
+
+            return user
+
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Error validating token: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Token validation failed"
             )
 
 
