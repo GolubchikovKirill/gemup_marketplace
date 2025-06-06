@@ -3565,3 +3565,846 @@ pages
 2025-06-03 12:14:14 [INFO] app.core.migrations:139 - Migration status: {'current_revision': 'db873f794314', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
 2025-06-03 12:14:14 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
 2025-06-03 12:14:14 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-06 08:48:33 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 08:48:33 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 08:48:34 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 08:48:34 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 08:48:34 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 08:48:34 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 08:48:34 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 08:48:34 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 08:48:34 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 08:48:34 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 08:48:34 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 08:48:34 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 08:48:34 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 08:48:34 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 08:48:34 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 08:48:34 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 08:48:34 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 08:48:34 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 08:48:34 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 08:48:34 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 08:48:34 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 08:48:34 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 08:48:34 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 08:48:34 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 08:48:34 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 08:48:34 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 08:48:34 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 08:48:34 [INFO] app.core.migrations:139 - Migration status: {'current_revision': 'db873f794314', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-06 08:48:34 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-06 08:48:34 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-06 08:51:18 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 08:51:18 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 08:51:18 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 08:51:18 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 08:51:18 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 08:51:18 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 08:51:18 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 08:51:18 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 08:51:18 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 08:51:18 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 08:51:18 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 08:51:18 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 08:51:18 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 08:51:18 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 08:51:18 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 08:51:18 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 08:51:18 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 08:51:18 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 08:51:18 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 08:51:18 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 08:51:18 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 08:51:18 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 08:51:18 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 08:51:18 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 08:51:18 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 08:51:18 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 08:51:18 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 08:51:18 [INFO] app.core.migrations:139 - Migration status: {'current_revision': 'db873f794314', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-06 08:51:18 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-06 08:51:18 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-06 08:54:02 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 08:54:02 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 08:54:02 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 08:54:02 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 08:54:02 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 08:54:02 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 08:54:02 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 08:54:03 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 08:54:03 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 08:54:03 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 08:54:03 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 08:54:03 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 08:54:03 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 08:54:03 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 08:54:03 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 08:54:03 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 08:54:03 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 08:54:03 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 08:54:03 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 08:54:03 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 08:54:03 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 08:54:03 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 08:54:03 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 08:54:03 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 08:54:03 [INFO] app.core.migrations:319 - 📦 Alembic version table not found, initializing...
+2025-06-06 08:54:03 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 08:57:56 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 08:57:56 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 08:57:56 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 08:57:56 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 08:57:56 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 08:57:56 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 08:57:56 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 08:57:56 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 08:57:56 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 08:57:56 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 08:57:56 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 08:57:56 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 08:57:57 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 08:57:57 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 08:57:57 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 08:57:57 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 08:57:57 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 08:57:57 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 08:57:57 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 08:57:57 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 08:57:57 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 08:57:57 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 08:57:57 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 08:57:57 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 08:57:57 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 08:57:57 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 08:57:57 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 08:57:57 [INFO] app.core.migrations:139 - Migration status: {'current_revision': None, 'head_revision': '2185c6547bcc', 'is_up_to_date': False, 'total_revisions': 1, 'needs_upgrade': True}
+2025-06-06 08:57:57 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-06 08:57:57 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-06 09:03:51 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:03:51 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:03:51 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:03:51 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:03:51 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:03:51 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:03:51 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:03:51 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:03:51 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:03:51 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:03:51 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:03:51 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:03:51 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 09:03:51 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:03:51 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:03:51 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:03:51 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:03:51 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:03:51 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:03:51 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:03:51 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:03:51 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:03:51 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:03:51 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:03:51 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:03:51 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:03:51 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:03:51 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '2185c6547bcc', 'head_revision': '2185c6547bcc', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:03:51 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:03:51 [INFO] app.core.main:109 - ✅ Database migrations completed
+2025-06-06 09:03:51 [INFO] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:03:51 [INFO] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:03:51 [INFO] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:03:56 [INFO] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:03:56 [INFO] app.core.main:165 - 🔄 Closing database connections...
+2025-06-06 09:03:56 [INFO] app.core.main:167 - ✅ Database connections closed
+2025-06-06 09:03:56 [INFO] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-06 09:03:56 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:03:56 [INFO] app.core.main:178 - ✅ Redis disconnected
+2025-06-06 09:03:56 [INFO] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:03:56 [INFO] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:03:57 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:03:57 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:03:57 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:03:57 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:03:57 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:03:57 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:03:57 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:03:57 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:03:57 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:03:57 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:03:57 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:03:57 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:03:57 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 09:03:57 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:03:57 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:03:57 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:03:57 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:03:57 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:03:57 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:03:57 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:03:57 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:03:57 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:03:57 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:03:57 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:03:57 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:03:57 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:03:57 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:03:57 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '2185c6547bcc', 'head_revision': None, 'is_up_to_date': False, 'total_revisions': 0, 'needs_upgrade': True}
+2025-06-06 09:03:57 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-06 09:03:57 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-06 09:06:16 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:06:16 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:06:16 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:06:16 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:06:16 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:06:16 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:06:16 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:06:16 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:06:16 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:06:16 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:06:16 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:06:16 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:06:16 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 09:06:16 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:06:16 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:06:16 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:06:16 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:06:16 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:06:16 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:06:16 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:06:16 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:06:16 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:06:16 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:06:16 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:06:16 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:06:16 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:06:16 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:06:16 [INFO] app.core.migrations:139 - Migration status: {'current_revision': None, 'head_revision': None, 'is_up_to_date': True, 'total_revisions': 0, 'needs_upgrade': False}
+2025-06-06 09:06:16 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:06:16 [INFO] app.core.main:109 - ✅ Database migrations completed
+2025-06-06 09:06:16 [INFO] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:06:16 [INFO] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:06:16 [INFO] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:06:40 [INFO] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:06:40 [INFO] app.core.main:165 - 🔄 Closing database connections...
+2025-06-06 09:06:40 [INFO] app.core.main:167 - ✅ Database connections closed
+2025-06-06 09:06:40 [INFO] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-06 09:06:40 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:06:40 [INFO] app.core.main:178 - ✅ Redis disconnected
+2025-06-06 09:06:40 [INFO] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:06:40 [INFO] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:06:40 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:06:40 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:06:40 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:06:40 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:06:40 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:06:40 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:06:40 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:06:40 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:06:40 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:06:40 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:06:40 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:06:40 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:06:40 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 09:06:40 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:06:40 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:06:40 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:06:40 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:06:40 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:06:40 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:06:40 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:06:40 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:06:40 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:06:40 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:06:40 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:06:40 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:06:41 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:06:41 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:06:41 [INFO] app.core.migrations:139 - Migration status: {'current_revision': None, 'head_revision': '839cf14f37ca', 'is_up_to_date': False, 'total_revisions': 1, 'needs_upgrade': True}
+2025-06-06 09:06:41 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-06 09:06:41 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-06 09:12:34 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:12:34 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:12:35 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:12:35 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:12:35 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:12:35 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:12:35 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:12:35 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:12:35 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:12:35 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:12:35 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:12:35 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:12:35 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 09:12:35 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:12:35 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:12:35 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:12:35 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:12:35 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:12:35 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:12:35 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:12:35 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:12:35 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:12:35 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:12:35 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:12:35 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:12:35 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:12:35 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:12:35 [INFO] app.core.migrations:139 - Migration status: {'current_revision': None, 'head_revision': '839cf14f37ca', 'is_up_to_date': False, 'total_revisions': 1, 'needs_upgrade': True}
+2025-06-06 09:12:35 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-06 09:12:35 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-06 09:12:47 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:12:47 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:12:47 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:12:47 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:12:47 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:12:47 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:12:47 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:12:47 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:12:47 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:12:47 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:12:47 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:12:47 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:12:47 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 09:12:47 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:12:47 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:12:47 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:12:47 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:12:47 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:12:47 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:12:47 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:12:47 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:12:47 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:12:47 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:12:47 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:12:47 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:12:47 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:12:47 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:12:47 [INFO] app.core.migrations:139 - Migration status: {'current_revision': None, 'head_revision': None, 'is_up_to_date': True, 'total_revisions': 0, 'needs_upgrade': False}
+2025-06-06 09:12:47 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:12:47 [INFO] app.core.main:109 - ✅ Database migrations completed
+2025-06-06 09:12:47 [INFO] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:12:47 [INFO] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:12:47 [INFO] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:12:55 [INFO] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:12:55 [INFO] app.core.main:165 - 🔄 Closing database connections...
+2025-06-06 09:12:55 [INFO] app.core.main:167 - ✅ Database connections closed
+2025-06-06 09:12:55 [INFO] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-06 09:12:55 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:12:55 [INFO] app.core.main:178 - ✅ Redis disconnected
+2025-06-06 09:12:55 [INFO] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:12:55 [INFO] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:12:56 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:12:56 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:12:56 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:12:56 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:12:56 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:12:56 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:12:56 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:12:56 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:12:56 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:12:56 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:12:56 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:12:56 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:12:56 [INFO] app.core.main:493 - ✅ All routers configured
+2025-06-06 09:12:56 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:12:56 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:12:56 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:12:56 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:12:56 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:12:56 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:12:56 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:12:56 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:12:56 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:12:56 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:12:56 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:12:56 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:12:56 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:12:56 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:12:56 [INFO] app.core.migrations:139 - Migration status: {'current_revision': None, 'head_revision': '31851406acc6', 'is_up_to_date': False, 'total_revisions': 1, 'needs_upgrade': True}
+2025-06-06 09:12:56 [INFO] app.core.migrations:343 - 📦 Database schema needs update, running migrations...
+2025-06-06 09:12:56 [INFO] app.core.migrations:163 - 🔄 Running migrations to revision: head
+2025-06-06 09:14:36 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:14:36 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:14:36 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:14:36 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:14:36 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:14:36 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:14:36 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:14:36 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:14:36 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:14:36 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:14:36 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:14:36 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:14:36 [INFO] app.core.main:489 - ✅ All routers configured
+2025-06-06 09:14:36 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:14:36 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:14:36 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:14:36 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:14:36 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:14:36 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:14:36 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:14:36 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:14:36 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:14:36 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:14:36 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:14:36 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:14:36 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:14:36 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:14:36 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:14:36 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:14:36 [INFO] app.core.main:109 - ✅ Database migrations completed
+2025-06-06 09:14:36 [INFO] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:14:36 [INFO] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:14:36 [INFO] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:18:02 [INFO] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:18:02 [INFO] app.core.main:165 - 🔄 Closing database connections...
+2025-06-06 09:18:02 [INFO] app.core.main:167 - ✅ Database connections closed
+2025-06-06 09:18:02 [INFO] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-06 09:18:02 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:18:02 [INFO] app.core.main:178 - ✅ Redis disconnected
+2025-06-06 09:18:02 [INFO] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:18:02 [INFO] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:18:03 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:18:03 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:18:03 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:18:03 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:18:03 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:18:03 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:18:03 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:18:03 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:18:03 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:18:03 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:18:03 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:18:03 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:18:03 [INFO] app.core.main:489 - ✅ All routers configured
+2025-06-06 09:18:03 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:18:03 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:18:03 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:18:03 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:18:03 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:18:03 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:18:03 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:18:03 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:18:03 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:18:03 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:18:03 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:18:03 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:18:03 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:18:03 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:18:03 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:18:03 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:18:03 [INFO] app.core.main:109 - ✅ Database migrations completed
+2025-06-06 09:18:03 [INFO] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:18:03 [INFO] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:18:03 [INFO] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:19:30 [INFO] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:19:30 [INFO] app.core.main:165 - 🔄 Closing database connections...
+2025-06-06 09:19:30 [INFO] app.core.main:167 - ✅ Database connections closed
+2025-06-06 09:19:30 [INFO] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-06 09:19:30 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:19:30 [INFO] app.core.main:178 - ✅ Redis disconnected
+2025-06-06 09:19:30 [INFO] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:19:30 [INFO] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:19:30 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:19:31 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:19:31 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:19:31 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:19:31 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:19:31 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:19:31 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:19:31 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:19:31 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:19:31 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:19:31 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:19:31 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:19:31 [INFO] app.core.main:489 - ✅ All routers configured
+2025-06-06 09:19:31 [INFO] app.core.main:63 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:19:31 [INFO] app.core.main:64 - 📊 Environment: development
+2025-06-06 09:19:31 [INFO] app.core.main:65 - 📊 Debug mode: True
+2025-06-06 09:19:31 [INFO] app.core.main:66 - 📊 Version: 1.0.0
+2025-06-06 09:19:31 [INFO] app.core.main:73 - 🔄 Checking database connection...
+2025-06-06 09:19:31 [INFO] app.core.main:77 - ✅ Database connection established
+2025-06-06 09:19:31 [INFO] app.core.main:89 - 🔄 Connecting to Redis...
+2025-06-06 09:19:31 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:19:31 [INFO] app.core.main:94 - ✅ Redis connection established
+2025-06-06 09:19:31 [INFO] app.core.main:107 - 🔄 Running database migrations...
+2025-06-06 09:19:31 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:19:31 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:19:31 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:19:31 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:19:31 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:19:31 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:19:31 [INFO] app.core.main:109 - ✅ Database migrations completed
+2025-06-06 09:19:31 [INFO] app.core.main:122 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:19:31 [INFO] app.core.main:136 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:19:31 [INFO] app.core.main:153 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:19:37 [INFO] app.core.middleware:62 - [6546765f] GET / - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:19:37 [INFO] app.core.middleware:76 - [6546765f] GET / - Status: 200 - Time: 0.0139s - Size: unknown bytes
+2025-06-06 09:19:43 [INFO] app.core.middleware:62 - [19d34a2a] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:19:43 [INFO] app.core.middleware:76 - [19d34a2a] GET /docs - Status: 200 - Time: 0.0082s - Size: unknown bytes
+2025-06-06 09:19:47 [INFO] app.core.middleware:62 - [70b8a42d] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:19:47 [INFO] app.core.middleware:76 - [70b8a42d] GET /docs - Status: 200 - Time: 0.0020s - Size: unknown bytes
+2025-06-06 09:19:55 [INFO] app.core.middleware:62 - [fa45a36f] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:19:55 [INFO] app.core.middleware:76 - [fa45a36f] GET /docs - Status: 200 - Time: 0.0021s - Size: unknown bytes
+2025-06-06 09:21:16 [INFO] app.core.middleware:62 - [e5034aeb] GET / - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:21:16 [INFO] app.core.middleware:76 - [e5034aeb] GET / - Status: 200 - Time: 0.0099s - Size: 189 bytes
+2025-06-06 09:21:22 [INFO] app.core.middleware:62 - [1f8e2988] GET /health - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:21:22 [INFO] app.core.middleware:76 - [1f8e2988] GET /health - Status: 200 - Time: 0.0185s - Size: 443 bytes
+2025-06-06 09:21:51 [INFO] app.core.middleware:62 - [aac97d93] GET /openapi.json - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:21:51 [INFO] app.core.middleware:76 - [aac97d93] GET /openapi.json - Status: 200 - Time: 0.1346s - Size: 107956 bytes
+2025-06-06 09:21:58 [INFO] app.core.middleware:62 - [ff8e593f] HEAD /redoc - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:21:58 [INFO] app.core.middleware:76 - [ff8e593f] HEAD /redoc - Status: 200 - Time: 0.0104s - Size: 901 bytes
+2025-06-06 09:23:13 [INFO] app.core.main:158 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:23:13 [INFO] app.core.main:165 - 🔄 Closing database connections...
+2025-06-06 09:23:13 [INFO] app.core.main:167 - ✅ Database connections closed
+2025-06-06 09:23:13 [INFO] app.core.main:176 - 🔄 Disconnecting from Redis...
+2025-06-06 09:23:13 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:23:13 [INFO] app.core.main:178 - ✅ Redis disconnected
+2025-06-06 09:23:13 [INFO] app.core.main:186 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:23:13 [INFO] app.core.main:190 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:23:14 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:23:14 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:23:14 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:23:14 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:23:14 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:23:14 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:23:14 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:23:14 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:23:14 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:23:14 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:23:14 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:23:14 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:23:14 [INFO] app.core.main:489 - ✅ All routers configured
+2025-06-06 09:23:14 [INFO] app.core.main:62 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:23:14 [INFO] app.core.main:63 - 📊 Environment: development
+2025-06-06 09:23:14 [INFO] app.core.main:64 - 📊 Debug mode: True
+2025-06-06 09:23:14 [INFO] app.core.main:65 - 📊 Version: 1.0.0
+2025-06-06 09:23:14 [INFO] app.core.main:72 - 🔄 Checking database connection...
+2025-06-06 09:23:14 [INFO] app.core.main:76 - ✅ Database connection established
+2025-06-06 09:23:14 [INFO] app.core.main:88 - 🔄 Connecting to Redis...
+2025-06-06 09:23:14 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:23:14 [INFO] app.core.main:93 - ✅ Redis connection established
+2025-06-06 09:23:14 [INFO] app.core.main:106 - 🔄 Running database migrations...
+2025-06-06 09:23:14 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:23:15 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:23:15 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:23:15 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:23:15 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:23:15 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:23:15 [INFO] app.core.main:108 - ✅ Database migrations completed
+2025-06-06 09:23:15 [INFO] app.core.main:121 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:23:15 [INFO] app.core.main:135 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:23:15 [INFO] app.core.main:152 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:23:21 [INFO] app.core.main:157 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:23:21 [INFO] app.core.main:164 - 🔄 Closing database connections...
+2025-06-06 09:23:21 [INFO] app.core.main:166 - ✅ Database connections closed
+2025-06-06 09:23:21 [INFO] app.core.main:175 - 🔄 Disconnecting from Redis...
+2025-06-06 09:23:21 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:23:21 [INFO] app.core.main:177 - ✅ Redis disconnected
+2025-06-06 09:23:21 [INFO] app.core.main:185 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:23:21 [INFO] app.core.main:189 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:23:22 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:23:22 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:23:22 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:23:22 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:23:22 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:23:22 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:23:22 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:23:22 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:23:22 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:23:22 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:23:22 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:23:22 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:23:22 [INFO] app.core.main:491 - ✅ All routers configured
+2025-06-06 09:23:22 [INFO] app.core.main:62 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:23:22 [INFO] app.core.main:63 - 📊 Environment: development
+2025-06-06 09:23:22 [INFO] app.core.main:64 - 📊 Debug mode: True
+2025-06-06 09:23:22 [INFO] app.core.main:65 - 📊 Version: 1.0.0
+2025-06-06 09:23:22 [INFO] app.core.main:72 - 🔄 Checking database connection...
+2025-06-06 09:23:22 [INFO] app.core.main:76 - ✅ Database connection established
+2025-06-06 09:23:22 [INFO] app.core.main:88 - 🔄 Connecting to Redis...
+2025-06-06 09:23:22 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:23:22 [INFO] app.core.main:93 - ✅ Redis connection established
+2025-06-06 09:23:22 [INFO] app.core.main:106 - 🔄 Running database migrations...
+2025-06-06 09:23:22 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:23:22 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:23:22 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:23:22 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:23:22 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:23:22 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:23:22 [INFO] app.core.main:108 - ✅ Database migrations completed
+2025-06-06 09:23:22 [INFO] app.core.main:121 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:23:22 [INFO] app.core.main:135 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:23:22 [INFO] app.core.main:152 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:23:27 [INFO] app.core.main:157 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:23:27 [INFO] app.core.main:164 - 🔄 Closing database connections...
+2025-06-06 09:23:28 [INFO] app.core.main:166 - ✅ Database connections closed
+2025-06-06 09:23:28 [INFO] app.core.main:175 - 🔄 Disconnecting from Redis...
+2025-06-06 09:23:28 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:23:28 [INFO] app.core.main:177 - ✅ Redis disconnected
+2025-06-06 09:23:28 [INFO] app.core.main:185 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:23:28 [INFO] app.core.main:189 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:23:29 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:23:29 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:23:29 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:23:29 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:23:29 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:23:29 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:23:29 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:23:29 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:23:29 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:23:29 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:23:29 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:23:29 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:23:29 [INFO] app.core.main:491 - ✅ All routers configured
+2025-06-06 09:23:29 [INFO] app.core.main:62 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:23:29 [INFO] app.core.main:63 - 📊 Environment: development
+2025-06-06 09:23:29 [INFO] app.core.main:64 - 📊 Debug mode: True
+2025-06-06 09:23:29 [INFO] app.core.main:65 - 📊 Version: 1.0.0
+2025-06-06 09:23:29 [INFO] app.core.main:72 - 🔄 Checking database connection...
+2025-06-06 09:23:29 [INFO] app.core.main:76 - ✅ Database connection established
+2025-06-06 09:23:29 [INFO] app.core.main:88 - 🔄 Connecting to Redis...
+2025-06-06 09:23:29 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:23:29 [INFO] app.core.main:93 - ✅ Redis connection established
+2025-06-06 09:23:29 [INFO] app.core.main:106 - 🔄 Running database migrations...
+2025-06-06 09:23:29 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:23:29 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:23:29 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:23:29 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:23:29 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:23:29 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:23:29 [INFO] app.core.main:108 - ✅ Database migrations completed
+2025-06-06 09:23:29 [INFO] app.core.main:121 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:23:29 [INFO] app.core.main:135 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:23:29 [INFO] app.core.main:152 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:23:32 [INFO] app.core.middleware:62 - [8e298f6f] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:23:32 [INFO] app.core.middleware:76 - [8e298f6f] GET /docs - Status: 200 - Time: 0.0090s - Size: unknown bytes
+2025-06-06 09:23:33 [INFO] app.core.middleware:62 - [236bebf4] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:23:33 [INFO] app.core.middleware:76 - [236bebf4] GET /docs - Status: 200 - Time: 0.0054s - Size: unknown bytes
+2025-06-06 09:23:40 [INFO] app.core.main:157 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:23:40 [INFO] app.core.main:164 - 🔄 Closing database connections...
+2025-06-06 09:23:40 [INFO] app.core.main:166 - ✅ Database connections closed
+2025-06-06 09:23:40 [INFO] app.core.main:175 - 🔄 Disconnecting from Redis...
+2025-06-06 09:23:40 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:23:40 [INFO] app.core.main:177 - ✅ Redis disconnected
+2025-06-06 09:23:40 [INFO] app.core.main:185 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:23:40 [INFO] app.core.main:189 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:23:57 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:23:57 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:23:58 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:23:58 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:23:58 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:23:58 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:23:58 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:23:58 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:23:58 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:23:58 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:23:58 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:23:58 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:23:58 [INFO] app.core.main:491 - ✅ All routers configured
+2025-06-06 09:23:58 [INFO] app.core.main:62 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:23:58 [INFO] app.core.main:63 - 📊 Environment: development
+2025-06-06 09:23:58 [INFO] app.core.main:64 - 📊 Debug mode: True
+2025-06-06 09:23:58 [INFO] app.core.main:65 - 📊 Version: 1.0.0
+2025-06-06 09:23:58 [INFO] app.core.main:72 - 🔄 Checking database connection...
+2025-06-06 09:23:58 [INFO] app.core.main:76 - ✅ Database connection established
+2025-06-06 09:23:58 [INFO] app.core.main:88 - 🔄 Connecting to Redis...
+2025-06-06 09:23:58 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:23:58 [INFO] app.core.main:93 - ✅ Redis connection established
+2025-06-06 09:23:58 [INFO] app.core.main:106 - 🔄 Running database migrations...
+2025-06-06 09:23:58 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:23:58 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:23:58 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:23:58 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:23:58 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:23:58 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:23:58 [INFO] app.core.main:108 - ✅ Database migrations completed
+2025-06-06 09:23:58 [INFO] app.core.main:121 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:23:58 [INFO] app.core.main:135 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:23:58 [INFO] app.core.main:152 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:24:00 [INFO] app.core.middleware:62 - [c96bcf9e] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:24:00 [INFO] app.core.middleware:76 - [c96bcf9e] GET /docs - Status: 200 - Time: 0.0045s - Size: unknown bytes
+2025-06-06 09:24:02 [INFO] app.core.middleware:62 - [c3071df9] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:24:02 [INFO] app.core.middleware:76 - [c3071df9] GET /docs - Status: 200 - Time: 0.0060s - Size: unknown bytes
+2025-06-06 09:24:15 [INFO] app.core.middleware:62 - [7662e866] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:24:15 [INFO] app.core.middleware:76 - [7662e866] GET /docs - Status: 200 - Time: 0.0092s - Size: unknown bytes
+2025-06-06 09:24:43 [INFO] app.core.middleware:62 - [6a0dd340] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:24:43 [INFO] app.core.middleware:76 - [6a0dd340] GET /docs - Status: 200 - Time: 0.0064s - Size: unknown bytes
+2025-06-06 09:24:49 [INFO] app.core.middleware:62 - [2f75d401] GET / - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:24:49 [INFO] app.core.middleware:76 - [2f75d401] GET / - Status: 200 - Time: 0.0047s - Size: unknown bytes
+2025-06-06 09:24:49 [INFO] app.core.middleware:62 - [cc2ff6fc] GET /favicon.ico - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:24:49 [INFO] app.core.middleware:76 - [cc2ff6fc] GET /favicon.ico - Status: 404 - Time: 0.0049s - Size: unknown bytes
+2025-06-06 09:25:22 [INFO] app.core.main:157 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:25:22 [INFO] app.core.main:164 - 🔄 Closing database connections...
+2025-06-06 09:25:22 [INFO] app.core.main:166 - ✅ Database connections closed
+2025-06-06 09:25:22 [INFO] app.core.main:175 - 🔄 Disconnecting from Redis...
+2025-06-06 09:25:22 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:25:22 [INFO] app.core.main:177 - ✅ Redis disconnected
+2025-06-06 09:25:22 [INFO] app.core.main:185 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:25:22 [INFO] app.core.main:189 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:25:39 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:25:39 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:25:39 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:25:39 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:25:39 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:25:39 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:25:39 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:25:39 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:25:39 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:25:39 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:25:39 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:25:39 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:25:39 [INFO] app.core.main:491 - ✅ All routers configured
+2025-06-06 09:25:39 [INFO] app.core.main:62 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:25:39 [INFO] app.core.main:63 - 📊 Environment: development
+2025-06-06 09:25:39 [INFO] app.core.main:64 - 📊 Debug mode: True
+2025-06-06 09:25:39 [INFO] app.core.main:65 - 📊 Version: 1.0.0
+2025-06-06 09:25:39 [INFO] app.core.main:72 - 🔄 Checking database connection...
+2025-06-06 09:25:39 [INFO] app.core.main:76 - ✅ Database connection established
+2025-06-06 09:25:39 [INFO] app.core.main:88 - 🔄 Connecting to Redis...
+2025-06-06 09:25:39 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:25:39 [INFO] app.core.main:93 - ✅ Redis connection established
+2025-06-06 09:25:39 [INFO] app.core.main:106 - 🔄 Running database migrations...
+2025-06-06 09:25:39 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:25:39 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:25:39 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:25:39 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:25:39 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:25:39 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:25:39 [INFO] app.core.main:108 - ✅ Database migrations completed
+2025-06-06 09:25:39 [INFO] app.core.main:121 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:25:39 [INFO] app.core.main:135 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:25:39 [INFO] app.core.main:152 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:25:45 [INFO] app.core.middleware:62 - [b0cfcede] GET / - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:25:45 [INFO] app.core.middleware:76 - [b0cfcede] GET / - Status: 200 - Time: 0.0170s - Size: unknown bytes
+2025-06-06 09:25:45 [INFO] app.core.middleware:62 - [93a4b6f0] GET /favicon.ico - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:25:45 [INFO] app.core.middleware:76 - [93a4b6f0] GET /favicon.ico - Status: 404 - Time: 0.0113s - Size: unknown bytes
+2025-06-06 09:25:52 [INFO] app.core.middleware:62 - [f980be86] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:25:52 [INFO] app.core.middleware:76 - [f980be86] GET /docs - Status: 200 - Time: 0.0041s - Size: unknown bytes
+2025-06-06 09:25:55 [INFO] app.core.middleware:62 - [b033f378] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:25:55 [INFO] app.core.middleware:76 - [b033f378] GET /docs - Status: 200 - Time: 0.0023s - Size: unknown bytes
+2025-06-06 09:26:06 [INFO] app.core.middleware:62 - [c010b501] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:26:06 [INFO] app.core.middleware:76 - [c010b501] GET /docs - Status: 200 - Time: 0.0021s - Size: unknown bytes
+2025-06-06 09:27:45 [INFO] app.core.middleware:62 - [d542ca7c] GET / - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:27:45 [INFO] app.core.middleware:76 - [d542ca7c] GET / - Status: 200 - Time: 0.0075s - Size: 189 bytes
+2025-06-06 09:28:00 [INFO] app.core.middleware:62 - [b5b35478] GET / - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:28:00 [INFO] app.core.middleware:76 - [b5b35478] GET / - Status: 200 - Time: 0.0119s - Size: 189 bytes
+2025-06-06 09:28:23 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:28:23 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:28:23 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:28:23 [INFO] app.core.middleware:276 - Setting up middleware...
+2025-06-06 09:28:23 [INFO] app.core.middleware:287 - ✅ CORS middleware configured
+2025-06-06 09:28:23 [INFO] app.core.middleware:305 - ✅ Security Headers middleware configured
+2025-06-06 09:28:23 [INFO] app.core.middleware:313 - ✅ GZip middleware configured
+2025-06-06 09:28:23 [INFO] app.core.middleware:323 - ✅ Session middleware configured
+2025-06-06 09:28:23 [INFO] app.core.middleware:335 - ✅ Request Logging middleware configured
+2025-06-06 09:28:23 [INFO] app.core.middleware:337 - 🚀 All middleware configured successfully
+2025-06-06 09:28:23 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:28:23 [INFO] app.core.middleware:350 - ✅ Error handlers configured
+2025-06-06 09:28:24 [INFO] app.core.main:491 - ✅ All routers configured
+2025-06-06 09:28:59 [INFO] app.core.middleware:62 - [14fd1ffe] HEAD /docs - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:28:59 [INFO] app.core.middleware:76 - [14fd1ffe] HEAD /docs - Status: 200 - Time: 0.0070s - Size: 941 bytes
+2025-06-06 09:29:16 [INFO] app.core.middleware:62 - [957049d1] HEAD /openapi.json - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:29:16 [INFO] app.core.middleware:76 - [957049d1] HEAD /openapi.json - Status: 200 - Time: 0.1086s - Size: 107956 bytes
+2025-06-06 09:30:07 [INFO] app.core.middleware:62 - [2ffe5821] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:30:07 [INFO] app.core.middleware:76 - [2ffe5821] GET /docs - Status: 200 - Time: 0.0169s - Size: unknown bytes
+2025-06-06 09:30:21 [INFO] app.core.middleware:62 - [4c263895] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:30:22 [INFO] app.core.middleware:76 - [4c263895] GET /docs - Status: 200 - Time: 0.0024s - Size: unknown bytes
+2025-06-06 09:32:32 [INFO] app.core.middleware:62 - [c67fc977] GET /openapi.json - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:32:32 [INFO] app.core.middleware:76 - [c67fc977] GET /openapi.json - Status: 200 - Time: 0.0124s - Size: 107956 bytes
+2025-06-06 09:32:39 [INFO] app.core.middleware:62 - [2d0aa1f5] GET /openapi.json - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:32:39 [INFO] app.core.middleware:76 - [2d0aa1f5] GET /openapi.json - Status: 200 - Time: 0.0206s - Size: 107956 bytes
+2025-06-06 09:33:13 [INFO] app.core.middleware:62 - [706052e9] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:33:13 [INFO] app.core.middleware:76 - [706052e9] GET /docs - Status: 200 - Time: 0.0090s - Size: unknown bytes
+2025-06-06 09:33:29 [INFO] app.core.middleware:62 - [98193f78] HEAD /redoc - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:33:29 [INFO] app.core.middleware:76 - [98193f78] HEAD /redoc - Status: 200 - Time: 0.0060s - Size: 901 bytes
+2025-06-06 09:33:45 [INFO] app.core.middleware:62 - [c90800a0] GET /docs - Client: 192.168.65.1 - User-Agent: curl/8.7.1...
+2025-06-06 09:33:45 [INFO] app.core.middleware:76 - [c90800a0] GET /docs - Status: 200 - Time: 0.0071s - Size: 941 bytes
+2025-06-06 09:39:08 [INFO] app.core.main:157 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:39:08 [INFO] app.core.main:164 - 🔄 Closing database connections...
+2025-06-06 09:39:08 [INFO] app.core.main:166 - ✅ Database connections closed
+2025-06-06 09:39:08 [INFO] app.core.main:175 - 🔄 Disconnecting from Redis...
+2025-06-06 09:39:08 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:39:08 [INFO] app.core.main:177 - ✅ Redis disconnected
+2025-06-06 09:39:08 [INFO] app.core.main:185 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:39:08 [INFO] app.core.main:189 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:39:09 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:39:09 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:39:09 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:39:09 [INFO] app.core.middleware:295 - Setting up middleware...
+2025-06-06 09:39:09 [INFO] app.core.middleware:321 - ✅ CORS middleware configured
+2025-06-06 09:39:09 [INFO] app.core.middleware:325 - ✅ Security Headers middleware configured
+2025-06-06 09:39:09 [INFO] app.core.middleware:329 - ✅ GZip middleware configured
+2025-06-06 09:39:09 [INFO] app.core.middleware:339 - ✅ Session middleware configured
+2025-06-06 09:39:09 [INFO] app.core.middleware:348 - ✅ Request Logging middleware configured
+2025-06-06 09:39:09 [INFO] app.core.middleware:350 - 🚀 All middleware configured successfully
+2025-06-06 09:39:09 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:39:09 [INFO] app.core.middleware:363 - ✅ Error handlers configured
+2025-06-06 09:39:09 [INFO] app.core.main:491 - ✅ All routers configured
+2025-06-06 09:39:09 [INFO] app.core.main:62 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:39:09 [INFO] app.core.main:63 - 📊 Environment: development
+2025-06-06 09:39:09 [INFO] app.core.main:64 - 📊 Debug mode: True
+2025-06-06 09:39:09 [INFO] app.core.main:65 - 📊 Version: 1.0.0
+2025-06-06 09:39:09 [INFO] app.core.main:72 - 🔄 Checking database connection...
+2025-06-06 09:39:09 [INFO] app.core.main:76 - ✅ Database connection established
+2025-06-06 09:39:09 [INFO] app.core.main:88 - 🔄 Connecting to Redis...
+2025-06-06 09:39:09 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:39:09 [INFO] app.core.main:93 - ✅ Redis connection established
+2025-06-06 09:39:09 [INFO] app.core.main:106 - 🔄 Running database migrations...
+2025-06-06 09:39:09 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:39:09 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:39:09 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:39:09 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:39:09 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:39:09 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:39:09 [INFO] app.core.main:108 - ✅ Database migrations completed
+2025-06-06 09:39:09 [INFO] app.core.main:121 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:39:09 [INFO] app.core.main:135 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:39:09 [INFO] app.core.main:152 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:39:12 [INFO] app.core.main:157 - 🛑 Shutting down Gemup Marketplace API...
+2025-06-06 09:39:12 [INFO] app.core.main:164 - 🔄 Closing database connections...
+2025-06-06 09:39:12 [INFO] app.core.main:166 - ✅ Database connections closed
+2025-06-06 09:39:12 [INFO] app.core.main:175 - 🔄 Disconnecting from Redis...
+2025-06-06 09:39:12 [INFO] app.core.redis:48 - ✅ Redis connection closed
+2025-06-06 09:39:12 [INFO] app.core.main:177 - ✅ Redis disconnected
+2025-06-06 09:39:12 [INFO] app.core.main:185 - ✅ Shutdown completed. Tasks: Database, Redis
+2025-06-06 09:39:12 [INFO] app.core.main:189 - 👋 Gemup Marketplace API stopped
+2025-06-06 09:39:29 [DEBUG] app.core.migrations:58 - Found alembic.ini at: alembic.ini
+2025-06-06 09:39:29 [INFO] app.core.auth:56 - AuthHandler initialized with algorithm: HS256
+2025-06-06 09:39:29 [DEBUG] app.services:145 - Services module initialized with all MVP services
+2025-06-06 09:39:29 [INFO] app.core.middleware:295 - Setting up middleware...
+2025-06-06 09:39:29 [INFO] app.core.middleware:321 - ✅ CORS middleware configured
+2025-06-06 09:39:29 [INFO] app.core.middleware:325 - ✅ Security Headers middleware configured
+2025-06-06 09:39:29 [INFO] app.core.middleware:329 - ✅ GZip middleware configured
+2025-06-06 09:39:29 [INFO] app.core.middleware:339 - ✅ Session middleware configured
+2025-06-06 09:39:29 [INFO] app.core.middleware:348 - ✅ Request Logging middleware configured
+2025-06-06 09:39:29 [INFO] app.core.middleware:350 - 🚀 All middleware configured successfully
+2025-06-06 09:39:29 [INFO] app.core.exceptions:409 - Exception handlers configured
+2025-06-06 09:39:29 [INFO] app.core.middleware:363 - ✅ Error handlers configured
+2025-06-06 09:39:29 [INFO] app.core.main:491 - ✅ All routers configured
+2025-06-06 09:39:29 [INFO] app.core.main:62 - 🚀 Starting Gemup Marketplace API...
+2025-06-06 09:39:29 [INFO] app.core.main:63 - 📊 Environment: development
+2025-06-06 09:39:29 [INFO] app.core.main:64 - 📊 Debug mode: True
+2025-06-06 09:39:29 [INFO] app.core.main:65 - 📊 Version: 1.0.0
+2025-06-06 09:39:29 [INFO] app.core.main:72 - 🔄 Checking database connection...
+2025-06-06 09:39:29 [INFO] app.core.main:76 - ✅ Database connection established
+2025-06-06 09:39:29 [INFO] app.core.main:88 - 🔄 Connecting to Redis...
+2025-06-06 09:39:29 [INFO] app.core.redis:35 - ✅ Redis connection established successfully
+2025-06-06 09:39:29 [INFO] app.core.main:93 - ✅ Redis connection established
+2025-06-06 09:39:29 [INFO] app.core.main:106 - 🔄 Running database migrations...
+2025-06-06 09:39:29 [INFO] app.core.migrations:315 - 🔄 Initializing Alembic migrations...
+2025-06-06 09:39:29 [DEBUG] app.core.migrations:91 - Alembic configuration loaded successfully
+2025-06-06 09:39:29 [INFO] alembic.runtime.migration:207 - Context impl PostgresqlImpl.
+2025-06-06 09:39:29 [INFO] alembic.runtime.migration:210 - Will assume transactional DDL.
+2025-06-06 09:39:29 [INFO] app.core.migrations:139 - Migration status: {'current_revision': '31851406acc6', 'head_revision': '31851406acc6', 'is_up_to_date': True, 'total_revisions': 1, 'needs_upgrade': False}
+2025-06-06 09:39:29 [INFO] app.core.migrations:355 - ✅ Database schema is up to date
+2025-06-06 09:39:29 [INFO] app.core.main:108 - ✅ Database migrations completed
+2025-06-06 09:39:29 [INFO] app.core.main:121 - 🧹 Cleaned 0 expired sessions
+2025-06-06 09:39:29 [INFO] app.core.main:135 - ✅ Startup completed. Tasks: Database, Redis, Migrations
+2025-06-06 09:39:29 [INFO] app.core.main:152 - 🎉 Gemup Marketplace API is ready!
+2025-06-06 09:39:30 [INFO] app.core.middleware:118 - [ffd726fb] GET /docs - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:39:30 [DEBUG] app.core.middleware:77 - Applied docs CSP for path: /docs
+2025-06-06 09:39:30 [INFO] app.core.middleware:139 - [ffd726fb] GET /docs - Status: 200 - Time: 0.0040s - Size: unknown bytes
+2025-06-06 09:39:30 [INFO] app.core.middleware:118 - [ed00d480] GET /openapi.json - Client: 192.168.65.1 - User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0....
+2025-06-06 09:39:30 [INFO] app.core.middleware:139 - [ed00d480] GET /openapi.json - Status: 200 - Time: 0.1041s - Size: unknown bytes

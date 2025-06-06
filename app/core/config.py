@@ -184,7 +184,6 @@ class Settings(BaseSettings):
             raise ValueError(f'Log level must be one of: {allowed}')
         return v_upper
 
-    # ИСПРАВЛЕНО: Добавлен effective_log_level
     @computed_field
     @property
     def effective_log_level(self) -> str:
@@ -198,22 +197,31 @@ class Settings(BaseSettings):
         else:
             return self.log_level
 
-    # ИСПРАВЛЕНО: Добавлены effective URLs для документации
     @computed_field
     @property
     def effective_docs_url(self) -> Optional[str]:
         """Эффективный URL для Swagger документации."""
-        if self.is_production():
-            return None  # Отключаем в production
-        return self.docs_url
+        if self.is_development() or self.is_test():
+            return self.docs_url
+        elif self.is_staging():
+            return self.docs_url
+        elif self.is_production():
+            return None
+        else:
+            return self.docs_url
 
     @computed_field
     @property
     def effective_redoc_url(self) -> Optional[str]:
         """Эффективный URL для ReDoc документации."""
-        if self.is_production():
-            return None  # Отключаем в production
-        return self.redoc_url
+        if self.is_development() or self.is_test():
+            return self.redoc_url
+        elif self.is_staging():
+            return self.redoc_url
+        elif self.is_production():
+            return None
+        else:
+            return self.redoc_url
 
     # API settings
     api_prefix: str = Field(default="/api/v1", description="API prefix")

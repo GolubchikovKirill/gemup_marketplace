@@ -4,7 +4,7 @@ services:
       context: .
       target: development
     ports:
-      - "8080:8000"
+      - "8000:8000"
     environment:
       - DEBUG=true
       - POSTGRES_HOST=db

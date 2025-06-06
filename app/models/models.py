@@ -88,7 +88,7 @@ class TransactionType(str, Enum):
     PURCHASE = "purchase"
     REFUND = "refund"
     WITHDRAWAL = "withdrawal"
-    BALANCE_TOPUP = "balance_topup"  # ДОБАВЛЕНО для пополнения баланса
+    BALANCE_TOPUP = "balance_topup"
 
 
 class TransactionStatus(str, Enum):
@@ -103,10 +103,10 @@ class TransactionStatus(str, Enum):
 
 class UserRole(str, Enum):
     """Роли пользователей."""
-    USER = "user"
-    ADMIN = "admin"
-    MODERATOR = "moderator"
-    MANAGER = "manager"
+    USER = "USER"
+    ADMIN = "ADMIN"
+    MODERATOR = "MODERATOR"
+    MANAGER = "MANAGER"
 
 
 class PaymentProvider(str, Enum):
@@ -138,7 +138,7 @@ class User(Base):
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False, server_default='false')
 
     # Роль пользователя
-    role: Mapped[UserRole] = mapped_column(default=UserRole.USER, server_default='user')
+    role: Mapped[UserRole] = mapped_column(default=UserRole.USER, server_default='USER')
 
     # Финансы - КЛЮЧЕВОЕ для MVP
     balance: Mapped[Decimal] = mapped_column(

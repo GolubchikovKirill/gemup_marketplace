@@ -5,49 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/crud/balance_topup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/api_key.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/api_key.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/permission.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/permission.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/proxy_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/proxy_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/proxy_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/proxy_purchase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/shopping_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/shopping_cart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/transaction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/integrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/integrations/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/integrations/cryptomus.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/cryptomus.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/integrations/proxy_711.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/proxy_711.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/env.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/middleware.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/cart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/orders.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/orders.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/payments.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/payments.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/products.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/proxies.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/proxies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/api_key.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/api_key.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/cart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/payment.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/payment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/permission.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/permission.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/proxy_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/proxy_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/proxy_purchase.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/proxy_purchase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/transaction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/auth_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/auth_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/cart_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/cart_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/order_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/order_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/payment_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/payment_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/product_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/product_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/proxy_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/proxy_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/app.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/app.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -228,7 +193,9 @@
       <workItem from="1748845689088" duration="3576000" />
       <workItem from="1748849677987" duration="24554000" />
       <workItem from="1748929145901" duration="2670000" />
-      <workItem from="1748932127782" duration="19867000" />
+      <workItem from="1748932127782" duration="20702000" />
+      <workItem from="1749108138464" duration="2946000" />
+      <workItem from="1749199830732" duration="2920000" />
     </task>
     <servers />
   </component>
