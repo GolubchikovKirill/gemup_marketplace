@@ -67,11 +67,12 @@ async def login(
         )
 
         access_token = auth_service.create_access_token(user.id)
-        refresh_token = auth_service.create_refresh_token(user.id)
+        refreshed_token = auth_service.create_refresh_token(user.id)
 
-        token_response = auth_service.create_token_response(user, access_token, refresh_token)
+        token_response = auth_service.create_token_response(user, access_token, refreshed_token)
 
-        logger.info(f"User logged in successfully: {user.email}")
+        user_identifier = user.email or f"user_id:{user.id}"
+        logger.info(f"User logged in successfully: {user_identifier}")
         return TokenResponse(**token_response)
 
     except HTTPException:
@@ -96,9 +97,9 @@ async def login_json(
         )
 
         access_token = auth_service.create_access_token(user.id)
-        refresh_token = auth_service.create_refresh_token(user.id)
+        refreshed_token = auth_service.create_refresh_token(user.id)
 
-        token_response = auth_service.create_token_response(user, access_token, refresh_token)
+        token_response = auth_service.create_token_response(user, access_token, refreshed_token)
 
         logger.info(f"User logged in via JSON: {user.email}")
         return TokenResponse(**token_response)

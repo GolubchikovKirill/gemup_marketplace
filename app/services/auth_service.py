@@ -192,56 +192,75 @@ class AuthService:
                 detail="Registration failed. Please try again."
             )
 
-    async def authenticate_user(self, email: str, password: str, db: AsyncSession) -> User:
+    async def authenticate_user(self, email_or_username: str, password: str, db: AsyncSession) -> User:
         """
-        Аутентификация пользователя по email и паролю.
+        Аутентификация пользователя по email или username.
 
         Args:
-            email: Email пользователя
-            password: Пароль пользователя
+            email_or_username: Email или username пользователя
+            password: Пароль
             db: Сессия базы данных
 
         Returns:
             User: Аутентифицированный пользователь
 
         Raises:
-            HTTPException: При неверных учетных данных или неактивном аккаунте
+            HTTPException: При ошибках аутентификации
         """
         try:
-            # Проверка на заблокированный аккаунт
-            self._check_account_lockout(email)
+            # Сначала пробуем как email
+            user = await user_crud.get_by_email(db, email=email_or_username)
 
-            user = await user_crud.authenticate(db, email=email, password=password)
-
+            # Если не найден по email, пробуем как username
             if not user:
-                logger.warning(f"Failed login attempt for email: {email}")
-                self._increment_failed_attempts(email)
+                user = await user_crud.get_by_username(db, username=email_or_username)
+
+            # Проверяем существование пользователя
+            if not user:
+                logger.warning(f"Authentication failed: user not found for {email_or_username}")
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Incorrect email or password",
+                    detail="Incorrect email/username or password",
                     headers={"WWW-Authenticate": "Bearer"},
                 )
 
-            if not user.is_active:
-                logger.warning(f"Inactive user login attempt: {email}")
+            # Проверяем что это не гостевой пользователь
+            if user.is_guest:
+                logger.warning(f"Authentication attempt for guest user: {user.id}")
                 raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="User account is inactive"
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Guest users cannot login with password",
+                    headers={"WWW-Authenticate": "Bearer"},
                 )
 
-            # Сброс счетчика неудачных попыток
-            self._reset_failed_attempts(email)
+            # Проверяем активность пользователя
+            if not user.is_active:
+                logger.warning(f"Authentication failed: inactive user {user.email}")
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Inactive user",
+                    headers={"WWW-Authenticate": "Bearer"},
+                )
 
-            # Обновление времени последнего входа
+            # Проверяем пароль
+            if not user_crud.verify_password(password, user.hashed_password):
+                logger.warning(f"Authentication failed: incorrect password for {email_or_username}")
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Incorrect email/username or password",
+                    headers={"WWW-Authenticate": "Bearer"},
+                )
+
+            # Обновляем время последнего входа
             await user_crud.update_last_login(db, user_id=user.id)
 
-            logger.info(f"User authenticated successfully: {email}")
+            logger.info(f"User authenticated successfully: {user.email}")
             return user
 
         except HTTPException:
             raise
         except Exception as e:
-            logger.error(f"Error during user authentication: {e}")
+            logger.error(f"Unexpected error during authentication: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Authentication failed"
@@ -332,11 +351,17 @@ class AuthService:
             # - Очистка сессий в Redis
             # - Логирование события выхода
 
-            logger.info(f"User logged out: {user.email}")
+            if user.is_guest:
+                user_identifier = f"guest:{user.guest_session_id}"
+            else:
+                user_identifier = f"user:{user.email}"
+
+            logger.info(f"User logged out: {user_identifier}")
             return True
 
         except Exception as e:
-            logger.error(f"Error during logout for user {user.email}: {e}")
+            user_id = getattr(user, "id", "unknown")
+            logger.error(f"Error during logout for user {user_id}: {e}")
             return False
 
     async def refresh_user_token(self, user: User) -> str:
