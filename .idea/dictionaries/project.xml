@@ -2,7 +2,9 @@
   <dictionary name="project">
     <words>
       <w>goproxy</w>
+      <w>lpush</w>
       <w>newuser</w>
+      <w>rpush</w>
       <w>tablename</w>
       <w>testpassword</w>
       <w>wrongpassword</w>

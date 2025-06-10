@@ -259,7 +259,6 @@ class Settings(BaseSettings):
         """Проверка staging окружения"""
         return self.environment == "staging"
 
-    # ИСПРАВЛЕНО: Добавлен метод для получения включенных провайдеров
     def get_enabled_proxy_providers(self) -> List[str]:
         """Получение списка включенных провайдеров прокси."""
         enabled = []
@@ -275,7 +274,6 @@ class Settings(BaseSettings):
 
         return enabled
 
-    # ИСПРАВЛЕНО: Добавлен метод валидации обязательных настроек
     def validate_required_settings(self) -> List[str]:
         """Валидация обязательных настроек для production."""
         missing = []
@@ -291,6 +289,21 @@ class Settings(BaseSettings):
                 missing.append("postgres_db")
 
         return missing
+
+    def log_configuration(self) -> None:
+        """Логирование текущей конфигурации."""
+        import logging
+        logger = logging.getLogger(__name__)
+
+        logger.info(f"Environment: {self.environment}")
+        logger.info(f"Debug mode: {self.debug}")
+        logger.info(f"Database: {self.postgres_host}:{self.postgres_port}/{self.postgres_db}")
+        logger.info(f"CORS origins: {self.cors_origins_list}")
+        logger.info(f"Frontend URL: {self.frontend_url}")
+
+        # Проверяем провайдеры
+        enabled_providers = self.get_enabled_proxy_providers()
+        logger.info(f"Enabled proxy providers: {enabled_providers}")
 
 
 # Создание глобального экземпляра настроек
