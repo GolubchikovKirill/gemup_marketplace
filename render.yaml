@@ -3,6 +3,7 @@ services:
     name: gemup-marketplace-backend
     env: python
     buildCommand: pip install -r requirements.txt
+    preDeployCommand: python -m alembic upgrade head
     startCommand: python main.py
     envVars:
       - key: ENVIRONMENT

@@ -11,9 +11,9 @@ fi
 
 echo "✅ DATABASE_URL найден: ${DATABASE_URL:0:30}..."
 
-# ИСПРАВЛЕНО: Используйте python -m alembic вместо прямого вызова alembic
+
 echo "🔄 Применение миграций..."
-python -m alembic upgrade head
+python migrate.py
 
 echo "🚀 Запуск приложения..."
 exec python main.py
