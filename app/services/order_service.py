@@ -1,394 +1,727 @@
+"""
+Сервис для управления заказами.
+
+Обеспечивает создание, обработку и управление заказами пользователей,
+включая интеграцию с провайдерами прокси и обработку платежей.
+"""
+
 import logging
+import uuid
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import List, Optional, Dict, Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import BusinessLogicError, InsufficientFundsError
+from app.core.exceptions import BusinessLogicError
 from app.crud.order import order_crud
-from app.crud.proxy_product import proxy_product_crud
-from app.crud.shopping_cart import shopping_cart_crud
-from app.crud.transaction import transaction_crud
+from app.crud.proxy_purchase import proxy_purchase_crud
 from app.crud.user import user_crud
-from app.models.models import Order, OrderStatus, User, Transaction, TransactionStatus
+from app.integrations import get_proxy_provider, IntegrationError
+from app.models.models import Order, User, OrderStatus, ProviderType
 from app.schemas.order import OrderCreate, OrderUpdate
 from app.services.base import BaseService, BusinessRuleValidator
+from app.services.cart_service import cart_service
 
 logger = logging.getLogger(__name__)
 
 
 class OrderBusinessRules(BusinessRuleValidator):
-    """Валидатор бизнес-правил для заказов"""
+    """Валидатор бизнес-правил для заказов."""
 
-    async def validate(self, data: dict, db: AsyncSession) -> bool:
-        """Валидация правил заказа"""
-        user_id = data.get('user_id')
-        cart_items = data.get('cart_items', [])
+    async def validate(self, data: Dict[str, Any], db: AsyncSession) -> bool:
+        """
+        Валидация бизнес-правил для заказа.
 
-        if not cart_items:
-            raise BusinessLogicError("Cart is empty")
+        Args:
+            data: Данные для валидации (user_id, cart_items, total_amount)
+            db: Сессия базы данных
 
-        # Проверяем доступность всех товаров
-        total_amount = Decimal('0.00')
-        for item in cart_items:
-            product = await proxy_product_crud.get(db, obj_id=item.proxy_product_id)
-            if not product:
-                raise BusinessLogicError(f"Product {item.proxy_product_id} not found")
+        Returns:
+            bool: Результат валидации
 
-            if not product.is_active:
-                raise BusinessLogicError(f"Product {product.name} is not available")
+        Raises:
+            BusinessLogicError: При нарушении бизнес-правил
+        """
+        try:
+            user_id = data.get("user_id")
+            total_amount = data.get("total_amount", Decimal('0'))
+            cart_items = data.get("cart_items", [])
 
-            if item.quantity > product.stock_available:
-                raise BusinessLogicError(
-                    f"Only {product.stock_available} items available for {product.name}"
-                )
+            if not user_id:
+                raise BusinessLogicError("User ID is required")
 
-            if item.quantity < product.min_quantity:
-                raise BusinessLogicError(
-                    f"Minimum quantity for {product.name} is {product.min_quantity}"
-                )
+            if not cart_items:
+                raise BusinessLogicError("Cart is empty")
 
-            if item.quantity > product.max_quantity:
-                raise BusinessLogicError(
-                    f"Maximum quantity for {product.name} is {product.max_quantity}"
-                )
+            if total_amount <= 0:
+                raise BusinessLogicError("Order total must be positive")
 
-            total_amount += product.price_per_proxy * item.quantity
+            if total_amount > Decimal('50000.00'):
+                raise BusinessLogicError("Order amount exceeds maximum limit")
 
-        # Проверяем баланс пользователя
-        user = await user_crud.get(db, obj_id=user_id)
-        if user and not user.is_guest:
-            if user.balance < total_amount:
-                raise InsufficientFundsError(
-                    f"Insufficient balance. Required: {total_amount}, Available: {user.balance}"
-                )
+            total_items = sum(item.quantity for item in cart_items)
+            if total_items > 10000:
+                raise BusinessLogicError("Order exceeds maximum item limit")
 
-        return True
+            logger.debug(f"Order business rules validation passed for user {user_id}")
+            return True
+
+        except BusinessLogicError:
+            raise
+        except Exception as e:
+            logger.error(f"Error during order business rules validation: {e}")
+            raise BusinessLogicError(f"Validation failed: {str(e)}")
 
 
 class OrderService(BaseService[Order, OrderCreate, OrderUpdate]):
-    """Сервис для работы с заказами"""
+    """
+    Сервис для управления заказами.
+
+    Предоставляет функциональность для создания заказов из корзины,
+    обработки платежей, активации прокси и управления жизненным циклом заказов.
+    """
 
     def __init__(self):
         super().__init__(Order)
         self.crud = order_crud
         self.business_rules = OrderBusinessRules()
 
-    async def create_order_from_cart(
-            self,
-            db: AsyncSession,
-            user: User,
-            payment_method: Optional[str] = None,
-            notes: Optional[str] = None
-    ) -> Order:
-        """Создание заказа из корзины пользователя"""
+    async def create_order_from_cart(self, db: AsyncSession, *, user: User) -> Order:
+        """
+        Создание заказа на основе содержимого корзины пользователя.
 
-        # Получаем корзину пользователя
-        user_id = user.id if not user.is_guest else None
-        session_id = user.guest_session_id if user.is_guest else None
+        Args:
+            db: Сессия базы данных
+            user: Пользователь, создающий заказ
 
-        cart_items = await shopping_cart_crud.get_user_cart(
-            db, user_id=user_id, session_id=session_id
-        )
+        Returns:
+            Order: Созданный заказ
 
-        if not cart_items:
-            raise BusinessLogicError("Cart is empty")
-
-        # Валидируем бизнес-правила
-        await self.business_rules.validate({
-            'user_id': user.id,
-            'cart_items': cart_items
-        }, db)
-
-        # Создаем заказ через CRUD
-        order = await order_crud.create_order_from_cart(
-            db,
-            user_id=user.id,
-            cart_items=cart_items,
-            payment_method=payment_method
-        )
-
-        if notes:
-            order.notes = notes
-            await db.commit()
-            await db.refresh(order)
-
-        # Резервируем товары
-        await self._reserve_products(db, cart_items)
-
-        # Списываем средства с баланса
-        if not user.is_guest and user.balance >= order.total_amount:
-            await self._process_payment_from_balance(db, user, order)
-
-        # Очищаем корзину
-        await shopping_cart_crud.clear_user_cart(db, user_id, session_id)
-
-        logger.info(f"Order {order.order_number} created for user {user.id}")
-        return order
-
-    @staticmethod
-    async def _reserve_products(db: AsyncSession, cart_items):
-        """Резервирование товаров"""
-        for item in cart_items:
-            await proxy_product_crud.update_stock(
-                db,
-                product_id=item.proxy_product_id,
-                quantity=item.quantity
-            )
-
-    @staticmethod
-    async def _process_payment_from_balance(db: AsyncSession, user: User, order: Order):
-        """Списание средств с баланса"""
-        await user_crud.update_balance(
-            db,
-            user=user,
-            amount=-float(order.total_amount)
-        )
-
-        order.status = OrderStatus.PAID
-        await db.commit()
-        await db.refresh(order)
-
-        logger.info(f"Payment processed from balance for order {order.order_number}")
-
-    async def _process_successful_payment(
-            self,
-            db: AsyncSession,
-            transaction: Transaction,
-            amount: str
-    ):
-        """Обработка успешного платежа"""
+        Raises:
+            BusinessLogicError: При ошибках валидации или недостатке средств
+        """
         try:
-            # Обновляем статус транзакции
-            await transaction_crud.update_status(
+            # Валидация корзины перед созданием заказа
+            cart_validation = await cart_service.validate_cart_before_checkout(
                 db,
-                transaction=transaction,
-                status=TransactionStatus.COMPLETED
+                user_id=user.id if not user.is_guest else None,
+                session_id=user.guest_session_id if user.is_guest else None
             )
 
-            # Пополняем баланс пользователя
-            user = await user_crud.get(db, obj_id=transaction.user_id)
-            if user:
-                await user_crud.update_balance(
-                    db,
-                    user=user,
-                    amount=float(amount)
+            if not cart_validation["is_valid"]:
+                error_msg = "; ".join(cart_validation["errors"])
+                raise BusinessLogicError(f"Cart validation failed: {error_msg}")
+
+            # Получение содержимого корзины
+            cart_items = await cart_service.get_user_cart(
+                db,
+                user_id=user.id if not user.is_guest else None,
+                session_id=user.guest_session_id if user.is_guest else None
+            )
+
+            if not cart_items:
+                raise BusinessLogicError("Cart is empty")
+
+            # Расчет стоимости
+            cart_total = await cart_service.calculate_cart_total(
+                db,
+                user_id=user.id if not user.is_guest else None,
+                session_id=user.guest_session_id if user.is_guest else None
+            )
+
+            total_amount = Decimal(cart_total["total_amount"])
+
+            # Валидация бизнес-правил
+            validation_data = {
+                "user_id": user.id,
+                "cart_items": cart_items,
+                "total_amount": total_amount
+            }
+            await self.business_rules.validate(validation_data, db)
+
+            # Проверка баланса для зарегистрированных пользователей
+            if not user.is_guest and user.balance < total_amount:
+                raise BusinessLogicError(
+                    f"Insufficient balance. Required: {total_amount}, Available: {user.balance}"
                 )
 
-                # ИСПРАВЛЕНО: Активируем прокси если это оплата заказа
-                if transaction.order_id:
-                    order = await order_crud.get(db, obj_id=transaction.order_id)
-                    if order and order.status == OrderStatus.PAID:
-                        try:
-                            # ИСПРАВЛЕНО: вызываем метод напрямую
-                            await self._activate_proxies_for_order(db, order)
+            # Создание заказа
+            order_number = self._generate_order_number()
+            order_data = OrderCreate(
+                order_number=order_number,
+                user_id=user.id,
+                total_amount=total_amount,
+                currency="USD",
+                status=OrderStatus.PENDING,
+                notes=f"Order created from cart with {len(cart_items)} items"
+            )
 
-                            # Обновляем статус заказа на "в обработке"
-                            await order_crud.update_status(
-                                db,
-                                order_id=order.id,
-                                status=OrderStatus.PROCESSING
-                            )
-                            logger.info(f"Proxies activated for order {order.order_number}")
+            order = await self.crud.create(db, obj_in=order_data)
 
-                        except Exception as e:
-                            logger.error(f"Failed to activate proxies for order {order.id}: {e}")
-                            # Не прерываем процесс, только логируем ошибку
+            # Обработка оплаты для зарегистрированных пользователей
+            if not user.is_guest:
+                await self._process_balance_payment(db, user, order, total_amount)
 
-                logger.info(f"Balance updated for user {user.id}: +{amount}")
+            # Создание покупок прокси
+            for cart_item in cart_items:
+                try:
+                    await self._create_proxy_purchase(db, order, cart_item)
+                except Exception as e:
+                    logger.error(f"Failed to create proxy purchase for cart item {cart_item.id}: {e}")
+                    # Продолжаем обработку других элементов
+
+            # Очистка корзины
+            await cart_service.clear_cart(
+                db,
+                user_id=user.id if not user.is_guest else None,
+                session_id=user.guest_session_id if user.is_guest else None
+            )
+
+            logger.info(f"Order created successfully: {order.order_number}")
+            return order
+
+        except BusinessLogicError:
+            raise
+        except Exception as e:
+            logger.error(f"Error creating order: {e}")
+            raise BusinessLogicError(f"Failed to create order: {str(e)}")
+
+    async def get_user_orders(
+        self,
+        db: AsyncSession,
+        *,
+        user_id: int,
+        status: Optional[OrderStatus] = None,
+        skip: int = 0,
+        limit: int = 100
+    ) -> List[Order]:
+        """
+        Получение списка заказов пользователя.
+
+        Args:
+            db: Сессия базы данных
+            user_id: Идентификатор пользователя
+            status: Фильтр по статусу заказа
+            skip: Количество пропускаемых записей
+            limit: Максимальное количество записей
+
+        Returns:
+            List[Order]: Список заказов пользователя
+        """
+        try:
+            return await self.crud.get_user_orders(
+                db, user_id=user_id, status=status, skip=skip, limit=limit
+            )
+        except Exception as e:
+            logger.error(f"Error getting user orders: {e}")
+            return []
+
+    async def get_order_by_id(
+        self,
+        db: AsyncSession,
+        *,
+        order_id: int,
+        user_id: int
+    ) -> Optional[Order]:
+        """
+        Получение заказа по идентификатору с проверкой прав доступа.
+
+        Args:
+            db: Сессия базы данных
+            order_id: Идентификатор заказа
+            user_id: Идентификатор пользователя (для проверки прав доступа)
+
+        Returns:
+            Optional[Order]: Заказ или None, если не найден или нет доступа
+        """
+        try:
+            order = await self.crud.get_with_items(db, order_id=order_id)
+            if order and order.user_id == user_id:
+                return order
+            return None
+        except Exception as e:
+            logger.error(f"Error getting order by ID: {e}")
+            return None
+
+    async def get_order_summary(
+        self,
+        db: AsyncSession,
+        *,
+        user_id: int,
+        days: int = 30
+    ) -> Dict[str, Any]:
+        """
+        Получение сводной статистики по заказам пользователя.
+
+        Args:
+            db: Сессия базы данных
+            user_id: Идентификатор пользователя
+            days: Период для статистики в днях
+
+        Returns:
+            Dict[str, Any]: Статистика заказов
+        """
+        try:
+            return await self.crud.get_order_stats(db, user_id=user_id, days=days)
+        except Exception as e:
+            logger.error(f"Error getting order summary: {e}")
+            return {
+                "total_orders": 0,
+                "total_amount": "0.00000000",
+                "status_breakdown": {},
+                "period_days": days
+            }
+
+    async def cancel_order(
+        self,
+        db: AsyncSession,
+        *,
+        order_id: int,
+        user_id: int,
+        reason: Optional[str] = None
+    ) -> bool:
+        """
+        Отмена заказа пользователем.
+
+        Args:
+            db: Сессия базы данных
+            order_id: Идентификатор заказа
+            user_id: Идентификатор пользователя
+            reason: Причина отмены
+
+        Returns:
+            bool: Успешность операции
+
+        Raises:
+            BusinessLogicError: При невозможности отмены заказа
+        """
+        try:
+            order = await self.crud.get(db, id=order_id)
+            if not order or order.user_id != user_id:
+                raise BusinessLogicError("Order not found or access denied")
+
+            if order.status not in [OrderStatus.PENDING, OrderStatus.PAID]:
+                raise BusinessLogicError(f"Cannot cancel order with status {order.status.value}")
+
+            # Возврат средств при отмене оплаченного заказа
+            if order.status == OrderStatus.PAID:
+                await self._process_refund(db, order)
+
+            # Обновление статуса заказа
+            await self.crud.update_status(
+                db,
+                order=order,
+                status=OrderStatus.CANCELLED
+            )
+
+            # Обновляем примечания
+            order.notes = f"{order.notes or ''}\nCancelled: {reason or 'User requested'}"
+            order.updated_at = datetime.now(timezone.utc)
+            await db.commit()
+
+            # Деактивация связанных покупок прокси
+            await self._deactivate_order_proxies(db, order.id)
+
+            logger.info(f"Order {order.order_number} cancelled by user {user_id}")
+            return True
+
+        except BusinessLogicError:
+            raise
+        except Exception as e:
+            logger.error(f"Error cancelling order: {e}")
+            raise BusinessLogicError(f"Failed to cancel order: {str(e)}")
+
+    async def update_order_status(
+        self,
+        db: AsyncSession,
+        *,
+        order_id: int,
+        status: OrderStatus,
+        payment_id: Optional[str] = None
+    ) -> Optional[Order]:
+        """
+        Обновление статуса заказа (административная функция).
+
+        Args:
+            db: Сессия базы данных
+            order_id: Идентификатор заказа
+            status: Новый статус заказа
+            payment_id: ID платежа (опционально)
+
+        Returns:
+            Optional[Order]: Обновленный заказ или None
+        """
+        try:
+            order = await self.crud.get(db, id=order_id)
+            if not order:
+                return None
+
+            return await self.crud.update_status(
+                db, order=order, status=status, payment_id=payment_id
+            )
 
         except Exception as e:
-            logger.error(f"Error processing successful payment: {e}")
+            logger.error(f"Error updating order status: {e}")
+            return None
+
+    async def get_order_by_number(
+        self,
+        db: AsyncSession,
+        *,
+        order_number: str,
+        user_id: Optional[int] = None
+    ) -> Optional[Order]:
+        """
+        Получение заказа по номеру.
+
+        Args:
+            db: Сессия базы данных
+            order_number: Номер заказа
+            user_id: Идентификатор пользователя (для проверки прав доступа)
+
+        Returns:
+            Optional[Order]: Заказ или None
+        """
+        try:
+            order = await self.crud.get_by_order_number(db, order_number=order_number)
+            if order and (user_id is None or order.user_id == user_id):
+                return order
+            return None
+        except Exception as e:
+            logger.error(f"Error getting order by number: {e}")
+            return None
+
+    async def search_orders(
+        self,
+        db: AsyncSession,
+        *,
+        search_term: str,
+        user_id: Optional[int] = None,
+        skip: int = 0,
+        limit: int = 100
+    ) -> List[Order]:
+        """
+        Поиск заказов по номеру или описанию.
+
+        Args:
+            db: Сессия базы данных
+            search_term: Поисковый термин
+            user_id: Идентификатор пользователя
+            skip: Количество пропускаемых записей
+            limit: Максимальное количество записей
+
+        Returns:
+            List[Order]: Список найденных заказов
+        """
+        try:
+            return await self.crud.search_orders(
+                db, search_term=search_term, user_id=user_id, skip=skip, limit=limit
+            )
+        except Exception as e:
+            logger.error(f"Error searching orders: {e}")
+            return []
+
+    async def get_orders_by_status(
+        self,
+        db: AsyncSession,
+        *,
+        status: OrderStatus,
+        skip: int = 0,
+        limit: int = 100
+    ) -> List[Order]:
+        """
+        Получение заказов по статусу.
+
+        Args:
+            db: Сессия базы данных
+            status: Статус заказа
+            skip: Количество пропускаемых записей
+            limit: Максимальное количество записей
+
+        Returns:
+            List[Order]: Список заказов с указанным статусом
+        """
+        try:
+            return await self.crud.get_orders_by_status(
+                db, status=status, skip=skip, limit=limit
+            )
+        except Exception as e:
+            logger.error(f"Error getting orders by status {status}: {e}")
+            return []
+
+    async def get_expired_orders(
+        self,
+        db: AsyncSession,
+        *,
+        hours_old: int = 24
+    ) -> List[Order]:
+        """
+        Получение просроченных заказов для автоматической отмены.
+
+        Args:
+            db: Сессия базы данных
+            hours_old: Количество часов для определения просрочки
+
+        Returns:
+            List[Order]: Список просроченных заказов
+        """
+        try:
+            return await self.crud.get_expired_orders(db, hours_old=hours_old)
+        except Exception as e:
+            logger.error(f"Error getting expired orders: {e}")
+            return []
+
+    async def auto_cancel_expired_orders(self, db: AsyncSession) -> int:
+        """
+        Автоматическая отмена просроченных заказов.
+
+        Args:
+            db: Сессия базы данных
+
+        Returns:
+            int: Количество отмененных заказов
+        """
+        try:
+            expired_orders = await self.get_expired_orders(db, hours_old=24)
+            cancelled_count = 0
+
+            for order in expired_orders:
+                try:
+                    await self.crud.update_status(
+                        db,
+                        order=order,
+                        status=OrderStatus.CANCELLED
+                    )
+                    order.notes = f"{order.notes or ''}\nAuto-cancelled: Payment timeout"
+                    order.updated_at = datetime.now(timezone.utc)
+                    await db.commit()
+
+                    # Деактивация прокси
+                    await self._deactivate_order_proxies(db, order.id)
+                    cancelled_count += 1
+
+                except Exception as e:
+                    logger.error(f"Error auto-cancelling order {order.id}: {e}")
+                    continue
+
+            if cancelled_count > 0:
+                logger.info(f"Auto-cancelled {cancelled_count} expired orders")
+
+            return cancelled_count
+
+        except Exception as e:
+            logger.error(f"Error in auto-cancel expired orders: {e}")
+            return 0
+
+    # Приватные методы
+    async def _create_proxy_purchase(self, db: AsyncSession, order: Order, cart_item) -> None:
+        """
+        Создание покупки прокси через интеграцию с провайдерами.
+
+        Args:
+            db: Сессия базы данных
+            order: Заказ
+            cart_item: Элемент корзины
+        """
+        try:
+            # РЕАЛЬНАЯ интеграция с провайдерами
+            proxy_data = await self._purchase_proxies_from_provider(cart_item)
+
+            # Рассчитываем дату истечения
+            duration_days = getattr(cart_item.proxy_product, 'duration_days', 30)
+            expires_at = datetime.now(timezone.utc) + timedelta(days=duration_days)
+
+            await proxy_purchase_crud.create_purchase(
+                db,
+                user_id=order.user_id,
+                proxy_product_id=cart_item.proxy_product_id,
+                order_id=order.id,
+                proxy_list=proxy_data["proxy_list"],
+                username=proxy_data.get("username"),
+                password=proxy_data.get("password"),
+                expires_at=expires_at,
+                provider_order_id=proxy_data.get("provider_order_id"),
+                provider_metadata=proxy_data.get("provider_metadata")
+            )
+
+        except Exception as e:
+            logger.error(f"Error creating proxy purchase: {e}")
+            raise
+
+    async def _purchase_proxies_from_provider(self, cart_item) -> Dict[str, Any]:
+        """
+        Покупка прокси у соответствующего провайдера - РЕАЛЬНАЯ РЕАЛИЗАЦИЯ.
+
+        Args:
+            cart_item: Элемент корзины с информацией о продукте
+
+        Returns:
+            Dict[str, Any]: Данные купленных прокси
+
+        Raises:
+            BusinessLogicError: При ошибках интеграции с провайдером
+        """
+        try:
+            product = cart_item.proxy_product
+
+            # ИСПРАВЛЕНО: Проверяем наличие продукта и провайдера
+            if not product:
+                raise BusinessLogicError("Product not found in cart item")
+
+            provider = product.provider
+
+            if not provider:
+                raise BusinessLogicError("Provider not specified for product")
+
+            logger.info(f"Purchasing {cart_item.quantity} proxies from {provider.value}")
+
+            if provider == ProviderType.PROVIDER_711:
+                # РЕАЛЬНАЯ интеграция с 711proxy
+                proxy_api = get_proxy_provider("711proxy")
+
+                return await proxy_api.purchase_proxies(
+                    product_id=product.provider_product_id or product.id,
+                    quantity=cart_item.quantity,
+                    duration_days=product.duration_days,
+                    country=product.country_code,
+                    format="ip:port:user:pass"
+                )
+
+            elif provider == ProviderType.WEBSHARE:
+                raise BusinessLogicError(f"Provider {provider.value} integration not implemented yet")
+
+            elif provider == ProviderType.PROXY_SELLER:
+                raise BusinessLogicError(f"Provider {provider.value} integration not implemented yet")
+
+            else:
+                raise BusinessLogicError(f"Unsupported provider: {provider.value}")
+
+        except IntegrationError as e:
+            logger.error(f"Integration error purchasing proxies: {e}")
+            # ИСПРАВЛЕНО: Безопасное получение provider.value
+            provider_name = getattr(product, 'provider', None)
+            provider_value = provider_name.value if provider_name else 'unknown'
+            raise BusinessLogicError(f"Failed to purchase proxies from {provider_value}: {e.message}")
+
+        except Exception as e:
+            logger.error(f"Error purchasing proxies from provider: {e}")
+            raise BusinessLogicError(f"Failed to purchase proxies: {str(e)}")
+
+    async def _process_balance_payment(
+        self,
+        db: AsyncSession,
+        user: User,
+        order: Order,
+        amount: Decimal
+    ) -> None:
+        """
+        Обработка оплаты с баланса пользователя.
+
+        Args:
+            db: Сессия базы данных
+            user: Пользователь
+            order: Заказ
+            amount: Сумма платежа
+        """
+        try:
+            # Списание с баланса
+            await user_crud.update_balance(db, user=user, amount=-amount)
+
+            # Обновление статуса заказа
+            await self.crud.update_status(
+                db,
+                order=order,
+                status=OrderStatus.PAID
+            )
+
+            logger.info(f"Balance payment processed for order {order.order_number}: {amount}")
+
+        except Exception as e:
+            logger.error(f"Error processing balance payment: {e}")
             raise
 
     @staticmethod
-    async def _activate_proxies_for_order(db: AsyncSession, order: Order):
-        """ДОБАВЛЕНО: Активация прокси для заказа"""
-        # Импортируем здесь для избежания циклических импортов
-        from app.services.proxy_service import proxy_service
-        return await proxy_service.activate_proxies_for_order(db, order)
+    async def _process_refund(db: AsyncSession, order: Order) -> None:
+        """
+        Обработка возврата средств за отмененный заказ.
+
+        Args:
+            db: Сессия базы данных
+            order: Заказ для возврата
+        """
+        try:
+            user = await user_crud.get(db, id=order.user_id)
+            if user:
+                await user_crud.update_balance(db, user=user, amount=order.total_amount)
+                logger.info(f"Refund processed for order {order.order_number}: {order.total_amount}")
+
+        except Exception as e:
+            logger.error(f"Error processing refund: {e}")
+            raise
 
     @staticmethod
-    async def get_user_orders(
-            db: AsyncSession,
-            user: User,
-            skip: int = 0,
-            limit: int = 100
-    ) -> List[Order]:
-        """Получение заказов пользователя"""
-        return await order_crud.get_user_orders(
-            db,
-            user_id=user.id,
-            skip=skip,
-            limit=limit
-        )
+    async def _deactivate_order_proxies(db: AsyncSession, order_id: int) -> bool:
+        """
+        Деактивация прокси для отмененного заказа.
 
-    @staticmethod
-    async def get_order_by_id(
-            db: AsyncSession,
-            order_id: int,
-            user: User
-    ) -> Optional[Order]:
-        """Получение заказа по ID"""
-        order = await order_crud.get(db, obj_id=order_id)
+        Args:
+            db: Сессия базы данных
+            order_id: Идентификатор заказа
 
-        if not order:
-            return None
-
-        if order.user_id != user.id:
-            raise BusinessLogicError("Access denied to this order")
-
-        return order
-
-    @staticmethod
-    async def get_order_by_number(
-            db: AsyncSession,
-            order_number: str,
-            user: User
-    ) -> Optional[Order]:
-        """Получение заказа по номеру"""
-        order = await order_crud.get_by_order_number(db, order_number=order_number)
-
-        if not order:
-            return None
-
-        if order.user_id != user.id:
-            raise BusinessLogicError("Access denied to this order")
-
-        return order
-
-    async def update_order_status(
-            self,
-            db: AsyncSession,
-            order_id: int,
-            status: OrderStatus,
-            user: User
-    ) -> Order:
-        """Обновление статуса заказа"""
-        order = await self.get_order_by_id(db, order_id, user)
-
-        if not order:
-            raise BusinessLogicError("Order not found")
-
-        if not self._can_update_status(order.status, status):
-            raise BusinessLogicError(
-                f"Cannot change status from {order.status} to {status}"
+        Returns:
+            bool: Успешность деактивации
+        """
+        try:
+            # Получаем все покупки прокси для заказа
+            from sqlalchemy import select
+            result = await db.execute(
+                select(proxy_purchase_crud.model).where(
+                    proxy_purchase_crud.model.order_id == order_id
+                )
             )
+            purchases = list(result.scalars().all())
 
-        return await order_crud.update_status(
-            db,
-            order_id=order_id,
-            status=status
-        )
+            for purchase in purchases:
+                purchase.is_active = False
+                purchase.updated_at = datetime.now(timezone.utc)
 
-    @staticmethod
-    def _can_update_status(current_status: OrderStatus, new_status: OrderStatus) -> bool:
-        """Проверка возможности изменения статуса"""
-        allowed_transitions = {
-            OrderStatus.PENDING: [OrderStatus.PAID, OrderStatus.CANCELLED],
-            OrderStatus.PAID: [OrderStatus.PROCESSING, OrderStatus.CANCELLED],
-            OrderStatus.PROCESSING: [OrderStatus.COMPLETED, OrderStatus.FAILED],
-            OrderStatus.COMPLETED: [],
-            OrderStatus.CANCELLED: [],
-            OrderStatus.FAILED: [OrderStatus.PENDING]
-        }
-
-        return new_status in allowed_transitions.get(current_status, [])
-
-    async def cancel_order(
-            self,
-            db: AsyncSession,
-            order_id: int,
-            user: User,
-            reason: Optional[str] = None
-    ) -> Order:
-        """Отмена заказа"""
-        order = await self.get_order_by_id(db, order_id, user)
-
-        if not order:
-            raise BusinessLogicError("Order not found")
-
-        if order.status not in [OrderStatus.PENDING, OrderStatus.PAID]:
-            raise BusinessLogicError("Cannot cancel order in current status")
-
-        # Возвращаем товары на склад
-        await self._restore_products_stock(db, order)
-
-        # Возвращаем средства на баланс
-        if order.status == OrderStatus.PAID:
-            await self._refund_to_balance(db, user, order)
-
-        # Обновляем статус
-        updated_order = await order_crud.update_status(
-            db,
-            order_id=order_id,
-            status=OrderStatus.CANCELLED
-        )
-
-        if reason:
-            updated_order.notes = f"{updated_order.notes or ''}\nCancellation reason: {reason}"
             await db.commit()
-            await db.refresh(updated_order)
+            logger.info(f"Deactivated {len(purchases)} proxy purchases for order {order_id}")
+            return True
 
-        logger.info(f"Order {order.order_number} cancelled")
-        return updated_order
-
-    @staticmethod
-    async def _restore_products_stock(db: AsyncSession, order: Order):
-        """Возврат товаров на склад"""
-        for item in order.order_items:  # Работает благодаря lazy="selectin"
-            product = await proxy_product_crud.get(db, obj_id=item.proxy_product_id)
-            if product:
-                product.stock_available += item.quantity
-                await db.commit()
+        except Exception as e:
+            logger.error(f"Error deactivating proxies for order {order_id}: {e}")
+            return False
 
     @staticmethod
-    async def _refund_to_balance(db: AsyncSession, user: User, order: Order):
-        """Возврат средств на баланс"""
-        await user_crud.update_balance(
-            db,
-            user=user,
-            amount=float(order.total_amount)
-        )
+    def _generate_order_number() -> str:
+        """
+        Генерация уникального номера заказа.
 
-        logger.info(f"Refund {order.total_amount} to user {user.id} balance")
-
-    async def get_order_summary(
-            self,
-            db: AsyncSession,
-            user: User
-    ) -> Dict[str, Any]:
-        """Получение сводки по заказам"""
-        orders = await self.get_user_orders(db, user)
-
-        summary = {
-            'total_orders': len(orders),
-            'pending_orders': len([o for o in orders if o.status == OrderStatus.PENDING]),
-            'completed_orders': len([o for o in orders if o.status == OrderStatus.COMPLETED]),
-            'cancelled_orders': len([o for o in orders if o.status == OrderStatus.CANCELLED]),
-            'total_spent': sum(o.total_amount for o in orders if o.status == OrderStatus.COMPLETED),
-            'recent_orders': orders[:5]
-        }
-
-        return summary
+        Returns:
+            str: Уникальный номер заказа в формате ORD-YYYYMMDD-XXXXXXXX
+        """
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d")
+        unique_id = str(uuid.uuid4())[:8].upper()
+        return f"ORD-{timestamp}-{unique_id}"
 
     # Реализация абстрактных методов BaseService
-    async def create(self, db: AsyncSession, obj_in: OrderCreate) -> Order:
-        return await order_crud.create(db, obj_in=obj_in)
+    async def create(self, db: AsyncSession, *, obj_in: OrderCreate) -> Order:
+        return await self.crud.create(db, obj_in=obj_in)
 
-    async def get(self, db: AsyncSession, obj_id: int) -> Optional[Order]:
-        return await order_crud.get(db, obj_id=obj_id)
+    async def get(self, db: AsyncSession, *, obj_id: int) -> Optional[Order]:
+        return await self.crud.get(db, id=obj_id)
 
-    async def update(self, db: AsyncSession, db_obj: Order, obj_in: OrderUpdate) -> Order:
-        return await order_crud.update(db, db_obj=db_obj, obj_in=obj_in)
+    async def update(self, db: AsyncSession, *, db_obj: Order, obj_in: OrderUpdate) -> Order:
+        return await self.crud.update(db, db_obj=db_obj, obj_in=obj_in)
 
-    async def delete(self, db: AsyncSession, obj_id: int) -> bool:
-        await order_crud.remove(db, obj_id=obj_id)
-        return True
+    async def delete(self, db: AsyncSession, *, obj_id: int) -> bool:
+        result = await self.crud.delete(db, id=obj_id)
+        return result is not None
 
-    async def get_multi(self, db: AsyncSession, skip: int = 0, limit: int = 100) -> List[Order]:
-        return await order_crud.get_multi(db, skip=skip, limit=limit)
+    async def get_multi(self, db: AsyncSession, *, skip: int = 0, limit: int = 100) -> List[Order]:
+        return await self.crud.get_multi(db, skip=skip, limit=limit)
 
 
-# Создаем экземпляр сервиса
 order_service = OrderService()

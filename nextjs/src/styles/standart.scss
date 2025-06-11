@@ -1,0 +1,137 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+   padding: 0;
+   margin: 0;
+}
+
+html {
+  font-size: 16px; // Это означает 1rem = 16px
+}
+
+body {
+   font-family: "Inter", serif;
+   font-optical-sizing: auto;
+   -ms-overflow-style: none;
+   overflow: -moz-scrollbars-none;
+   position: relative;
+   word-break: auto-phrase;
+   background-color: $body-bg;
+   &::-webkit-scrollbar {
+      width: 0;
+   }
+}
+
+.bodyScroll {
+   overflow: hidden;
+}
+
+.container {
+   width: 93%;
+   max-width: 75rem;
+   margin: 0 auto;
+}
+
+.cab__wrapper {
+   display: grid;
+   //grid-template-columns: minmax(max-content, 15.5rem) auto;
+}
+
+main {
+   width: 100%;
+   height: auto;
+   min-height: calc(100lvh - 64px);
+}
+
+i {
+   line-height: 80%;
+   display: inline-block;
+}
+
+@media screen and (max-width: 767px) {
+   main {
+      min-height: calc(100svh - 64px);
+   }
+}
+
+h1, h2, h3, h4, h5, h6 {
+   font-weight: 700;
+   line-height: 115%;
+   color: #fff;
+}
+
+p, a, span {
+   @include adaptiv-font(.9,.8);
+   font-weight: 400;
+   line-height: 160%;
+   color: #fff;
+}
+
+p {
+   margin-bottom: 0.75rem;
+   &:last-child {      
+      margin-bottom: 0; 
+      padding-bottom: 0;
+   }
+}
+
+a {
+   text-decoration: none;
+   &:hover {
+      transition: ease-in .45s;
+      color: $main-Green;
+   }
+}
+
+strong, b {
+   font-weight: 600;
+}
+
+span {
+   display: inline-block;
+   line-height: 100%;
+   font-size: 1rem;
+}
+
+button {
+   border: none;
+   background-color: transparent;
+   padding: 0;
+   margin: 0;
+   color: #fff;
+   font-size: 1rem;
+   line-height: 100%;
+   cursor: pointer;
+   transition: ease-in-out .45s;
+}
+
+ul {
+   li {
+      list-style: disc outside;
+      padding-bottom: 0.5rem;
+      margin-left: 1rem;
+      line-height: 160%;
+      font-weight: 500;
+      max-width: 80%;
+      @include adaptiv-font(0.938,0.85);
+      &::marker {
+         font-size: 1rem;
+         color: $main-Green;
+      }
+   }
+}
+
+ul, li {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+}
+
+img {
+   width: 100%;
+   height: auto;
+}

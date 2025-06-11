@@ -16,7 +16,7 @@ dependencies = [
     "pydantic>=2.11.5",
     "pydantic-settings>=2.1.0",
     "redis[hiredis]>=6.1.0",
-    "passlib[bcrypt]>=1.7.0",
+    "passlib[bcrypt]>=1.7.4",
     "python-jose[cryptography]>=3.3.0",
     "python-multipart>=0.0.6",
     "httpx>=0.25.0",
@@ -28,6 +28,8 @@ dependencies = [
     "pytz>=2023.3",
     "itsdangerous>=2.1.0",
     "greenlet>=3.2.2",
+    "aiohttp>=3.12.4",
+    "locust>=2.37.6",
 ]
 
 [dependency-groups]
@@ -46,6 +48,8 @@ dev = [
     "safety>=2.3.0",
     "factory-boy>=3.3.0",
     "faker>=20.0.0",
+    "locust>=2.17.0",
+    "aiohttp>=0.25.0",
 ]
 
 [build-system]
@@ -106,3 +110,30 @@ warn_unused_configs = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
 check_untyped_defs = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --disable-warnings --strict-markers"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PytestUnknownMarkWarning",
+    "ignore::PytestDeprecationWarning",
+    "ignore::RuntimeWarning",
+    "ignore::pytest.PytestDeprecationWarning",
+    "ignore::passlib.utils.DeprecationWarning",
+    "ignore",
+]
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "auth: marks tests related to authentication",
+    "crud: marks tests related to CRUD operations",
+    "api: marks tests related to API endpoints",
+    "order: marks tests related to orders",
+    "payment: marks tests related to payments",
+    "proxy: marks tests related to proxies",
+]

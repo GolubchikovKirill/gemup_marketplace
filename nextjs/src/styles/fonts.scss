@@ -1,0 +1,123 @@
+   @font-face {      
+      font-family: 'Gemups';
+      src:  url('/fonts/Gemups.eot?y1anyg');
+      src:  url('/fonts/Gemups.eot?y1anyg#iefix') format('embedded-opentype'),
+        url('/fonts/Gemups.ttf?y1anyg') format('truetype'),
+        url('/fonts/Gemups.woff?y1anyg') format('woff'),
+        url('/fonts/Gemups.svg?y1anyg#Gemups') format('svg');
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+    }
+    
+    [class^="ico-"]::before, [class*=" ico-"]::before {
+      font-family: 'Gemups' !important;
+      speak: never;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .ico-eye:before {
+  content: "\e900";
+}
+.ico-eye-close:before {
+  content: "\e901";
+}
+.ico-facebook:before {
+  content: "\e902";
+}
+.ico-file:before {
+  content: "\e903";
+}
+.ico-info:before {
+  content: "\e904";
+}
+.ico-instagram:before {
+  content: "\e905";
+}
+.ico-logout:before {
+  content: "\e906";
+}
+.ico-plus:before {
+  content: "\e907";
+}
+.ico-refresh:before {
+  content: "\e908";
+}
+.ico-shield:before {
+  content: "\e909";
+}
+.ico-shield-close:before {
+  content: "\e90a";
+}
+.ico-star:before {
+  content: "\e90b";
+}
+.ico-tag:before {
+  content: "\e90c";
+}
+.ico-time:before {
+  content: "\e90d";
+}
+.ico-twitter:before {
+  content: "\e90e";
+}
+.ico-user:before {
+  content: "\e90f";
+}
+.ico-users:before {
+  content: "\e910";
+}
+.ico-wallet:before {
+  content: "\e911";
+}
+.ico-world:before {
+  content: "\e912";
+}
+.ico-arrow:before {
+  content: "\e913";
+}
+.ico-arrow-menu-left:before {
+  content: "\e914";
+}
+.ico-burger-mb:before {
+  content: "\e915";
+}
+.ico-burger-nav:before {
+  content: "\e916";
+}
+.ico-cart:before {
+  content: "\e917";
+}
+.ico-cart-bag:before {
+  content: "\e918";
+}
+.ico-category:before {
+  content: "\e919";
+}
+.ico-close:before {
+  content: "\e91a";
+}
+.ico-copy:before {
+  content: "\e91b";
+}
+.ico-delete:before {
+  content: "\e91c";
+}
+.ico-details:before {
+  content: "\e91d";
+}
+.ico-done:before {
+  content: "\e91e";
+}
+.ico-download:before {
+  content: "\e91f";
+}
+.ico-edit:before {
+  content: "\e920";
+}

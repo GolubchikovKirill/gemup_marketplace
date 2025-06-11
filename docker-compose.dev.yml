@@ -1,6 +1,7 @@
 services:
-  web:
-    build: 
+  # Backend (FastAPI)
+  backend:
+    build:
       context: .
       target: development
     ports:
@@ -9,6 +10,7 @@ services:
       - DEBUG=true
       - POSTGRES_HOST=db
       - REDIS_HOST=redis
+      - FRONTEND_URL=http://localhost:3000
     env_file:
       - .env
     depends_on:
@@ -17,10 +19,35 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - .:/app
-      # Исключаем только директории, НЕ файлы
+      - ./app:/app/app
+      - ./alembic:/app/alembic
+      - ./scripts:/app/scripts
+      - ./.env:/app/.env
       - venv_data:/app/.venv
-      - /app/__pycache__
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Frontend (Next.js через Docker)
+  frontend:
+    build:
+      context: ./nextjs
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:8000
+    volumes:
+      - ./nextjs:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - app-network
 
   db:
     image: postgres:15-alpine
@@ -37,6 +64,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - app-network
 
   redis:
     image: redis:7-alpine
@@ -49,8 +78,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
   redis_data:
   venv_data:
+
+networks:
+  app-network:
+    driver: bridge

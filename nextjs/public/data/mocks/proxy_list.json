@@ -1,0 +1,212 @@
+[
+  {
+    "type": "socks5",
+    "ip": "192.168.3.5",
+    "port": 1080,
+    "login": "socks_user5",
+    "password": "socks_password5"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.8",
+    "port": 8080,
+    "login": "user8",
+    "password": "password8"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.2",
+    "port": 8443,
+    "login": "https_user2",
+    "password": "https_password2"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.1",
+    "port": 8080,
+    "login": "user1",
+    "password": "password1"
+  },
+  {
+    "type": "socks5",
+    "ip": "192.168.3.10",
+    "port": 1080,
+    "login": "socks_user10",
+    "password": "socks_password10"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.7",
+    "port": 8443,
+    "login": "https_user7",
+    "password": "https_password7"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.3",
+    "port": 8080,
+    "login": "user3",
+    "password": "password3"
+  },
+  {
+    "type": "socks5",
+    "ip": "192.168.3.1",
+    "port": 1080,
+    "login": "socks_user1",
+    "password": "socks_password1"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.4",
+    "port": 8443,
+    "login": "https_user4",
+    "password": "https_password4"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.9",
+    "port": 8080,
+    "login": "user9",
+    "password": "password9"
+  },
+  {
+    "type": "socks5",
+    "ip": "192.168.3.8",
+    "port": 1080,
+    "login": "socks_user8",
+    "password": "socks_password8"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.10",
+    "port": 8443,
+    "login": "https_user10",
+    "password": "https_password10"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.5",
+    "port": 8080,
+    "login": "user5",
+    "password": "password5"
+  },
+  {
+    "type": "socks5",
+    "ip": "192.168.3.3",
+    "port": 1080,
+    "login": "socks_user3",
+    "password": "socks_password3"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.6",
+    "port": 8443,
+    "login": "https_user6",
+    "password": "https_password6"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.7",
+    "port": 8080,
+    "login": "user7",
+    "password": "password7"
+  },
+  {
+    "type": "socks5",
+    "ip": "192.168.3.2",
+    "port": 1080,
+    "login": "socks_user2",
+    "password": "socks_password2"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.9",
+    "port": 8443,
+    "login": "https_user9",
+    "password": "https_password9"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.2",
+    "port": 8080,
+    "login": "user2",
+    "password": "password2"
+  },
+  {
+    "type": "socks5",
+    "ip": "192.168.3.7",
+    "port": 1080,
+    "login": "socks_user7",
+    "password": "socks_password7"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.1",
+    "port": 8443,
+    "login": "https_user1",
+    "password": "https_password1"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.10",
+    "port": 8080,
+    "login": "user10",
+    "password": "password10"
+  },
+  {
+    "type": "socks5",
+    "ip": "192.168.3.6",
+    "port": 1080,
+    "login": "socks_user6",
+    "password": "socks_password6"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.8",
+    "port": 8443,
+    "login": "https_user8",
+    "password": "https_password8"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.6",
+    "port": 8080,
+    "login": "user6",
+    "password": "password6"
+  },
+  {
+    "type": "socks5",
+    "ip": "192.168.3.4",
+    "port": 1080,
+    "login": "socks_user4",
+    "password": "socks_password4"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.5",
+    "port": 8443,
+    "login": "https_user5",
+    "password": "https_password5"
+  },
+  {
+    "type": "http",
+    "ip": "192.168.1.4",
+    "port": 8080,
+    "login": "user4",
+    "password": "password4"
+  },
+  {
+    "type": "socks5",
+    "ip": "192.168.3.9",
+    "port": 1080,
+    "login": "socks_user9",
+    "password": "socks_password9"
+  },
+  {
+    "type": "https",
+    "ip": "192.168.2.3",
+    "port": 8443,
+    "login": "https_user3",
+    "password": "https_password3"
+  }
+]

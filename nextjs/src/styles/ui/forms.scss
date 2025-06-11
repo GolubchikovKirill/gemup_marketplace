@@ -1,0 +1,40 @@
+// Base
+
+.form__fields {
+  display: grid;
+  grid-template-columns: auto;
+  gap: .5rem;
+}
+
+.form__action {
+  button[type="submit"] {
+    color: $body-bg;
+    background-color: $main-Green;
+    padding: 1.25rem 1rem;
+    border-radius: .25rem;
+    @include adaptiv-font(.95,.9);
+    font-weight: 500;
+    &:disabled {
+      cursor: default;
+      opacity: .5;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: $main-Green-Hover;
+        color: #fff;
+        &:disabled {
+          background-color: $main-Green;
+          color: $body-bg;
+        }
+      }
+    }
+  }
+  .sub__actions {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    a {
+      color: $main-Green;
+    }
+  }
+}

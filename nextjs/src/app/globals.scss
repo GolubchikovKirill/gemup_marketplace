@@ -1,0 +1,32 @@
+@import "../styles/lib/custom-select.scss";
+@import "../styles/lib/hystmodal.min.scss";
+@import "../styles/lib/slimselect.scss";
+@import "../styles/lib/swiper-bundle.min.scss";
+@import "../styles/lib/venobox.min.scss";
+@import "../styles/variables.scss";
+@import "../styles/mixins.scss";
+@import "../styles/style.scss";
+
+.not-found-page {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    &__title {
+        font-size: 2.5rem;
+    }
+    &__link {
+        text-decoration: underline;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .not-found-page {
+        &__title {
+            font-size: 2rem;
+        }
+    }
+}

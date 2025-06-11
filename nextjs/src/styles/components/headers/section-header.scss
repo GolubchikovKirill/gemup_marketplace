@@ -1,0 +1,26 @@
+.headSection__wrapper {
+   width: 100%;
+   max-width: 52rem;
+   margin-bottom: 2rem;
+   h2 {
+      @include adaptiv-font(2.8,1.7);
+      color: $color-black;
+      line-height: 120%;
+      margin-bottom: 0.5rem;
+   }
+   p {
+      @include adaptiv-font(1,0.8);
+      color: #545454;
+      line-height: 160%;
+      font-weight: 400;
+   }
+}
+
+@media screen and (max-width: 767px) {
+   .headSection__wrapper {
+      margin-bottom: 1.25rem;
+      h2 {
+         margin-bottom: 0.25rem;
+      }
+   }
+}

@@ -1,0 +1,38 @@
+.headSectionInline__wrapper {
+  width: 100%;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  h2 {
+     @include adaptiv-font(2.8,1.7);
+     color: $color-black;
+     line-height: 110%;
+     width: 40%;
+  }
+  p {
+     @include adaptiv-font(.9,0.8);
+     color: #545454;
+     line-height: 160%;
+     font-weight: 400;
+     width: 50%;
+     text-align: end;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .headSectionInline__wrapper {
+     margin-bottom: 1.25rem;
+     flex-direction: column;
+     h2,p {
+      width: 100%;
+     }
+     h2 {
+        margin-bottom: 0.25rem;
+     }
+     p {
+      text-align: left;
+     }
+  }
+}

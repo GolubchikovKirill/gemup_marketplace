@@ -1,0 +1,359 @@
+header {
+   width: 100%;
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 1rem 0;
+   position: relative;
+   .header__wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 93%;
+      max-width: 1200px;
+      margin: 0 auto;
+      .leftSide {}
+      .rightSide {
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         gap: 1rem;
+      }
+   }
+}
+
+header.auth {
+   .header__wrapper > .rightSide {
+      gap: 0.5rem;
+   }
+}
+
+.header__wrapper {
+  .leftSide {
+    a {
+      display: none;
+    }
+  }
+}
+
+// Стили для кнопок логина/регистрации до авторизации пользователя
+header.noauth {
+  .btn-main, .btn-line {
+    padding: .35rem .75rem .4rem .75rem;
+    font-size: .8rem;
+    line-height: 115%;
+    border-radius: .25rem;
+    border: 1px solid transparent;
+    font-weight: 500;
+    transition: ease-in-out .3s;
+  }
+  .btn-main {
+    background-color: $main-Green;
+    color: $text-black;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: $main-Green-Hover;
+        color: #fff;
+      }
+    }
+  }
+  .btn-line {
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid $main-Green;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: #fff;
+        background-color: $black-elementBG;
+        border: 1px solid #fff;
+      }
+    }
+  }
+  
+}
+
+@import "../elements/header/langSwitch";
+// Стили для отображения динамической корзины
+.cart__wrapper {
+  background-color: $black-elementBG;
+  border-radius: .5rem;
+  .cart {
+    display: flex;
+    position: relative;
+    i {
+      font-size: 1rem;
+      color: $main-Green;
+      padding: .5rem;
+      line-height: 80%;
+      display: flex;
+    }
+    .count__lable {
+      display: none;
+      position: absolute;
+      top: -.5rem;
+      right: -.5rem;
+      background-color: $main-Green;
+      padding: .5rem;
+      border-radius: 999px;
+      width: .3rem;
+      height: .3rem;
+      align-items: center;
+      justify-content: center;
+      span {
+        font-size: 0.6rem;
+        line-height: 80%;
+        color: $text-black;
+      }
+      &.active {
+        display: flex;
+      }
+    }
+  }
+}
+
+.cash__wrapper {
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+   background-color: $black-elementBG;
+   padding: .5rem;
+   border-radius: .5rem;
+   i {
+      font-size: 1rem;
+      color: $main-Green;
+      line-height: 50%;
+   }
+   .billing {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      .value, .currency {
+         color: $main-Green;
+         line-height: 50%;
+         font-size: 0.8rem;
+         transition: ease-in-out .3s;
+      }
+      &:hover {
+         .value, .currency {
+            color: #fff;
+         }
+      }
+   }
+}
+
+.user__wrapper {
+   display: flex;
+   padding: .5rem;
+   background-color: $black-elementBG;
+   border-radius: .5rem;
+   gap: 0.25rem;
+   cursor: pointer;
+   position: relative;
+   .user__name {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      i, span {
+         line-height: 80%;
+      }
+      i {
+         color: $main-Green;
+      }
+      span {
+         color: #fff;
+         font-size: 0.8rem;
+      }
+   }
+   i {
+      color: $gray500;
+      line-height: 80%;
+   }
+   .userMenu {
+      display: none;
+      opacity: 0;
+      transition: ease-in-out .5s;
+      position: relative;
+   }
+   &:hover {
+      .userMenu {
+         transition: ease-in-out .5s;
+         opacity: 1;
+         display: block;
+         position: absolute;
+         top: 2rem;
+         left: 50%;
+         transform: translateX(-50%);
+         background-color: $black-elementBG;
+         width: auto;
+         border-radius: .5rem;
+         z-index: 2;
+         padding: 0;
+         margin: 0;
+         .userMenu__items {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            gap: 0.5rem;
+            .userMenu__item {
+               list-style: none;
+               padding: 0;
+               margin: 0;
+               a {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.25rem;
+                  flex-wrap: nowrap;
+                  flex-shrink: 0;
+                  font-size: 0.8rem;
+                  width: 100%;
+                  transition: ease-in-out .5s;    
+                  color: $text-secondory;
+                  white-space: nowrap;     
+                  i {
+                     font-style: normal;
+                     transition: ease-in-out .5s; 
+                     color: $text-secondory;
+                     margin-right: .25rem;
+                     font-size: 1.15rem;
+                  }
+               }
+               &.logout {
+                  a, i {
+                     color: $red-danger;
+                  }
+               }
+               &:hover {
+                  a {
+                     color: #fff;
+                     i {
+                        color: $main-Green;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+// Стили для отображения мобильного бургера
+.burger__wrapper {
+  cursor: pointer;
+  display: none;
+  i {
+    color: #fff;
+    font-size: 1.25rem;
+    line-height: 80%;
+  }
+}
+
+.mobileMenu__wrapper {
+   //display: none;
+   position: absolute;
+   left: -2000px;
+   top: 0;
+   opacity: 0;
+   visibility: hidden;
+   transition: ease-in-out .5s;
+}
+
+@media screen and (max-width:1024px) {
+   .header__wrapper {
+      .leftSide {
+         a {
+            display: flex;
+         }
+      }
+   }
+
+   .burger__wrapper {
+      display: flex;
+   }
+
+   header .rightSide {
+      .lang__switch {
+         display: none;
+      }
+   }
+
+   .user__wrapper {
+   .user__name {
+      span {
+         display: none;
+      }
+   }
+}
+
+   .mobileMenu__wrapper {
+      top: 0;
+      left: 0;
+      background-color: $body-bg;
+      width: 88%;
+      padding: 0;
+      height: 100svh;
+      padding: 1.5rem;
+      transition: ease-in-out .5s;
+      .head__area {
+         display: flex;
+         flex-direction: row;
+         justify-content: space-between;
+         align-items: center;
+         width: 100%;
+         padding: .5rem 0;
+         margin-bottom: 1rem;
+         button {
+            background-color: $black-elementBG;
+            padding: .75rem;
+            border-radius: 999px;
+            i {
+               color: $gray500;
+               font-size: 1.15rem;
+               line-height: 80%;
+            }
+         }
+      }
+      .mainMenu__wrapper {
+         display: flex;
+         flex-direction: column;
+         gap: 1.5rem;
+         .menu__element {
+            .menuHead {
+               color: $text-secondory;
+               font-size: 0.9rem;
+               margin-bottom: 0.5rem;
+            }
+            nav.mobNav__wrapper {
+               
+               ul.mobNav {
+                  li.mobNav__item {
+                     padding: 0;
+                     margin: 0;
+                     list-style: none;
+                     display: flex;
+                     align-items: center;
+                     gap: 0.5rem;
+                     i {
+                        color: $text-secondory;
+                        font-size: 1.5rem;
+                        line-height: 80%;
+                     }
+                     a {
+                        color: $text-secondory;
+                        font-size: 1.2rem;
+                        line-height: 100%;
+                     }
+                  }
+               }
+            }
+         }
+      }
+      &.active {
+         //display: block;
+         opacity: 1;
+         visibility: visible;
+         top: 0;
+         left: 0;
+         transition: ease-in-out .5s;
+      }
+   }
+}

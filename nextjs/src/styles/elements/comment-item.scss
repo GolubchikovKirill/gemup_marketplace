@@ -1,0 +1,147 @@
+.comment__item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: $black-elementBG;
+  border-radius: 1rem;
+
+  .ava__wrapper {
+    position: relative;
+    width: auto;
+
+    img {
+      width: 3.25rem;
+      height: 3.25rem;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    i {
+      position: absolute;
+      bottom: -0.5rem;
+      right: -0.5rem;
+      padding: 0.35rem;
+      font-size: 1rem;
+      color: $main-Green;
+      background-color: #0B3E30;
+      border: 2px solid $body-bg;
+      border-radius: 50%;
+    }
+  }
+
+  .comment__data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 75%;
+
+    .name {
+      @include adaptiv-font(1.25, 1.05);
+      font-weight: 700;
+      line-height: 125%;
+    }
+
+    .subject {
+      @include adaptiv-font(1, 0.95);
+      font-weight: 700;
+      text-transform: uppercase;
+      color: $text-secondory;
+      line-height: 125%;
+      margin-bottom: 0.5rem;
+    }
+
+    .comment__body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .title,
+      .comment__text {
+        color: $text-secondory;
+        font-weight: 500;
+        line-height: 100%;
+      }
+
+      .title {
+        @include adaptiv-font(0.95, 0.9);
+      }
+
+      .comment__text {
+        @include adaptiv-font(0.9, 0.85);
+        font-weight: 400;
+        line-height: 160%;
+      }
+    }
+  }
+
+  .comment__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.15rem;
+    width: auto;
+
+    .rating {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.35rem;
+
+      .value {
+        color: #fff;
+        @include adaptiv-font(0.9, 0.8);
+      }
+
+      .stars__wrapper {
+        display: flex;
+        gap: 0.1rem;
+
+        .ico-star {
+          color: $text-secondory;
+          @include adaptiv-font(0.9, 0.8);
+
+          &.active {
+            color: $main-Green;
+          }
+        }
+      }
+    }
+
+    .date span {
+      color: $text-secondory;
+      @include adaptiv-font(0.75, 0.75);
+      white-space: nowrap;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .comment__item {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+
+    .ava__wrapper {
+      order: 1;
+    }
+
+    .comment__details {
+      order: 2;
+    }
+
+    .comment__data {
+      order: 3;
+      width: 100%;
+
+      .subject {
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+}

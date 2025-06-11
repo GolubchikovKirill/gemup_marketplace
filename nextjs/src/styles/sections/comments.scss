@@ -1,0 +1,10 @@
+#comments {
+  .addComment__wrapper {}
+  .comments__wrapper {
+    .comments__list {
+      display: grid;
+      grid-template-columns: auto;
+      gap: 1rem;
+    }
+  }
+}
