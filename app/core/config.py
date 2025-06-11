@@ -1,5 +1,5 @@
 """
-Конфигурация приложения.
+Конфигурация приложения с поддержкой Render.com
 
 """
 
@@ -13,14 +13,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 DOTENV_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env")
 
 class Settings(BaseSettings):
-    """
-    Настройки приложения.
-
-    ИСПРАВЛЕНИЯ:
-    ✅ Добавлены database pool настройки
-    ✅ Исправлены computed_field
-    ✅ Enhanced validation
-    """
+    """Настройки приложения с поддержкой Render.com"""
 
     model_config = SettingsConfigDict(
         env_file=DOTENV_PATH,
@@ -29,15 +22,15 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    # Database settings - ИСПРАВЛЕНО: Добавлены недостающие настройки
-    postgres_user: str = Field(..., description="PostgreSQL username")
-    postgres_password: str = Field(..., description="PostgreSQL password")
-    postgres_db: str = Field(..., description="PostgreSQL database name")
-    postgres_host: str = Field(default="db", description="PostgreSQL host")  # ИСПРАВЛЕНО: db для Docker
+    # Database settings (для локальной разработки)
+    postgres_user: str = Field(default="gemup_user", description="PostgreSQL username")
+    postgres_password: str = Field(default="", description="PostgreSQL password")
+    postgres_db: str = Field(default="gemup_marketplace", description="PostgreSQL database name")
+    postgres_host: str = Field(default="db", description="PostgreSQL host")
     postgres_port: int = Field(default=5432, ge=1, le=65535, description="PostgreSQL port")
     database_echo: bool = Field(default=False, description="Enable SQLAlchemy query logging")
 
-    # ИСПРАВЛЕНИЕ: Добавлены недостающие database pool настройки
+    # Database pool settings
     database_pool_size: int = Field(default=20, ge=1, le=100, description="Database connection pool size")
     database_max_overflow: int = Field(default=30, ge=0, le=100, description="Database max overflow connections")
     database_pool_timeout: int = Field(default=30, ge=1, le=300, description="Database pool timeout in seconds")
@@ -46,23 +39,39 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def database_url(self) -> str:
-        """Строка подключения к PostgreSQL"""
+        """ИСПРАВЛЕНО: Строка подключения к PostgreSQL с поддержкой Render"""
+
+        # 1. ПРИОРИТЕТ: DATABASE_URL от Render (автоматически через fromDatabase)
+        database_url = os.getenv("DATABASE_URL")
+        if database_url:
+            # Render использует postgres://, SQLAlchemy нужен postgresql://
+            if database_url.startswith("postgres://"):
+                database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+            # Добавляем SSL для Render (обязательно согласно документации)
+            if "sslmode" not in database_url:
+                separator = "&" if "?" in database_url else "?"
+                database_url = f"{database_url}{separator}sslmode=require"
+
+            return database_url
+
+        # 2. FALLBACK: Локальная разработка
         return f"postgresql+asyncpg://{self.postgres_user}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
 
-    # Redis settings - ИСПРАВЛЕНО: Улучшены настройки
-    redis_host: str = Field(default="redis", description="Redis host")  # ИСПРАВЛЕНО: redis для Docker
+    # Redis settings
+    redis_host: str = Field(default="redis", description="Redis host")
     redis_port: int = Field(default=6379, ge=1, le=65535, description="Redis port")
     redis_db: int = Field(default=0, ge=0, le=15, description="Redis database number")
     redis_password: Optional[str] = Field(default=None, description="Redis password")
     redis_max_connections: int = Field(default=20, ge=1, le=100, description="Redis max connections")
-    redis_socket_timeout: int = Field(default=10, ge=1, description="Redis socket timeout")  # ИСПРАВЛЕНО: увеличен timeout
+    redis_socket_timeout: int = Field(default=10, ge=1, description="Redis socket timeout")
     redis_socket_connect_timeout: int = Field(default=10, ge=1, description="Redis connect timeout")
     redis_retry_on_timeout: bool = Field(default=True, description="Redis retry on timeout")
 
     @computed_field
     @property
     def redis_url(self) -> str:
-        """ИСПРАВЛЕНО: Строка подключения к Redis с правильной обработкой пароля"""
+        """Строка подключения к Redis с правильной обработкой пароля"""
         if self.redis_password and self.redis_password.strip():
             return f"redis://:{self.redis_password}@{self.redis_host}:{self.redis_port}/{self.redis_db}"
         return f"redis://{self.redis_host}:{self.redis_port}/{self.redis_db}"
@@ -81,20 +90,15 @@ class Settings(BaseSettings):
             raise ValueError(f'Environment must be one of: {allowed}')
         return v
 
-    # Security settings - ИСПРАВЛЕНО: Enhanced validation
-    secret_key: str = Field(..., min_length=32, description="Secret key for JWT")
+    # Security settings
+    secret_key: str = Field(default="dev-secret-key-change-in-production-32-chars-minimum", min_length=32, description="Secret key for JWT")
     algorithm: str = Field(default="HS256", description="JWT algorithm")
-    access_token_expire_minutes: int = Field(
-        default=30,
-        ge=1,
-        le=43200,
-        description="Access token expiration in minutes"
-    )
+    access_token_expire_minutes: int = Field(default=30, ge=1, le=43200, description="Access token expiration in minutes")
 
     @field_validator('secret_key')
     @classmethod
     def validate_secret_key(cls, v: str) -> str:
-        """ИСПРАВЛЕНО: Валидация SECRET_KEY для безопасности"""
+        """Валидация SECRET_KEY для безопасности"""
         if len(v) < 32:
             raise ValueError('Secret key must be at least 32 characters long')
 
@@ -105,7 +109,6 @@ class Settings(BaseSettings):
         for pattern in unsafe_patterns:
             if pattern in v_lower:
                 # В development предупреждаем, в production блокируем
-                import os
                 env = os.getenv('ENVIRONMENT', 'development')
                 if env == 'production':
                     raise ValueError(f'Secret key contains unsafe pattern: {pattern}')
@@ -123,7 +126,7 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def cors_origins_list(self) -> List[str]:
-        """ИСПРАВЛЕНО: Список разрешенных CORS origin с валидацией"""
+        """Список разрешенных CORS origin с валидацией"""
         origins = []
         for origin in self.cors_origins.split(","):
             origin = origin.strip()
@@ -139,40 +142,24 @@ class Settings(BaseSettings):
 
     # Rate limiting
     rate_limit_requests: int = Field(default=100, ge=1, description="Rate limit requests per window")
-    rate_limit_window: int = Field(default=60, ge=1, description="Rate limit window in seconds")  # ИСПРАВЛЕНО: 60 секунд вместо 3600
+    rate_limit_window: int = Field(default=60, ge=1, description="Rate limit window in seconds")
     auth_rate_limit_requests: int = Field(default=5, ge=1, description="Auth rate limit requests")
     auth_rate_limit_window: int = Field(default=300, ge=1, description="Auth rate limit window")
 
     # Guest session settings
-    guest_session_expire_hours: int = Field(
-        default=24,
-        ge=1,
-        le=168,
-        description="Guest session expiration in hours"
-    )
-    guest_cart_expire_hours: int = Field(
-        default=2,
-        ge=1,
-        le=24,
-        description="Guest cart expiration in hours"
-    )
+    guest_session_expire_hours: int = Field(default=24, ge=1, le=168, description="Guest session expiration in hours")
+    guest_cart_expire_hours: int = Field(default=2, ge=1, le=24, description="Guest cart expiration in hours")
 
     # URL settings
-    base_url: str = Field(
-        default="http://localhost:8000",
-        description="Base URL of the application"
-    )
-    frontend_url: str = Field(
-        default="http://localhost:3000",
-        description="Frontend application URL"
-    )
+    base_url: str = Field(default="http://localhost:8000", description="Base URL of the application")
+    frontend_url: str = Field(default="http://localhost:3000", description="Frontend application URL")
 
-    # ИСПРАВЛЕНИЕ: Добавлены недостающие circuit breaker настройки
+    # Circuit breaker настройки
     circuit_breaker_failure_threshold: int = Field(default=5, ge=1, description="Circuit breaker failure threshold")
     circuit_breaker_recovery_timeout: int = Field(default=60, ge=1, description="Circuit breaker recovery timeout")
     circuit_breaker_expected_exception: str = Field(default="Exception", description="Expected exception for circuit breaker")
 
-    # Worker settings - ИСПРАВЛЕНО: Добавлены настройки производительности
+    # Worker settings
     worker_count: int = Field(default=4, ge=1, le=32, description="Worker count")
     max_connections_per_worker: int = Field(default=1000, ge=100, description="Max connections per worker")
 
@@ -180,47 +167,29 @@ class Settings(BaseSettings):
     cryptomus_api_key: str = Field(default="", description="Cryptomus API key")
     cryptomus_merchant_id: str = Field(default="", description="Cryptomus merchant ID")
     cryptomus_webhook_secret: str = Field(default="", description="Cryptomus webhook secret")
-    cryptomus_base_url: str = Field(
-        default="https://api.cryptomus.com/v1",
-        description="Cryptomus API base URL"
-    )
+    cryptomus_base_url: str = Field(default="https://api.cryptomus.com/v1", description="Cryptomus API base URL")
 
     # 711 Proxy settings
     proxy_711_api_key: str = Field(default="", description="711 Proxy API key")
     proxy_711_username: Optional[str] = Field(default=None, description="711 Proxy username")
     proxy_711_password: Optional[str] = Field(default=None, description="711 Proxy password")
-    proxy_711_base_url: str = Field(
-        default="https://service.711proxy.com/api",
-        description="711 Proxy API base URL"
-    )
+    proxy_711_base_url: str = Field(default="https://service.711proxy.com/api", description="711 Proxy API base URL")
 
     # ProxySeller settings
     proxy_seller_api_key: str = Field(default="", description="ProxySeller API key")
-    proxy_seller_base_url: str = Field(
-        default="https://proxy-seller.com/api",
-        description="ProxySeller API base URL"
-    )
+    proxy_seller_base_url: str = Field(default="https://proxy-seller.com/api", description="ProxySeller API base URL")
 
     # Lightning Proxies settings
     lightning_api_key: str = Field(default="", description="Lightning Proxies API key")
-    lightning_base_url: str = Field(
-        default="https://api.lightningproxies.com",
-        description="Lightning Proxies API base URL"
-    )
+    lightning_base_url: str = Field(default="https://api.lightningproxies.com", description="Lightning Proxies API base URL")
 
     # GoProxy settings
     goproxy_api_key: str = Field(default="", description="GoProxy API key")
-    goproxy_base_url: str = Field(
-        default="https://api.goproxy.com",
-        description="GoProxy API base URL"
-    )
+    goproxy_base_url: str = Field(default="https://api.goproxy.com", description="GoProxy API base URL")
 
     # Logging settings
     log_level: str = Field(default="INFO", description="Logging level")
-    log_format: str = Field(
-        default="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        description="Log format"
-    )
+    log_format: str = Field(default="%(asctime)s - %(name)s - %(levelname)s - %(message)s", description="Log format")
     log_file: Optional[str] = Field(default=None, description="Log file path")
 
     @field_validator('log_level')
@@ -253,7 +222,7 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def effective_docs_url(self) -> Optional[str]:
-        """ИСПРАВЛЕНО: Эффективный URL для Swagger документации."""
+        """Эффективный URL для Swagger документации."""
         if self.is_production():
             return None  # Отключаем в production
         return self.docs_url
@@ -261,26 +230,16 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def effective_redoc_url(self) -> Optional[str]:
-        """ИСПРАВЛЕНО: Эффективный URL для ReDoc документации."""
+        """Эффективный URL для ReDoc документации."""
         if self.is_production():
             return None  # Отключаем в production
         return self.redoc_url
 
     # Pagination settings
-    default_page_size: int = Field(
-        default=20,
-        ge=1,
-        le=100,
-        description="Default page size for pagination"
-    )
-    max_page_size: int = Field(
-        default=100,
-        ge=1,
-        le=1000,
-        description="Maximum page size for pagination"
-    )
+    default_page_size: int = Field(default=20, ge=1, le=100, description="Default page size for pagination")
+    max_page_size: int = Field(default=100, ge=1, le=1000, description="Maximum page size for pagination")
 
-    # ИСПРАВЛЕНИЕ: Методы для проверки окружения с better typing
+    # Методы для проверки окружения
     def is_production(self) -> bool:
         """Проверка production окружения"""
         return self.environment.lower() == "production"
@@ -298,7 +257,7 @@ class Settings(BaseSettings):
         return self.environment.lower() == "staging"
 
     def get_enabled_proxy_providers(self) -> List[str]:
-        """ИСПРАВЛЕНО: Получение списка включенных провайдеров прокси."""
+        """Получение списка включенных провайдеров прокси."""
         enabled = []
 
         # Проверяем наличие реальных ключей (не dev placeholders)
@@ -325,19 +284,17 @@ class Settings(BaseSettings):
         return enabled
 
     def validate_required_settings(self) -> List[str]:
-        """ИСПРАВЛЕНО: Валидация обязательных настроек для production."""
+        """Валидация обязательных настроек для production."""
         missing = []
 
         if self.is_production():
             # Critical settings
             if not self.secret_key or len(self.secret_key) < 32:
                 missing.append("secret_key")
-            if not self.postgres_user:
-                missing.append("postgres_user")
-            if not self.postgres_password:
-                missing.append("postgres_password")
-            if not self.postgres_db:
-                missing.append("postgres_db")
+
+            # Database URL должен быть доступен в production
+            if not os.getenv("DATABASE_URL"):
+                missing.append("database_url")
 
             # Payment settings
             if not self.cryptomus_api_key:
@@ -350,13 +307,19 @@ class Settings(BaseSettings):
         return missing
 
     def log_configuration(self) -> None:
-        """ИСПРАВЛЕНО: Логирование текущей конфигурации."""
+        """Логирование текущей конфигурации."""
         import logging
         logger = logging.getLogger(__name__)
 
         logger.info(f"🌍 Environment: {self.environment}")
         logger.info(f"🐛 Debug mode: {self.debug}")
-        logger.info(f"🗄️ Database: {self.postgres_host}:{self.postgres_port}/{self.postgres_db}")
+
+        # Логируем тип подключения к БД
+        if os.getenv("DATABASE_URL"):
+            logger.info(f"🗄️ Database: Using Render DATABASE_URL (Internal)")
+        else:
+            logger.info(f"🗄️ Database: {self.postgres_host}:{self.postgres_port}/{self.postgres_db}")
+
         logger.info(f"🌐 CORS origins: {len(self.cors_origins_list)} configured")
         logger.info(f"🎯 Frontend URL: {self.frontend_url}")
 
@@ -372,11 +335,17 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def is_docker(self) -> bool:
-        """ИСПРАВЛЕНО: Определение запуска в Docker"""
+        """Определение запуска в Docker"""
         return self.postgres_host in ['db', 'database'] or self.redis_host in ['redis', 'redis-server']
 
+    @computed_field
+    @property
+    def is_render(self) -> bool:
+        """НОВОЕ: Определение запуска на Render"""
+        return bool(os.getenv("DATABASE_URL")) and self.is_production()
 
-# ИСПРАВЛЕНИЕ: Создание глобального экземпляра настроек с error handling
+
+# Создание глобального экземпляра настроек с error handling
 try:
     settings = Settings()
 except Exception as e:
