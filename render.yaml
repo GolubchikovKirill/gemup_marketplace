@@ -3,13 +3,13 @@ services:
     name: gemup-marketplace-backend
     env: python
     buildCommand: pip install -r requirements.txt
-    preDeployCommand: python -m alembic upgrade head
+    preDeployCommand: python -c "import sys; sys.path.insert(0, '.'); sys.path.insert(0, 'app'); from alembic.config import Config; from alembic import command; alembic_cfg = Config('alembic.ini'); command.upgrade(alembic_cfg, 'head')"
     startCommand: python main.py
     envVars:
       - key: ENVIRONMENT
         value: production
       - key: DEBUG
-        value: false
+        value: "false"
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
