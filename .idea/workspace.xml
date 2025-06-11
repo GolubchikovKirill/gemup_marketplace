@@ -5,28 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/nextjs/Dockerfile.dev" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nextjs/next.confog.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nginx/default.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nginx/nginx.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Gemup Marketplace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Gemup Marketplace.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/render.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/1e835121a8c1_new_migration.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/auth_bearer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/auth_bearer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/circuit_breaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/circuit_breaker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/middleware.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/auth_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/auth_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/base.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/app.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/app.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs/Dockerfile.dev" beforeDir="false" afterPath="$PROJECT_DIR$/nextjs/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nextjs/next.confog.js" beforeDir="false" afterPath="$PROJECT_DIR$/nextjs/next.confog.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,12 +49,12 @@
     &quot;assignee&quot;: &quot;GolubchikovKirill&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;git@github.com:GolubchikovKirill/gemup_marketplace.git&quot;,
-    &quot;accountId&quot;: &quot;b7291a8e-1228-445e-b2b8-92d67645b526&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/GolubchikovKirill/gemup_marketplace.git",
+    "accountId": "6aea45cd-f1e4-4a4b-9822-81efd7920fd7"
   }
-}</component>
+}]]></component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -219,7 +202,7 @@
       <workItem from="1749531081765" duration="5000" />
       <workItem from="1749542211916" duration="4268000" />
       <workItem from="1749591499001" duration="4455000" />
-      <workItem from="1749644878401" duration="2441000" />
+      <workItem from="1749644878401" duration="3687000" />
     </task>
     <servers />
   </component>

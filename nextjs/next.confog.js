@@ -1,13 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // ВАЖНО: Включаем standalone для Docker
+  output: 'standalone',
+
   // API proxy для development
   async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: process.env.NEXT_PUBLIC_BACKEND_URL + '/api/:path*',
-      },
-    ];
+    if (process.env.NODE_ENV === 'development') {
+      return [
+        {
+          source: '/api/:path*',
+          destination: process.env.NEXT_PUBLIC_BACKEND_URL + '/api/:path*',
+        },
+      ];
+    }
+    return [];
+  },
+
+  // Environment variables для клиента
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 
   // CORS настройки

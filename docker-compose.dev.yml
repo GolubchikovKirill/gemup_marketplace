@@ -28,7 +28,7 @@ services:
     networks:
       - app-network
 
-  # Frontend (Next.js) - НОВЫЙ КОНТЕЙНЕР
+  # Frontend (Next.js через Docker)
   frontend:
     build:
       context: ./nextjs
@@ -49,7 +49,6 @@ services:
     networks:
       - app-network
 
-  # Database
   db:
     image: postgres:15-alpine
     environment:
@@ -68,7 +67,6 @@ services:
     networks:
       - app-network
 
-  # Redis
   redis:
     image: redis:7-alpine
     ports:
