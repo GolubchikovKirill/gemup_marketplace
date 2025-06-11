@@ -11,10 +11,9 @@ fi
 
 echo "✅ DATABASE_URL найден: ${DATABASE_URL:0:30}..."
 
-# ИСПРАВЛЕНО: Устанавливаем PYTHONPATH и используйте прямой вызов
+# ИСПРАВЛЕНО: Используйте python -m alembic вместо прямого вызова alembic
 echo "🔄 Применение миграций..."
-export PYTHONPATH=/opt/render/project/src:$PYTHONPATH
-alembic upgrade head
+python -m alembic upgrade head
 
 echo "🚀 Запуск приложения..."
 exec python main.py
