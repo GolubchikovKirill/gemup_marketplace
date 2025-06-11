@@ -11,9 +11,10 @@ fi
 
 echo "✅ DATABASE_URL найден: ${DATABASE_URL:0:30}..."
 
-# УБИРАЕМ проверку готовности БД - SQLAlchemy сам справится
+# ИСПРАВЛЕНО: Устанавливаем PYTHONPATH и используйте прямой вызов
 echo "🔄 Применение миграций..."
-python -m alembic upgrade head
+export PYTHONPATH=/opt/render/project/src:$PYTHONPATH
+alembic upgrade head
 
 echo "🚀 Запуск приложения..."
 exec python main.py
