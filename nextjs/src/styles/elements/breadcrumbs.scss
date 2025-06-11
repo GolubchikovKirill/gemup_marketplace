@@ -1,0 +1,43 @@
+.breadcrumbs {
+  .breadcrumbs-wrapper {
+    ol {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.25rem;
+      li {
+        a {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;          
+          span {
+            color: $text-secondory;
+            font-size: 0.95rem;
+            @include adaptiv-font(.95,.8);
+            transition: ease-in-out .5s;
+          }
+          i {
+            @include adaptiv-font(.95,.8);
+            transform: rotate(-90deg);
+            transition: ease-in-out .5s;
+            color: $text-secondory;
+            z-index: -1;
+          }
+          &:hover {
+            span {
+              color: $main-Green;
+            }
+            i {
+              color: $text-secondory;
+            }
+          }
+        }
+        span.active {
+          color: #fff;
+          @include adaptiv-font(.95,.8);
+          
+        }
+      }
+    }
+  }
+}

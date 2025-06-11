@@ -1,0 +1,8 @@
+.page__header {
+  padding: 1rem 0;
+  h1 {
+      @include adaptiv-font(2,1.15);
+      line-height: 125%;
+      font-weight: 700;
+  }
+}

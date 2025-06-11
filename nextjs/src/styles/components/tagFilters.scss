@@ -1,0 +1,37 @@
+.product__filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .filter__tags {
+    width: 80%;
+    button {
+      font-size: .85rem;
+      padding: .5rem .8rem;
+      border-radius: 999px;
+      background-color: $black-elementBG;
+      line-height: 100%;
+      color: $text-secondory;
+      &:hover {
+        color: #fff;
+      }
+      &.active {
+        color: $main-Green;
+        background-color: #13f1951a;
+      }
+    }
+  }
+  .full__filters {
+    width: auto;
+    button {
+      font-size: .85rem;
+      padding: .5rem .8rem;
+      border-radius: 999px;
+      background-color: $black-elementBG;
+      line-height: 100%;
+      color: $text-secondory;
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+}

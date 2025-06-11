@@ -1,0 +1,95 @@
+@mixin label-float($color, $background, $weight) {
+  transform: translate(-0.25rem, -2.5rem) scale(0.75);
+  color: $color;
+  background: $background;
+  padding: 0.125rem 0.375rem;
+  font-weight: $weight;
+}
+
+// Form control
+.form-control {
+  margin-bottom: 0;
+
+  &--fullwidth {
+    width: 100%;
+  }
+}
+
+// Text field (с анимацией подсказок)
+.text-field {
+  position: relative;
+  min-height: 4rem;
+
+  &__label {
+    position: absolute;
+    top: 50%;
+    left: 1.25rem; // 20px → 1.25rem
+    transform: translateY(-50%);
+    @include adaptiv-font(0.95, 0.9);
+    color: rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left top;
+    z-index: 1;
+    background: transparent;
+    padding: 0;
+  }
+}
+
+// Input base (с анимацией label)
+.input-base {
+  position: relative;
+
+  &--outlined {
+    position: relative;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 1.25rem 1rem; // 20px 16px
+    border: 0.125rem solid transparent; // 2px
+    border-radius: 0.25rem; // 4px
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    @include adaptiv-font(1, 0.95);
+
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:hover:not(:focus) {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:focus {
+      border-color: $main-Green;
+      background: rgba(255, 255, 255, 0.08);
+
+      ~ .text-field__label {
+        @include label-float($main-Green, $black-elementBG, 500);
+      }
+    }
+
+    &:not(:placeholder-shown) {
+      ~ .text-field__label {
+        @include label-float(rgba(255, 255, 255, 0.8), #030507, 400);
+      }
+    }
+
+    &:focus:not(:placeholder-shown) {
+      ~ .text-field__label {
+        color: $main-Green;
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__outline,
+  &__legend {
+    display: none;
+  }
+}

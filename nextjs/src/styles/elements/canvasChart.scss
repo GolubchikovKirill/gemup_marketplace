@@ -1,0 +1,10 @@
+.Canv__wrapper {
+   width: 100%;
+}
+canvas#chartTraffic {
+   width: 100%;
+    height: auto;
+    display: block;
+    background-color: $bg-element;
+    border-radius: 50%;
+}

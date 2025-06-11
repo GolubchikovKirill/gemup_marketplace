@@ -1,0 +1,59 @@
+.tabs {  
+  &__nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid $gray-stoke;
+    position: relative;
+    overflow: hidden;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__button {
+    position: relative;
+    padding: 1rem;
+    background: transparent;
+    color: $text-secondory;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 2px;
+      background-color: $main-Green;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.3s ease;
+    }
+    &.active {
+      color: #fff;
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+  }
+  &__content {
+    .tab {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      &.active {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+}

@@ -1,0 +1,273 @@
+.fixedNavmenu {
+  background-color: #090E15;
+  position: sticky;
+  top: 0;
+  width: 250px;
+  height: 100lvh;
+  min-height: 100lvh;
+  //overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  transition: width 0.5s ease-in-out;
+  border-right: 1px solid $black-elementBG;
+  grid-template-areas: aside;
+  .head__block {
+    border-bottom: 1px solid $gray-stoke;
+    padding: 1.5rem 1rem;
+    align-items: center;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+    position: relative;
+    transition: padding 0.5s ease-in-out, grid-template-columns 0.5s ease-in-out;
+
+    .logo__wrapper {
+      a {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 0.25rem;
+
+        img.logo__element {
+          width: 100%;
+          height: auto;
+          max-width: 2rem;
+          transition: max-width 0.5s ease-in-out;
+        }
+
+        img.logo__text {
+          width: 100%;
+          height: auto;
+          max-width: 4.375rem;
+          transition: opacity 0.3s ease-in-out;
+        }
+      }
+    }
+
+    button {
+      color: $text-secondory;
+      font-size: 1.5rem;
+      line-height: 80%;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      &.menuFunction {
+        display: block;
+        text-align: end;
+      }
+
+      &.menuMinimal {
+        position: absolute;
+        bottom: -10px;
+        right: -10px;
+        display: none;
+
+        &.hidden {
+          display: none !important;
+        }
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .sidebar__element {
+    padding: 0 1rem;
+    margin-bottom: .5rem;
+    .headline {
+      @include adaptiv-font(.75,.75);
+      color: $text-secondory;
+      margin-bottom: 0.5rem;
+      padding: 1rem 0 .5rem .5rem;
+    }
+    nav.sidebarNav {
+      width: 100%;
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0rem;
+        width: 100%;
+        li.sidenav__element {
+          display: flex;
+          width: 100%;
+          max-width: inherit;
+          margin: 0;
+          list-style: none;
+          a,span {
+            padding: .5rem;
+            display: flex;
+            gap: 0.5rem;
+            color: $text-secondory;
+            font-size: 1rem;
+            width: 100%;
+            transition: ease-in-out .4s;
+            i {
+              font-size: 1.5rem;
+              color: $text-secondory;
+              line-height: 80%;
+              transition: ease-in-out .4s;
+            }
+            @media (hover: hover) and (pointer: fine) {
+              &:hover {
+                color: #fff;
+                i {
+                  color: $main-Green;
+                }
+              }
+            }
+          }
+
+          button {
+            color: $text-secondory;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;  
+            padding: .5rem;
+            transition: ease-in-out .4s;
+            .name {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              transition: ease-in-out .4s;
+              i {
+                font-size: 1.5rem;
+                line-height: 80%;
+                transition: ease-in-out .4s;
+              }
+            }
+            i {
+              transition: ease-in-out .4s;
+            }
+            @media (hover: hover) and (pointer: fine) {
+              &:hover {
+                color: #fff;
+                .name {
+                  color: #fff;
+                  i {
+                    color: $main-Green;
+                  }
+                }
+                i {
+                  color: $main-Green;
+                }
+              }
+            }
+          }
+
+          &.active {
+            
+            a,span, i {
+              color: $main-Green;
+              background-color: $black-elementBG;
+              border-radius: .25rem;
+            }
+          }
+
+        }
+      }
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.closed {
+    width: 50px;
+
+    .head__block {
+      grid-template-columns: auto;
+      padding: 1rem 0.75rem;
+
+      .logo__wrapper {
+        .logo__element {
+          max-width: 2rem;
+        }
+
+        .logo__text {
+          opacity: 0;
+          pointer-events: none;
+          width: 0;
+          height: 0;
+          overflow: hidden;
+        }
+      }
+
+      button {
+        &.menuFunction {
+          display: none;
+        }
+
+        &.menuMinimal {
+          display: flex;
+          padding: 0.25rem;
+          border-radius: 999px;
+          background-color: $black-elementBG;
+          font-size: 1.2rem;
+          bottom: -14px;
+          right: -14px;
+          border: 1px solid $gray-stoke;
+        }
+      }
+    }
+
+    .sidebar__element {
+    padding: 0 0.5rem;
+    margin-bottom: 0;
+    .headline {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      padding: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    nav.sidebarNav {
+      ul {
+        li.sidenav__element {
+          padding-bottom: 0;
+          a, span, button {
+            justify-content: center;
+            text-indent: -9999px;
+            overflow: hidden;
+            white-space: nowrap;
+            i {
+              text-indent: 0;
+              overflow: visible;
+            }
+          }
+
+          button .name {
+            text-indent: -9999px;
+            i {
+              text-indent: 0;
+            }
+          }
+
+          button i.ico-arrow {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+
+
+  }
+}
+
+// Скрываем на мобильных девайсах
+@media screen and (max-width:1024px) {
+  .fixedNavmenu {
+    display: none;
+  }
+}

@@ -5,12 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0c8b7a5-571b-4a34-9428-cbf448e78e0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/scripts/data_mock.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nextjs/Dockerfile.dev" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nextjs/next.confog.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nginx/default.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nginx/nginx.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Gemup Marketplace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Gemup Marketplace.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/1e835121a8c1_new_migration.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/auth_bearer.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/auth_bearer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/circuit_breaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/circuit_breaker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/core/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/core/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/dependencies.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/core/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/middleware.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/auth_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/auth_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/app.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/app.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -86,13 +101,14 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "dev",
-    "last_opened_file_path": "/Users/golubcikovkirill/Desktop/Projects/gemup_marketplace",
+    "last_opened_file_path": "/Users/golubcikovkirill/Desktop/gemup_marketplace2",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Color Scheme Font",
+    "ts.external.directory.path": "/Users/golubcikovkirill/Desktop/gemup_marketplace2/nextjs/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -202,11 +218,18 @@
       <workItem from="1749502525270" duration="1947000" />
       <workItem from="1749531081765" duration="5000" />
       <workItem from="1749542211916" duration="4268000" />
+      <workItem from="1749591499001" duration="4455000" />
+      <workItem from="1749644878401" duration="2441000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/nextjs/next.config.js" />
+      </list>
+    </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Gemup_Marketplace$config.coverage" NAME="config Coverage Results" MODIFIED="1748194323532" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/core" />

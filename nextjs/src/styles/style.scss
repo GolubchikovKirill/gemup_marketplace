@@ -1,0 +1,690 @@
+@import "variables";
+@import "base/normalize";
+//@import "base/optimize";
+@import "fonts";
+@import "flag-icon-css/sass/flag-icons";
+@import "mixins";
+@import "animations";
+@import "standart";
+
+// 1. UI-Компоненты
+@import "ui/buttons";
+@import "ui/inputs";
+@import "ui/forms";
+
+// 2. Элементы
+@import "elements/breadcrumbs";
+@import "elements/verify-message";
+@import "elements/comment-item";
+@import "elements/product-item";
+@import "elements/tabs";
+@import "elements/canvasChart";
+
+// 3. Компоненты
+@import "components/header";
+@import "components/sideNavDesktop";
+@import "components/headers/pageHeader";
+@import "components/tagFilters";
+@import "components/tables/contentFilter";
+@import "components/generatedArea";
+
+// 4. Секции / Сквозные секции
+@import "sections/comments";
+
+
+// 5. Модальные окна
+@import "modals/base";
+@import "modals/sendPass";
+@import "modals/addReview";
+@import "modals/cart";
+
+// 6. Страницы
+@import "pages/auth";
+@import "pages/generate";
+@import "pages/profile";
+
+.hidden {
+   display: none;
+}
+
+span {
+   font-size: 3rem;
+}
+
+.page__wrapper {
+   display: flex;
+   flex-direction: row;
+   gap: 0;
+}
+
+.main__content {
+   display: flex;
+   flex-direction: column;
+   width: 93%;
+   max-width: 1200px;
+   margin: 0 auto;
+   //width: 100%;
+}
+
+.product__filters {
+   margin-bottom: 1.5rem;
+}
+
+.products__items {
+   display: grid;
+   grid-template-columns: repeat(3,1fr);
+   gap: 1rem 1rem;
+}
+
+#products__container {
+   display: grid;
+   grid-template-columns: auto;
+   gap: 2rem;
+   .product__category {
+      .head__block {
+         margin-bottom: 1.25rem;
+         h2 {
+            @include adaptiv-font(1.5,1.25);
+            line-height: 125%;
+         }
+      }
+   }
+}
+
+#description__block {
+  background-color: $black-elementBG;
+  padding: 1.5rem;
+  border-radius: 1rem;
+
+  .description__wrapper {
+    .title {
+      @include adaptiv-font(1.15, 1.05);
+      line-height: 125%;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .content__body {
+      max-height: 120px;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+
+      p,
+      ul li {
+        color: $text-secondory;
+      }
+
+      ul {
+        padding: 0.75rem 0;
+      }
+
+      &.active {
+        max-height: 1000px; // достаточно большое значение
+      }
+    }
+
+    button {
+      color: $text-secondory;
+      transition: color 0.3s ease;
+      line-height: 125%;
+      margin-top: 0.75rem;
+
+      &:hover {
+        color: $main-Green;
+      }
+    }
+  }
+}
+
+
+.innerContent__wrapper {
+   display: grid;
+   grid-template-columns: auto 30%;
+   gap: 1rem;
+   margin-bottom: 2rem;
+   .mainContent {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+   }
+   .sideData {
+      height: max-content;
+      border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+   }
+}
+
+@media screen and (max-width:767px) {
+   .innerContent__wrapper {
+   grid-template-columns: auto;
+   gap: 1rem;
+   margin-bottom: 1rem;
+   .mainContent {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+   }
+   .sideData {      
+      border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+   }
+}
+}
+
+.order__dataWrapper {
+  background-color: $black-elementBG;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  form {
+   
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+    .selectPlan__wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .5rem;
+
+      label {
+      background-color: #2c1a20;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      position: relative;
+      .top {
+         display: flex;
+         align-items: center;
+         gap: 0.25rem;
+         justify-content: center;
+
+         .value,
+         .ed {
+            line-height: 100%;
+            @include adaptiv-font(0.9, 0.9);
+         }
+
+         .value {
+            color: #fff;
+         }
+
+         .ed {
+            color: $text-secondory;
+         }
+      }
+
+      .bottom {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+
+         .value,
+         .currency {
+            line-height: 100%;
+            @include adaptiv-font(1.15, 1.15);
+         }
+
+         .value {
+            color: #00ff88;
+         }
+
+         .currency {
+            color: #00ff88;
+         }
+      }
+
+      input[type="radio"] {
+         display: none;
+      }
+
+      // Выбранный тариф
+      &.selected {
+         border: 1px solid #00ff88;
+         background-color: #3a252e;
+
+         .top .value {
+            color: #fff;
+         }
+
+         .bottom .value,
+         .bottom .currency {
+            color: #00ff88;
+         }
+      }
+      &.popular {
+         grid-column: span 3;
+         .tag {
+            position: absolute;
+            top: -.5rem;
+            left: -.5rem;
+            color: #000;
+            font-size: .8rem;
+            padding: .25rem .5rem;
+            border-radius: .25rem;
+            background-color: $main-Green;
+            line-height: 100%;
+         }
+         .top {
+            .additional {
+               line-height: 100%;
+               @include adaptiv-font(0.9, 0.9);
+               span {
+                  color: $main-Green;
+                  @include adaptiv-font(0.9, 0.9);
+               }
+            }
+         }
+         .bottom {
+            .value, .currency {
+               display: none;
+            }
+            .complex {
+               display: flex;
+               line-height: 100%;
+               @include adaptiv-font(.9, .9);
+               color: $main-Green;
+               gap: 0.25rem;
+               .under {
+                  @include adaptiv-font(.9, .9);
+                  text-decoration: underline;
+                  line-height: 100%;
+                  color: $main-Green;
+               }
+            }
+         }
+      }
+      }
+
+    }
+    .item__data {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      .left, .soldout {
+         color: $text-secondory;
+         line-height: 100%;
+         @include adaptiv-font(.85,.8);
+         font-weight: 500;
+         .value {
+            color: #fff;
+            font-weight: 500;
+            line-height: 100%;
+            @include adaptiv-font(.85,.8);
+         }
+      }
+    }
+    .order__counter {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      gap: .25rem;
+      justify-content: space-between;
+      align-items: center;
+      .counter {
+         display: flex;
+         align-items: center;
+         gap: 0.25rem;
+         align-self: stretch;
+         align-items: stretch;
+         width: 65%;
+         button {
+            width: 2.25rem;
+            height: 2.25rem;
+            color: $main-Green;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: .25rem;
+            background-color: #141F2C;
+            font-size: 1.25rem;
+         }
+         input {
+            background-color: #141F2C;
+            border: none;
+            outline: none;
+            border-radius: .25rem;
+            max-width: 100px;
+            padding: .25rem .25rem;
+            text-align: center;
+            color: $main-Green;
+            font-size: 0.8rem;
+            line-height: 100%;
+            &::placeholder {
+               color: $main-Green;
+               font-size: 0.8rem;
+               line-height: 100%;
+            }
+         }
+      }
+      .item__price {
+         width: auto;
+         display: flex;
+         gap: 0.25rem;
+         .value, .currency {
+            color: $main-Green;
+            line-height: 100%;
+            font-weight: 600;
+            @include adaptiv-font(1.15,1.05);
+         }
+      }
+    }
+    .action__area {
+      display: flex;
+      gap: .5rem;
+      justify-items: stretch;
+      button[type="submit"], button[type="button"] {
+         width: 100%;
+         font-weight: 600;
+         border-radius: .5rem;
+         background-color: red;
+         padding: .5rem .5rem;
+         transition: ease-in-out .5s;
+         &:hover {
+            background-color: $main-Green-Hover;
+            color: #fff;
+         }
+      }
+      button[type="submit"] {
+         background-color: $main-Green;
+         color: $text-black;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         gap: 0.35rem;
+         i {
+            font-size: 1.5rem;
+         }
+      }
+      button[type="button"] {
+         background-color: $body-bg;
+         color: #fff;
+      }
+    }
+  }
+}
+
+.sellers__wrapper {
+   background-color: #05281C;
+   border-radius: 1rem;
+   a {
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .left__side {
+         display: flex;
+         flex-direction: row;
+         gap: 1rem;
+         align-items: center;
+         img {
+            object-fit: cover;
+            object-position: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+         }
+         .content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            justify-content: flex-start;
+            width: auto;
+            .title, .subtext {
+               
+               line-height: 100%;
+            }
+            .title {
+               color: #fff;
+               @include adaptiv-font(.9,.8);
+            }
+            .subtext {
+               color: $main-Green;
+               @include adaptiv-font(.8,.75);
+            }
+         }
+      }
+      .right__side {
+         display: flex;
+         gap: 0.5rem;
+         align-items: center;
+         .count__value {
+            display: flex;
+            justify-content: center;
+            padding: .35rem .5rem;
+            background-color: #07462E;
+            color: $main-Green;
+            border-radius: .25rem;
+            line-height: 100%;
+            font-size: 0.9rem;
+         }
+         i {
+            transform: rotate(-90deg);
+            font-size: 1.5rem;
+            color: $main-Green;
+         }
+      }
+   }
+}
+
+#account__data {
+   background-color: $black-elementBG;
+   padding: 1.5rem;
+   border-radius: 1rem;
+   .accountData__wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-direction: row;
+      gap: 1.5rem;
+      .avatar {
+          width: auto;
+         .img__wrapper {
+            position: relative;
+            img {
+               border-radius: 50%;
+               object-fit: cover;
+               object-position: center;
+               width: 64px;
+               height: 64px;
+            }
+            i {
+               font-size: 1.15rem;
+               padding: .35rem;
+               position: absolute;
+               bottom: -.5rem;
+               right: -.5rem;
+               color: $main-Green;
+               background-color: #0B3E30;
+               border: 2px solid $body-bg;
+               border-radius: 50%;
+            }
+         }
+      }
+      .content {
+         display: flex;
+         flex-direction: column;
+         gap: 1rem;
+         width: 75%;
+         .name {
+            @include adaptiv-font(1.25,1.15);
+            line-height: 140%;
+            
+         }
+         .textarea {
+            display: flex;
+            flex-direction: column;
+            p {
+               line-height: 160%;
+               color: $text-secondory;
+               margin: 0;
+            }
+            
+         }
+         .tags__wrapper {
+            .tag {
+               @include adaptiv-font(.8,.75);
+               line-height: 100%;
+               padding: .5rem .8rem;
+               border-radius: 1rem;
+               background-color: #1f2a38;
+               color: $text-secondory;
+            }
+         }
+         .rating__area {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            gap: 0.5rem;
+            .rating {
+               display: flex;
+               align-items: center;
+               gap: 0.5rem;
+               .stars__wrapper {
+                  display: flex;
+                  flex-direction: row;
+                  gap: 0.15rem;
+                  align-items: center;
+                  i {
+                     color: $gray500;
+                     font-size: .8rem;
+                     line-height: 80%;
+                     &.active {
+                        color: $main-Green;
+                     }
+                  }
+               }
+               .value {
+                  @include adaptiv-font(.85,.75);
+                  line-height: 100%;
+                  color: $text-secondory;
+               }
+            }
+            .delimiter {
+               display: flex;
+               width: 4px;
+               height: 4px;
+               background-color: $gray500;
+               border-radius: 50%;
+            }
+            .sales__wrapper {
+               display: flex;
+               flex-direction: row;
+               gap: 0.25rem;
+               .value, .name {
+                  color: $text-secondory;
+                  @include adaptiv-font(.85,.75);
+                  line-height: 100%;
+               }
+            }
+         }
+      }
+      .actions {
+         width: auto;
+         button {
+            display: flex;
+            align-items: center;
+            color: $text-secondory;
+            gap: 0.25rem;
+            background-color: #1f2a38;
+            padding: .5rem .75rem;
+            white-space: nowrap;
+            border-radius: 1rem;
+            font-size: .8rem;
+            line-height: 100%;
+            i {
+               color: #fff;
+               font-size: 1rem;
+            }
+            &:hover {
+               background-color: $main-Green-Hover;
+               color: #fff;
+            }
+         }
+      }
+   }
+}
+
+#Average__seller {
+   border-radius: 1rem;
+   background-color: $black-elementBG;
+   .average__wrapper {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      justify-content: space-between;
+      .leftSIde {
+         display: flex;
+         flex-direction: column;
+         gap: 0.75rem; 
+         .title {
+            color: #fff;
+            @include adaptiv-font(1.25,1.15);
+            line-height: 140%;
+            font-weight: 600;
+         }
+         .rating__wrapper {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            .value {
+               @include adaptiv-font(.9,.85);
+               color: #fff;
+               line-height: 100%;
+            }
+            .rating__stars {
+               display: flex;
+               align-items: center;
+               gap: 0.15rem;
+               i {
+                  @include adaptiv-font(.9,.85);
+                  color: $text-secondory;
+                  &.active {
+                     color: $main-Green;
+                  }
+               }
+            }
+         }
+         p {
+            color: $text-secondory;
+            @include adaptiv-font(.9,.85);
+            line-height: 160%;
+         }
+      }
+      .rightSide {
+         button {
+            background-color: $main-Green;
+            color: $text-black;
+            padding: .75rem;
+            border-radius: .5rem;
+            @include adaptiv-font(.85,.8);
+            line-height: 100%;
+            font-weight: 500;
+            transition: ease-in-out .3s;
+            &:hover {
+               background-color: $main-Green-Hover;
+               color: #fff;
+            }
+         }
+      }
+   }
+}
+
+.sideData {
+   background-color: $black-elementBG;
+   .side__content {
+      padding: 1.5rem;
+      
+   }
+}

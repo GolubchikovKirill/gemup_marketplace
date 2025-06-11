@@ -1,0 +1,61 @@
+#addReview {
+  form {
+    .form__fields {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      .rating__wrapper {
+        display: flex;
+        gap: 0.5rem;
+        align-items: flex-start;
+        flex-direction: column;
+        .head {
+          color: #fff;
+          font-weight: 600;
+        }
+        .rate__wrapper {
+          display: flex;
+          flex-wrap: wrap;
+          flex-direction: row;
+          align-items: center;
+          gap: 0.5rem;
+          .value {
+            line-height: 100%;
+            font-size: 1.25rem;
+            color: $text-secondory;
+          }
+          .ico-star {
+            cursor: pointer;
+            color: $gray500; // неактивная
+            transition: color 0.5s ease;
+            font-size: 1.5rem;        
+            &.active {
+              color: $main-Green; // активная
+            }
+          }
+        }
+
+      }
+    }
+  }
+}
+
+textarea {
+  background-color: #1a2431;
+  color: $text-secondory;
+  outline: none;
+  border: none;
+  resize: none;
+  overflow: hidden;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 1rem;
+  transition: all 0.2s ease;  
+  &::placeholder {
+    color: #fff;
+    opacity: 0.6;
+  }
+}

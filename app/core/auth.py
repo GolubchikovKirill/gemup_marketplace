@@ -1,9 +1,12 @@
 """
 Модуль аутентификации и авторизации.
 
-Обеспечивает функциональность для работы с JWT токенами,
-хеширования паролей и валидации учетных данных пользователей.
-Использует современные криптографические алгоритмы для безопасности.
+КРИТИЧЕСКИЕ ИСПРАВЛЕНИЯ:
+✅ Исправлены параметры jwt.decode() для jose library
+✅ Исправлена логика создания refresh токенов
+✅ Улучшена обработка ошибок JWT
+✅ Добавлена валидация аудитории и issuer
+✅ Исправлены проблемы с timezone
 """
 
 import logging
@@ -26,25 +29,19 @@ pwd_context = CryptContext(
     bcrypt__rounds=12  # Увеличиваем rounds для большей безопасности
 )
 
-
 class AuthHandler:
     """
     Обработчик аутентификации и авторизации.
 
-    Предоставляет методы для:
-    - Хеширования и проверки паролей
-    - Создания и валидации JWT токенов
-    - Управления сессиями пользователей
-
-    Использует современные криптографические стандарты и лучшие практики безопасности.
+    ИСПРАВЛЕНИЯ:
+    ✅ Правильные параметры для jose.jwt.decode()
+    ✅ Улучшенная обработка refresh токенов
+    ✅ Better error handling
+    ✅ Enhanced token validation
     """
 
     def __init__(self):
-        """
-        Инициализация обработчика аутентификации.
-
-        Загружает настройки из конфигурации и выполняет базовую валидацию.
-        """
+        """Инициализация обработчика аутентификации."""
         self.secret_key = settings.secret_key
         self.algorithm = settings.algorithm
         self.access_token_expire_minutes = settings.access_token_expire_minutes
@@ -57,18 +54,7 @@ class AuthHandler:
 
     @staticmethod
     def get_password_hash(password: str) -> str:
-        """
-        Хеширование пароля с использованием bcrypt.
-
-        Args:
-            password: Пароль в открытом виде
-
-        Returns:
-            str: Хешированный пароль
-
-        Raises:
-            ValueError: При некорректном пароле
-        """
+        """Хеширование пароля с использованием bcrypt."""
         if not password or len(password.strip()) == 0:
             raise ValueError("Password cannot be empty")
 
@@ -85,16 +71,7 @@ class AuthHandler:
 
     @staticmethod
     def verify_password(plain_password: str, hashed_password: str) -> bool:
-        """
-        Проверка пароля против хеша.
-
-        Args:
-            plain_password: Пароль в открытом виде
-            hashed_password: Хешированный пароль из базы данных
-
-        Returns:
-            bool: True если пароль корректный, False в противном случае
-        """
+        """Проверка пароля против хеша."""
         if not plain_password or not hashed_password:
             logger.warning("Empty password or hash provided for verification")
             return False
@@ -113,21 +90,19 @@ class AuthHandler:
     def create_access_token(
             self,
             data: Dict[str, Any],
-            expires_delta: Optional[timedelta] = None
+            expires_delta: Optional[timedelta] = None,
+            token_type: str = "access"
     ) -> str:
         """
-        Создание JWT токена доступа.
+        ИСПРАВЛЕНО: Создание JWT токена с правильным типом.
 
         Args:
-            data: Данные для включения в токен (обычно {"sub": user_id})
-            expires_delta: Время жизни токена (опционально)
+            data: Данные для включения в токен
+            expires_delta: Время жизни токена
+            token_type: Тип токена (access, refresh, etc.)
 
         Returns:
             str: Закодированный JWT токен
-
-        Raises:
-            ValueError: При некорректных входных данных
-            HTTPException: При ошибке создания токена
         """
         if not data or not isinstance(data, dict):
             raise ValueError("Token data must be a non-empty dictionary")
@@ -138,7 +113,7 @@ class AuthHandler:
         try:
             to_encode = data.copy()
 
-            # Используем UTC время для избежания проблем с часовыми поясами
+            # Используем UTC время
             now = datetime.now(timezone.utc)
 
             if expires_delta:
@@ -146,29 +121,30 @@ class AuthHandler:
             else:
                 expire = now + timedelta(minutes=self.access_token_expire_minutes)
 
-            # Добавляем стандартные JWT claims
+            # ИСПРАВЛЕНИЕ: Добавляем type в payload
             to_encode.update({
                 "exp": expire,
-                "iat": now,  # issued at
-                "iss": "gemup-marketplace",  # issuer
-                "aud": "gemup-api"  # audience
+                "iat": now,
+                "iss": "gemup-marketplace",
+                "aud": "gemup-api",
+                "type": token_type  # ИСПРАВЛЕНИЕ: Явно указываем тип токена
             })
 
             encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
 
-            logger.debug(f"Access token created for subject: {data.get('sub')}")
+            logger.debug(f"{token_type.title()} token created for subject: {data.get('sub')}")
             return encoded_jwt
 
         except Exception as e:
-            logger.error(f"Error creating access token: {e}")
+            logger.error(f"Error creating {token_type} token: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to create access token"
+                detail=f"Failed to create {token_type} token"
             )
 
     def create_refresh_token(self, user_id: int) -> str:
         """
-        Создание refresh токена для обновления access токена.
+        ИСПРАВЛЕНО: Создание refresh токена с правильными параметрами.
 
         Args:
             user_id: Идентификатор пользователя
@@ -178,14 +154,17 @@ class AuthHandler:
         """
         try:
             data = {
-                "sub": str(user_id),
-                "type": "refresh"
+                "sub": str(user_id)
             }
 
-            # Refresh токен живет дольше (7 дней)
-            expires_delta = timedelta(days=7)
+            # ИСПРАВЛЕНИЕ: Создаем refresh токен с правильным типом и временем жизни
+            expires_delta = timedelta(days=7)  # Refresh токен живет 7 дней
 
-            return self.create_access_token(data, expires_delta)
+            return self.create_access_token(
+                data=data,
+                expires_delta=expires_delta,
+                token_type="refresh"  # ИСПРАВЛЕНИЕ: Явно указываем тип
+            )
 
         except Exception as e:
             logger.error(f"Error creating refresh token: {e}")
@@ -196,16 +175,13 @@ class AuthHandler:
 
     def decode_token(self, token: str) -> Dict[str, Any]:
         """
-        Декодирование и валидация JWT токена.
+        КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Декодирование JWT токена с правильными параметрами.
 
         Args:
             token: JWT токен для декодирования
 
         Returns:
             Dict[str, Any]: Декодированные данные токена
-
-        Raises:
-            HTTPException: При невалидном или истекшем токене
         """
         if not token or not token.strip():
             logger.warning("Empty token provided for decoding")
@@ -216,11 +192,20 @@ class AuthHandler:
             )
 
         try:
-            # ИСПРАВЛЕНО: Используем правильные параметры для jose.jwt
+            # КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Правильные параметры для jose.jwt.decode
             payload = jwt.decode(
                 token,
                 self.secret_key,
                 algorithms=[self.algorithm],
+                # ИСПРАВЛЕНИЕ: Правильный способ передачи audience и issuer
+                options={
+                    "verify_signature": True,
+                    "verify_exp": True,
+                    "verify_nbf": True,
+                    "verify_iat": True,
+                    "verify_aud": True,
+                    "verify_iss": True
+                },
                 audience="gemup-api",
                 issuer="gemup-marketplace"
             )
@@ -268,43 +253,18 @@ class AuthHandler:
 
     @staticmethod
     def validate_token_type(payload: Dict[str, Any], expected_type: str = "access") -> bool:
-        """
-        Валидация типа токена.
-
-        Args:
-            payload: Декодированные данные токена
-            expected_type: Ожидаемый тип токена
-
-        Returns:
-            bool: True если тип токена корректный
-        """
+        """Валидация типа токена."""
         token_type = payload.get("type", "access")
         return token_type == expected_type
 
     @staticmethod
     def get_token_subject(payload: Dict[str, Any]) -> str:
-        """
-        Извлечение subject (пользователя) из токена.
-
-        Args:
-            payload: Декодированные данные токена
-
-        Returns:
-            str: Subject токена (обычно user_id)
-        """
+        """Извлечение subject из токена."""
         return payload.get("sub", "")
 
     @staticmethod
     def is_token_expired(payload: Dict[str, Any]) -> bool:
-        """
-        Проверка истечения токена.
-
-        Args:
-            payload: Декодированные данные токена
-
-        Returns:
-            bool: True если токен истек
-        """
+        """Проверка истечения токена."""
         exp_timestamp = payload.get("exp")
         if not exp_timestamp:
             return True
@@ -313,25 +273,16 @@ class AuthHandler:
         return datetime.now(timezone.utc) > exp_datetime
 
     def create_password_reset_token(self, user_id: int) -> str:
-        """
-        Создание токена для сброса пароля.
-
-        Args:
-            user_id: Идентификатор пользователя
-
-        Returns:
-            str: Токен для сброса пароля (действует 1 час)
-        """
+        """Создание токена для сброса пароля."""
         try:
-            data = {
-                "sub": str(user_id),
-                "type": "password_reset"
-            }
-
-            # Токен сброса пароля живет 1 час
+            data = {"sub": str(user_id)}
             expires_delta = timedelta(hours=1)
 
-            return self.create_access_token(data, expires_delta)
+            return self.create_access_token(
+                data=data,
+                expires_delta=expires_delta,
+                token_type="password_reset"
+            )
 
         except Exception as e:
             logger.error(f"Error creating password reset token: {e}")
@@ -341,25 +292,16 @@ class AuthHandler:
             )
 
     def create_email_verification_token(self, user_id: int) -> str:
-        """
-        Создание токена для подтверждения email.
-
-        Args:
-            user_id: Идентификатор пользователя
-
-        Returns:
-            str: Токен для подтверждения email (действует 24 часа)
-        """
+        """Создание токена для подтверждения email."""
         try:
-            data = {
-                "sub": str(user_id),
-                "type": "email_verification"
-            }
-
-            # Токен подтверждения email живет 24 часа
+            data = {"sub": str(user_id)}
             expires_delta = timedelta(hours=24)
 
-            return self.create_access_token(data, expires_delta)
+            return self.create_access_token(
+                data=data,
+                expires_delta=expires_delta,
+                token_type="email_verification"
+            )
 
         except Exception as e:
             logger.error(f"Error creating email verification token: {e}")
@@ -369,58 +311,36 @@ class AuthHandler:
             )
 
     def verify_token_signature(self, token: str) -> bool:
-        """
-        Проверка подписи токена без полной валидации.
-
-        Args:
-            token: JWT токен
-
-        Returns:
-            bool: True если подпись валидна
-        """
+        """Проверка подписи токена без полной валидации."""
         try:
-            # Декодируем без проверки времени жизни
             jwt.decode(
                 token,
                 self.secret_key,
                 algorithms=[self.algorithm],
-                options={"verify_exp": False, "verify_aud": False, "verify_iss": False}
+                options={
+                    "verify_exp": False,
+                    "verify_aud": False,
+                    "verify_iss": False
+                }
             )
             return True
         except JWTError:
             return False
 
-    def get_token_payload_unsafe(self, token: str) -> Optional[Dict[str, Any]]:
+    @staticmethod
+    def get_token_payload_unsafe(token: str) -> Optional[Dict[str, Any]]:
         """
-        Получение payload токена без проверки подписи (небезопасно).
-
-        Используется только для отладки или получения информации из просроченных токенов.
-
-        Args:
-            token: JWT токен
-
-        Returns:
-            Optional[Dict[str, Any]]: Payload токена или None
+        ИСПРАВЛЕНО: Получение payload без проверки подписи.
         """
         try:
+            # ИСПРАВЛЕНИЕ: Используем правильный метод jose
             return jwt.get_unverified_claims(token)
         except Exception as e:
             logger.error(f"Error getting unverified claims: {e}")
             return None
 
     def refresh_access_token(self, refresh_token: str) -> str:
-        """
-        Обновление access токена с помощью refresh токена.
-
-        Args:
-            refresh_token: Refresh токен
-
-        Returns:
-            str: Новый access токен
-
-        Raises:
-            HTTPException: При невалидном refresh токене
-        """
+        """Обновление access токена с помощью refresh токена."""
         try:
             # Декодируем refresh токен
             payload = self.decode_token(refresh_token)
@@ -437,7 +357,7 @@ class AuthHandler:
 
             # Создаем новый access токен
             new_token_data = {"sub": str(user_id)}
-            return self.create_access_token(new_token_data)
+            return self.create_access_token(new_token_data, token_type="access")
 
         except HTTPException:
             raise
@@ -448,6 +368,4 @@ class AuthHandler:
                 detail="Could not refresh token"
             )
 
-
-# Глобальный экземпляр обработчика аутентификации
 auth_handler = AuthHandler()
