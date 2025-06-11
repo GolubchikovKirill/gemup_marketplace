@@ -48,7 +48,7 @@ class Settings(BaseSettings):
             if database_url.startswith("postgres://"):
                 database_url = database_url.replace("postgres://", "postgresql://", 1)
 
-            # Добавляем SSL для Render (обязательно согласно документации)
+            # Добавляем SSL для Render (обязательно)
             if "sslmode" not in database_url:
                 separator = "&" if "?" in database_url else "?"
                 database_url = f"{database_url}{separator}sslmode=require"
