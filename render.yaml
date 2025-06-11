@@ -1,5 +1,4 @@
 services:
-  # Backend (FastAPI)
   - type: web
     name: gemup-marketplace-backend
     env: python
@@ -16,20 +15,6 @@ services:
         fromDatabase:
           name: gemup-marketplace-db
           property: connectionString
-      - key: CORS_ORIGINS
-        value: https://gemup-marketplace-frontend.onrender.com
-
-  # Frontend (Next.js)
-  - type: web
-    name: gemup-marketplace-frontend
-    env: node
-    buildCommand: cd nextjs && npm ci && npm run build
-    startCommand: cd nextjs && npm start
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: NEXT_PUBLIC_API_URL
-        value: https://gemup-marketplace-backend.onrender.com
 
 databases:
   - name: gemup-marketplace-db
